@@ -1,34 +1,111 @@
 ---
-// Footer.astro - Clean Vercel Geist aesthetic footer
+// Footer.astro - Multi-page SEO footer with comprehensive site navigation
 ---
 
-<footer class="relative z-10 bg-[var(--bg-page)] border-t border-[var(--border-color)] py-12 transition-colors duration-200">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 space-y-6">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-      <div class="flex items-center gap-2 text-[var(--text-main)]">
-        <div class="w-5 h-5 rounded-[4px] bg-[var(--text-main)] text-[var(--bg-card)] flex items-center justify-center font-mono font-bold text-[10px]">
-          R
+<footer class="relative z-10 bg-[var(--bg-page)] border-t border-[var(--border-color)] py-14 transition-colors duration-200">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 space-y-12">
+    
+    <!-- Multi-Column Navigation Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      
+      <!-- Column 1: Brand & Identity -->
+      <div class="col-span-2 md:col-span-1 space-y-3">
+        <a href="/" class="flex items-center gap-2 text-[var(--text-main)] group" aria-label="Free Virtual Ruler">
+          <div class="w-6 h-6 rounded-[5px] bg-[var(--accent)] text-white flex items-center justify-center font-mono font-bold text-[11px] shadow-xs group-hover:scale-105 transition-transform">
+            R
+          </div>
+          <span class="font-semibold text-sm tracking-tight">Free Virtual Ruler</span>
+        </a>
+        <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+          Accurate on-screen digital ruler and measuring tape. Calibrated to actual physical size in inches, centimeters, and millimeters on any device.
+        </p>
+        <div class="pt-1 flex items-center gap-1.5 text-[11px] font-mono text-[var(--text-tertiary)]">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          <span>100% Free · No App Needed</span>
         </div>
-        <span class="font-semibold text-xs tracking-tight">Free Virtual Ruler</span>
       </div>
 
-      <nav class="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-[var(--text-secondary)]">
-        <a href="#ruler-workspace" class="hover:text-[var(--text-main)] transition-colors">Virtual Ruler</a>
-        <a href="#guides-section" class="hover:text-[var(--text-main)] transition-colors">Calibration Guide</a>
-        <a href="#guides-section" class="hover:text-[var(--text-main)] transition-colors">Conversion Chart</a>
-        <a href="#guides-section" class="hover:text-[var(--text-main)] transition-colors">FAQ</a>
-      </nav>
+      <!-- Column 2: Ruler & Measuring Tools -->
+      <div class="space-y-3">
+        <h3 class="mono-eyebrow text-[11px] font-semibold text-[var(--text-main)] uppercase tracking-wider">
+          Measuring Tools
+        </h3>
+        <ul class="space-y-2 text-xs text-[var(--text-secondary)]">
+          <li>
+            <a href="/#ruler-workspace" class="hover:text-[var(--accent)] transition-colors">Virtual Ruler (Home)</a>
+          </li>
+          <li>
+            <a href="/#ruler-workspace" class="hover:text-[var(--accent)] transition-colors">12 Inch Online Ruler</a>
+          </li>
+          <li>
+            <a href="/#ruler-workspace" class="hover:text-[var(--accent)] transition-colors">Metric Ruler (cm & mm)</a>
+          </li>
+          <li>
+            <a href="/#ruler-workspace" class="hover:text-[var(--accent)] transition-colors">Dual Calipers & Tape</a>
+          </li>
+          <li>
+            <a href="/#ruler-workspace" class="hover:text-[var(--accent)] transition-colors">Floating Rotating Ruler</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Calibration & Help -->
+      <div class="space-y-3">
+        <h3 class="mono-eyebrow text-[11px] font-semibold text-[var(--text-main)] uppercase tracking-wider">
+          Guides & Help
+        </h3>
+        <ul class="space-y-2 text-xs text-[var(--text-secondary)]">
+          <li>
+            <a href="/#guides-section" class="hover:text-[var(--accent)] transition-colors">Calibration Methods</a>
+          </li>
+          <li>
+            <a href="/#guides-section" class="hover:text-[var(--accent)] transition-colors">Inches & Metric Chart</a>
+          </li>
+          <li>
+            <a href="/#faq" class="hover:text-[var(--accent)] transition-colors">Frequently Asked Questions</a>
+          </li>
+          <li>
+            <a href="/about" class="hover:text-[var(--accent)] transition-colors">Screen PPI Science</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Company & Legal (Multi-page links) -->
+      <div class="space-y-3">
+        <h3 class="mono-eyebrow text-[11px] font-semibold text-[var(--text-main)] uppercase tracking-wider">
+          Company & Legal
+        </h3>
+        <ul class="space-y-2 text-xs text-[var(--text-secondary)]">
+          <li>
+            <a href="/about" class="hover:text-[var(--accent)] transition-colors font-medium">About Us</a>
+          </li>
+          <li>
+            <a href="/contact" class="hover:text-[var(--accent)] transition-colors font-medium">Contact Us</a>
+          </li>
+          <li>
+            <a href="/privacy" class="hover:text-[var(--accent)] transition-colors font-medium">Privacy Policy</a>
+          </li>
+          <li>
+            <a href="/terms" class="hover:text-[var(--accent)] transition-colors font-medium">Terms & Conditions</a>
+          </li>
+        </ul>
+      </div>
+
     </div>
 
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-4 border-t border-[var(--border-color)] text-[11px] text-[var(--text-tertiary)] font-mono">
-      <p>&copy; {new Date().getFullYear()} Free Virtual Ruler (freevirtualruler.com). Accurate on-screen measurement tool.</p>
-      <div class="flex gap-4">
-        <span>No app required</span>
+    <!-- Bottom Row -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-[var(--border-color)] text-[11px] text-[var(--text-tertiary)] font-mono">
+      <p>&copy; {new Date().getFullYear()} Free Virtual Ruler (freevirtualruler.com). All rights reserved.</p>
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
+        <a href="/about" class="hover:text-[var(--text-main)] transition-colors">About</a>
         <span>·</span>
-        <span>Privacy-first</span>
+        <a href="/contact" class="hover:text-[var(--text-main)] transition-colors">Contact</a>
         <span>·</span>
-        <span>Inches & Metric</span>
+        <a href="/privacy" class="hover:text-[var(--text-main)] transition-colors">Privacy</a>
+        <span>·</span>
+        <a href="/terms" class="hover:text-[var(--text-main)] transition-colors">Terms</a>
       </div>
     </div>
+
   </div>
 </footer>

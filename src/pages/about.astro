@@ -1,0 +1,180 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SubpageHeader from '../components/SubpageHeader.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+  title="About Us — Free Virtual Ruler | Precision On-Screen Measurement Tool"
+  description="Learn about Free Virtual Ruler, our mission to build the most accurate, zero-install virtual ruler and digital tape measure for smartphones, laptops, and desktop screens."
+  keywords="about virtual ruler, accurate online ruler, digital ruler technology, free virtual ruler mission, screen calibration ppi"
+>
+  <SubpageHeader activePage="about" />
+
+  <main class="relative z-10 bg-[var(--bg-page)] min-h-screen py-12 sm:py-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 space-y-12">
+      
+      <!-- Breadcrumb & Header -->
+      <div class="space-y-4">
+        <nav class="flex items-center gap-2 text-xs font-mono text-[var(--text-tertiary)]" aria-label="Breadcrumb">
+          <a href="/" class="hover:text-[var(--accent)] transition-colors">Home</a>
+          <span>/</span>
+          <span class="text-[var(--text-main)]">About Us</span>
+        </nav>
+
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-card)] shadow-xs">
+            <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span>
+            <span class="mono-eyebrow text-[10px] text-[var(--text-tertiary)] uppercase tracking-wider">Our Story & Mission</span>
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-main)]">
+            About Free Virtual Ruler
+          </h1>
+          <p class="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
+            The story behind the web's most accurate, privacy-first, zero-install screen measuring tool.
+          </p>
+        </div>
+      </div>
+
+      <!-- Hero Summary Card -->
+      <div class="p-6 sm:p-8 rounded-[16px] bg-[var(--bg-card)] border border-[var(--border-color)] shadow-[var(--shadow-whisper)] space-y-4">
+        <h2 class="text-lg sm:text-xl font-semibold text-[var(--text-main)]">
+          Measuring the Physical World Through the Web
+        </h2>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          How many times have you needed to measure a bolt, a screw, a credit card, or a jewelry ring, only to realize your tape measure is buried in a drawer or nowhere in sight?
+        </p>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          <strong>Free Virtual Ruler (freevirtualruler.com)</strong> was created with a clear and uncompromising goal: to provide an instantaneous, 100% physically accurate, full-size digital ruler and measuring tape in any web browser on any device — without app downloads, accounts, paywalls, or privacy-invasive tracking.
+        </p>
+      </div>
+
+      <!-- Why We Built It -->
+      <section class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-main)]">
+          Why Traditional Ruler Apps Fall Short
+        </h2>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          When you download a measurement app from the Apple App Store or Google Play Store, you are frequently confronted with:
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+          <div class="p-4 rounded-[10px] bg-[var(--bg-card)] border border-[var(--border-color)] space-y-2">
+            <div class="w-8 h-8 rounded-[6px] bg-red-500/10 text-red-500 flex items-center justify-center font-bold text-xs">✕</div>
+            <h3 class="text-xs font-semibold text-[var(--text-main)]">Intrusive Ads</h3>
+            <p class="text-[11px] text-[var(--text-secondary)] leading-relaxed">Constant full-screen popups and banner distractions when you just want a quick measurement.</p>
+          </div>
+
+          <div class="p-4 rounded-[10px] bg-[var(--bg-card)] border border-[var(--border-color)] space-y-2">
+            <div class="w-8 h-8 rounded-[6px] bg-red-500/10 text-red-500 flex items-center justify-center font-bold text-xs">✕</div>
+            <h3 class="text-xs font-semibold text-[var(--text-main)]">Hidden Subscriptions</h3>
+            <p class="text-[11px] text-[var(--text-secondary)] leading-relaxed">Weekly or monthly recurring charges just to unlock calipers or metric/imperial toggle switches.</p>
+          </div>
+
+          <div class="p-4 rounded-[10px] bg-[var(--bg-card)] border border-[var(--border-color)] space-y-2">
+            <div class="w-8 h-8 rounded-[6px] bg-red-500/10 text-red-500 flex items-center justify-center font-bold text-xs">✕</div>
+            <h3 class="text-xs font-semibold text-[var(--text-main)]">Uncalibrated Display</h3>
+            <p class="text-[11px] text-[var(--text-secondary)] leading-relaxed">Assuming a generic 96 DPI, resulting in measurements that are off by up to 25% or more.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- The Science Behind Our Accuracy -->
+      <section class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-main)]">
+          The Engineering of Digital Accuracy
+        </h2>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          Because monitors and mobile screens range from 72 PPI (large desktop displays) to over 460 PPI (Retina OLED smartphones), a static inch or millimeter scale will never be accurate without calibration. Free Virtual Ruler solves this through three precision calibration pipelines:
+        </p>
+        <ul class="space-y-3 text-xs sm:text-sm text-[var(--text-secondary)]">
+          <li class="flex items-start gap-2.5 p-3 rounded-[8px] bg-[var(--bg-card)] border border-[var(--border-color)]">
+            <span class="w-2 h-2 rounded-full bg-[var(--accent)] mt-1.5 shrink-0"></span>
+            <div>
+              <strong class="text-[var(--text-main)]">1. Auto-Hardware Detection:</strong>
+              We inspect the browser's display metrics and user-agent string against our catalog of calibrated hardware profiles (MacBook, iPad, iPhone, Dell XPS, Samsung Galaxy) to calculate exact device pixel ratios.
+            </div>
+          </li>
+          <li class="flex items-start gap-2.5 p-3 rounded-[8px] bg-[var(--bg-card)] border border-[var(--border-color)]">
+            <span class="w-2 h-2 rounded-full bg-[var(--accent)] mt-1.5 shrink-0"></span>
+            <div>
+              <strong class="text-[var(--text-main)]">2. Screen Diagonal Mathematics:</strong>
+              Using the Pythagorean theorem <span class="font-mono text-[11px] text-[var(--text-main)]">PPI = √(w² + h²) / diagonal</span>, you can enter your monitor's advertised size in inches for true physical accuracy.
+            </div>
+          </li>
+          <li class="flex items-start gap-2.5 p-3 rounded-[8px] bg-[var(--bg-card)] border border-[var(--border-color)]">
+            <span class="w-2 h-2 rounded-full bg-[var(--accent)] mt-1.5 shrink-0"></span>
+            <div>
+              <strong class="text-[var(--text-main)]">3. ISO Credit Card Calibration:</strong>
+              Place any standard banking card or driver's license (globally regulated to exactly 85.60 mm or 3.370 inches) over the on-screen card guide to achieve 100% real-world scale in seconds.
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Our Core Values -->
+      <section class="space-y-4">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-main)]">
+          Our Guiding Principles
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-4 rounded-[12px] bg-[var(--bg-card)] border border-[var(--border-color)] space-y-2">
+            <h3 class="text-xs font-semibold text-[var(--text-main)] flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              100% Free Forever
+            </h3>
+            <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+              No locked features, no premium tiers, no subscriptions. Measurement is a universal utility that should remain freely accessible to everyone.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-[12px] bg-[var(--bg-card)] border border-[var(--border-color)] space-y-2">
+            <h3 class="text-xs font-semibold text-[var(--text-main)] flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              Privacy by Default
+            </h3>
+            <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+              Your calibration data and preferences stay inside your own browser's local storage. We collect no personal data and employ no invasive tracker networks.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-[12px] bg-[var(--bg-card)] border border-[var(--border-color)] space-y-2">
+            <h3 class="text-xs font-semibold text-[var(--text-main)] flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              Sub-Millimeter Precision
+            </h3>
+            <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+              Equipped with 1/16" and 1/32" imperial graduations, dual caliper slides, and smooth floating ruler rotation for real work.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-[12px] bg-[var(--bg-card)] border border-[var(--border-color)] space-y-2">
+            <h3 class="text-xs font-semibold text-[var(--text-main)] flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              Multi-Device Web Standard
+            </h3>
+            <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+              Built on HTML5 Canvas and modern responsive CSS, delivering smooth performance on mobile phones, tablets, MacBooks, and desktop displays.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bottom CTA Card -->
+      <div class="p-6 rounded-[16px] bg-gradient-to-r from-[var(--bg-card)] to-[var(--bg-subtle)] border border-[var(--border-color)] flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="space-y-1 text-center sm:text-left">
+          <div class="text-sm font-semibold text-[var(--text-main)]">Ready to measure?</div>
+          <div class="text-xs text-[var(--text-secondary)]">Launch our full size online ruler now on any device.</div>
+        </div>
+        <a 
+          href="/" 
+          class="px-4 py-2 rounded-[8px] bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white text-xs font-semibold transition-all shadow-sm shrink-0"
+        >
+          Launch Virtual Ruler &rarr;
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <Footer />
+</Layout>

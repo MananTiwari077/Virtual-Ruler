@@ -1,0 +1,105 @@
+---
+// SubpageHeader.astro - Unified top navigation for content subpages
+interface Props {
+  activePage?: 'about' | 'privacy' | 'terms' | 'contact';
+}
+
+const { activePage } = Astro.props;
+---
+
+<header class="sticky top-0 z-50 bg-[var(--bg-page)]/90 backdrop-blur-md border-b border-[var(--border-color)] transition-colors duration-200">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+    
+    <!-- Left: Logo -->
+    <a href="/" class="flex items-center gap-2 group text-[var(--text-main)] hover:opacity-90 transition-opacity" aria-label="Free Virtual Ruler Home">
+      <div class="w-7 h-7 rounded-[6px] bg-[var(--accent)] text-white flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"></path>
+          <path d="m14.5 12.5 2-2"></path>
+          <path d="m11.5 9.5 2-2"></path>
+          <path d="m8.5 6.5 2-2"></path>
+          <path d="m17.5 15.5 2-2"></path>
+        </svg>
+      </div>
+      <span class="font-semibold text-sm tracking-tight text-[var(--text-main)]">
+        Free Virtual Ruler
+      </span>
+    </a>
+
+    <!-- Center Navigation Links (Hidden on small mobile, visible on sm+) -->
+    <nav class="hidden md:flex items-center gap-6 text-xs font-medium text-[var(--text-secondary)]">
+      <a href="/" class="hover:text-[var(--accent)] transition-colors flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"></path>
+        </svg>
+        <span>Virtual Ruler</span>
+      </a>
+      <a 
+        href="/about" 
+        class={`hover:text-[var(--text-main)] transition-colors ${activePage === 'about' ? 'text-[var(--accent)] font-semibold' : ''}`}
+      >
+        About Us
+      </a>
+      <a 
+        href="/contact" 
+        class={`hover:text-[var(--text-main)] transition-colors ${activePage === 'contact' ? 'text-[var(--accent)] font-semibold' : ''}`}
+      >
+        Contact
+      </a>
+      <a 
+        href="/privacy" 
+        class={`hover:text-[var(--text-main)] transition-colors ${activePage === 'privacy' ? 'text-[var(--accent)] font-semibold' : ''}`}
+      >
+        Privacy
+      </a>
+      <a 
+        href="/terms" 
+        class={`hover:text-[var(--text-main)] transition-colors ${activePage === 'terms' ? 'text-[var(--accent)] font-semibold' : ''}`}
+      >
+        Terms
+      </a>
+    </nav>
+
+    <!-- Right: Theme Toggle & Launch Ruler CTA -->
+    <div class="flex items-center gap-2.5">
+      <!-- Theme Toggle -->
+      <button 
+        id="subpage-theme-toggle" 
+        class="h-8 w-8 flex items-center justify-center rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--accent-light)] hover:border-[var(--accent-border)] hover:text-[var(--accent)] text-[var(--text-main)] transition-all"
+        title="Toggle Theme"
+        aria-label="Toggle Theme"
+      >
+        <svg id="theme-sun-icon" class="w-4 h-4 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+        </svg>
+        <svg id="theme-moon-icon" class="w-4 h-4 block dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+        </svg>
+      </button>
+
+      <!-- Launch Ruler CTA Button -->
+      <a 
+        href="/" 
+        class="h-8 px-3.5 rounded-[6px] bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs transition-all hover:scale-[1.02] active:scale-[0.98]"
+      >
+        <span>Open Ruler</span>
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Theme toggle functionality for subpages
+  const themeBtn = document.getElementById('subpage-theme-toggle');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('fvr_theme', isDark ? 'dark' : 'light');
+    });
+  }
+</script>

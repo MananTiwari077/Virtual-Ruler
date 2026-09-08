@@ -1,0 +1,145 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SubpageHeader from '../components/SubpageHeader.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+  title="Privacy Policy — Free Virtual Ruler | 100% Client-Side Privacy"
+  description="Read the Free Virtual Ruler Privacy Policy. We respect your digital privacy: zero personal data collection, zero account requirements, and 100% local client-side calibration."
+  keywords="virtual ruler privacy policy, free virtual ruler terms, client side privacy, no cookies measuring tool"
+>
+  <SubpageHeader activePage="privacy" />
+
+  <main class="relative z-10 bg-[var(--bg-page)] min-h-screen py-12 sm:py-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 space-y-10">
+      
+      <!-- Breadcrumb & Header -->
+      <div class="space-y-4">
+        <nav class="flex items-center gap-2 text-xs font-mono text-[var(--text-tertiary)]" aria-label="Breadcrumb">
+          <a href="/" class="hover:text-[var(--accent)] transition-colors">Home</a>
+          <span>/</span>
+          <span class="text-[var(--text-main)]">Privacy Policy</span>
+        </nav>
+
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-card)] shadow-xs">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <span class="mono-eyebrow text-[10px] text-[var(--text-tertiary)] uppercase tracking-wider">Privacy First Architecture</span>
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-main)]">
+            Privacy Policy
+          </h1>
+          <p class="text-xs sm:text-sm font-mono text-[var(--text-tertiary)]">
+            Effective Date: September 2026 · Last Updated: September 9, 2026
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Summary Box -->
+      <div class="p-5 rounded-[12px] bg-[var(--accent-light)] border border-[var(--accent-border)] text-xs sm:text-sm text-[var(--accent)] leading-relaxed">
+        <strong class="font-semibold block mb-1">TL;DR Summary:</strong>
+        FreeVirtualRuler.com does not collect your name, email, IP profiles, or location. We do not require accounts, we do not sell data to advertisers, and your display calibration settings remain securely stored on your own device via your browser's local storage.
+      </div>
+
+      <!-- Section 1 -->
+      <section class="space-y-3">
+        <h2 class="text-lg sm:text-xl font-bold tracking-tight text-[var(--text-main)]">
+          1. Information We Do Not Collect
+        </h2>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          Because Free Virtual Ruler is designed as an open, utility-first web application, we have engineered our software to function entirely without collecting personally identifiable information (PII). We do not require:
+        </p>
+        <ul class="list-disc list-inside space-y-1.5 pl-2 text-xs sm:text-sm text-[var(--text-secondary)]">
+          <li>Account registration, passwords, or profile credentials</li>
+          <li>Credit card, bank account, or payment processing details</li>
+          <li>Access to your camera, microphone, contacts, or file system</li>
+          <li>Precise GPS or geographic location coordinates</li>
+        </ul>
+      </section>
+
+      <!-- Section 2 -->
+      <section class="space-y-3">
+        <h2 class="text-lg sm:text-xl font-bold tracking-tight text-[var(--text-main)]">
+          2. How We Use Browser Local Storage
+        </h2>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          To provide a smooth user experience, FreeVirtualRuler.com utilizes your web browser's native <code class="px-1.5 py-0.5 rounded bg-[var(--bg-subtle)] font-mono text-xs text-[var(--text-main)]">localStorage</code> feature. This allows your device to remember your settings between visits without sending anything to our servers:
+        </p>
+        <ul class="list-disc list-inside space-y-1.5 pl-2 text-xs sm:text-sm text-[var(--text-secondary)]">
+          <li><strong>Calibration Setting:</strong> Stores your calibrated Pixels Per Inch (<code class="font-mono text-xs">fvr_ppi</code>) so you don't need to recalibrate on every visit.</li>
+          <li><strong>Measurement Unit:</strong> Remembers whether you prefer Inches, Centimeters, Millimeters, or Pixels (<code class="font-mono text-xs">fvr_unit</code>).</li>
+          <li><strong>Theme Mode:</strong> Stores whether you selected light or dark mode (<code class="font-mono text-xs">fvr_theme</code>).</li>
+        </ul>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          This data remains 100% on your device and is never transmitted, synced, or shared externally. You can clear this data at any time by clearing your browser's site cookies and storage.
+        </p>
+      </section>
+
+      <!-- Section 3 -->
+      <section class="space-y-3">
+        <h2 class="text-lg sm:text-xl font-bold tracking-tight text-[var(--text-main)]">
+          3. Technical Server Logging & Analytics
+        </h2>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          Like virtually all websites delivered via modern content delivery networks (CDNs), our servers automatically record basic technical access logs when you request web assets. These logs may include:
+        </p>
+        <ul class="list-disc list-inside space-y-1.5 pl-2 text-xs sm:text-sm text-[var(--text-secondary)]">
+          <li>Browser type and version (User-Agent)</li>
+          <li>Referring web page and requested URLs</li>
+          <li>Time and date of access</li>
+          <li>Anonymized IP addresses used strictly for DDoS mitigation and routing efficiency</li>
+        </ul>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          These operational logs are maintained strictly for network stability, uptime monitoring, and security protection. They are never tied to individual user identities.
+        </p>
+      </section>
+
+      <!-- Section 4 -->
+      <section class="space-y-3">
+        <h2 class="text-lg sm:text-xl font-bold tracking-tight text-[var(--text-main)]">
+          4. Cookies and Third-Party Advertising
+        </h2>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          Free Virtual Ruler does not utilize third-party behavioral advertising cookies, affiliate tracking beacons, or cross-site tracking pixels. If external links are provided to standards organizations or resources, their respective privacy policies apply once you navigate away from our domain.
+        </p>
+      </section>
+
+      <!-- Section 5 -->
+      <section class="space-y-3">
+        <h2 class="text-lg sm:text-xl font-bold tracking-tight text-[var(--text-main)]">
+          5. GDPR & CCPA Rights
+        </h2>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          Under regulations including the European Union General Data Protection Regulation (GDPR) and the California Consumer Privacy Act (CCPA), individuals have rights regarding their personal data. Because we do not harvest, store, or sell any personal data, your privacy is preserved by architectural design. If you have questions regarding your data rights, you may contact our privacy desk.
+        </p>
+      </section>
+
+      <!-- Section 6 -->
+      <section class="space-y-3">
+        <h2 class="text-lg sm:text-xl font-bold tracking-tight text-[var(--text-main)]">
+          6. Children's Privacy
+        </h2>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          Our service is a general-audience educational and practical utility suitable for users of all ages, including students. We do not knowingly collect personal information from children under 13 (or under 16 in certain jurisdictions) in compliance with the Children's Online Privacy Protection Act (COPPA).
+        </p>
+      </section>
+
+      <!-- Section 7 -->
+      <section class="space-y-3">
+        <h2 class="text-lg sm:text-xl font-bold tracking-tight text-[var(--text-main)]">
+          7. Contact Our Privacy Team
+        </h2>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          If you have any questions, clarifications, or feedback concerning this Privacy Policy, please email us directly at:
+        </p>
+        <div class="p-4 rounded-[8px] bg-[var(--bg-card)] border border-[var(--border-color)] font-mono text-xs text-[var(--text-main)]">
+          Email: <a href="mailto:privacy@freevirtualruler.com" class="text-[var(--accent)] hover:underline">privacy@freevirtualruler.com</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
