@@ -7,13 +7,15 @@ interface Props {
 	description?: string;
 	keywords?: string;
 	image?: string;
+	noindex?: boolean;
 }
 
 const {
 	title = 'Virtual Ruler — Accurate Online Ruler in Inches, cm & mm | Full Size Virtual Ruler',
 	description = 'Free, 100% accurate virtual ruler and online ruler for your screen. Measure physical objects in actual size with virtual ruler inches, online ruler in cm, mm, and 12 inch online ruler. Use as a mobile ruler or measuring tape full size virtual ruler app without installation.',
 	keywords = 'virtual ruler, full size virtual ruler, virtual ruler inches, virtual ruler app, actual virtual ruler, virtual ruler mm, measuring tape full size virtual ruler, online ruler, online ruler inches, online ruler in cm, online ruler mm, online ruler cm, free online ruler, 12 inch online ruler, online ruler 12 inch, accurate online ruler, mobile ruler',
-	image = 'https://freevirtualruler.com/og-image.png'
+	image = 'https://freevirtualruler.com/og-image.png',
+	noindex = false
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, 'https://freevirtualruler.com');
@@ -56,7 +58,7 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freevirtualruler.com')
 		<meta name="description" content={description} />
 		<meta name="keywords" content={keywords} />
 		<meta name="author" content="Free Virtual Ruler" />
-		<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+		<meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"} />
 		<meta name="theme-color" content="#0070f3" media="(prefers-color-scheme: light)" />
 		<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
 

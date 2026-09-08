@@ -1,0 +1,103 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SubpageHeader from '../components/SubpageHeader.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+  title="404 — Page Not Found | Free Virtual Ruler"
+  description="The page you are looking for does not exist. Return to the Free Virtual Ruler homepage to access our accurate online ruler, dual calipers, and calibration tools."
+  noindex={true}
+>
+  <SubpageHeader />
+
+  <main class="relative z-10 bg-[var(--bg-page)] min-h-[75vh] flex items-center justify-center py-16 px-4 sm:px-6">
+    
+    <!-- Background glow -->
+    <div class="absolute inset-0 hero-mesh-gradient pointer-events-none opacity-40"></div>
+
+    <div class="max-w-lg w-full text-center space-y-8 relative z-10">
+      
+      <!-- Graphic Ruler Broken / Calibration Marker Visual -->
+      <div class="mx-auto w-full max-w-[280px] p-3 rounded-[12px] bg-[var(--bg-card)] border border-[var(--border-color)] shadow-[var(--shadow-whisper)] space-y-2">
+        <div class="flex items-center justify-between text-[10px] font-mono text-[var(--text-tertiary)] px-1">
+          <span>0"</span>
+          <span class="text-red-500 font-bold">4.04" (Missing)</span>
+          <span>12"</span>
+        </div>
+        <!-- Stylized Ruler Tick Marks with a gap in the center -->
+        <div class="h-6 w-full rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--border-color)] flex items-end justify-between px-2 pb-1 relative overflow-hidden">
+          <div class="h-4 w-[1.5px] bg-[var(--text-tertiary)]"></div>
+          <div class="h-2 w-[1px] bg-[var(--text-tertiary)]/60"></div>
+          <div class="h-3 w-[1px] bg-[var(--text-tertiary)]/80"></div>
+          <div class="h-2 w-[1px] bg-[var(--text-tertiary)]/60"></div>
+          <!-- Broken / missing gap indicator -->
+          <div class="h-5 px-1.5 rounded bg-red-500/10 border border-dashed border-red-500/40 flex items-center justify-center">
+            <span class="text-[9px] font-mono text-red-500 font-bold">404</span>
+          </div>
+          <div class="h-2 w-[1px] bg-[var(--text-tertiary)]/60"></div>
+          <div class="h-3 w-[1px] bg-[var(--text-tertiary)]/80"></div>
+          <div class="h-2 w-[1px] bg-[var(--text-tertiary)]/60"></div>
+          <div class="h-4 w-[1.5px] bg-[var(--text-tertiary)]"></div>
+        </div>
+      </div>
+
+      <!-- Text Header -->
+      <div class="space-y-3">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-red-500/20 bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-mono font-medium shadow-xs">
+          <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+          <span>Error 404 · Out of Range</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-main)]">
+          Page Not Found
+        </h1>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed max-w-sm mx-auto">
+          The page or measurement you're looking for doesn't exist, may have been relocated, or is beyond the ruler's boundaries.
+        </p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+        <a 
+          href="/" 
+          class="w-full sm:w-auto px-5 py-2.5 rounded-[8px] bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white text-xs font-semibold shadow-xs transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+        >
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"></path>
+          </svg>
+          <span>Return to Virtual Ruler</span>
+        </a>
+        <a 
+          href="/contact" 
+          class="w-full sm:w-auto px-5 py-2.5 rounded-[8px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--bg-subtle)] hover:text-[var(--text-main)] text-xs font-medium text-[var(--text-secondary)] transition-all flex items-center justify-center"
+        >
+          Report Issue / Contact
+        </a>
+      </div>
+
+      <!-- Popular Helpful Destinations -->
+      <div class="pt-6 border-t border-[var(--border-color)] text-left">
+        <div class="text-[11px] font-mono text-[var(--text-tertiary)] uppercase tracking-wider mb-3 text-center">
+          Popular Resources
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <a href="/#ruler-workspace" class="p-2.5 rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--accent-border)] hover:bg-[var(--accent-light)] hover:text-[var(--accent)] text-[var(--text-secondary)] transition-all">
+            &rarr; Virtual Ruler Tool
+          </a>
+          <a href="/#guides-section" class="p-2.5 rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--accent-border)] hover:bg-[var(--accent-light)] hover:text-[var(--accent)] text-[var(--text-secondary)] transition-all">
+            &rarr; Calibration Guide
+          </a>
+          <a href="/#faq" class="p-2.5 rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--accent-border)] hover:bg-[var(--accent-light)] hover:text-[var(--accent)] text-[var(--text-secondary)] transition-all">
+            &rarr; Frequently Asked Questions
+          </a>
+          <a href="/about" class="p-2.5 rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:border-[var(--accent-border)] hover:bg-[var(--accent-light)] hover:text-[var(--accent)] text-[var(--text-secondary)] transition-all">
+            &rarr; About Our Technology
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
