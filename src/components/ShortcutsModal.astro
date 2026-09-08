@@ -1,0 +1,113 @@
+---
+// ShortcutsModal.astro - Vercel Geist keyboard shortcuts sheet
+---
+
+<div
+  id="shortcuts-modal"
+  class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="shortcuts-modal-title"
+>
+  <div class="relative w-full max-w-md bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[12px] shadow-[var(--shadow-floating)] overflow-hidden transition-transform duration-200 scale-95 flex flex-col max-h-[85vh]">
+    
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between px-5 pt-5 pb-3 border-b border-[var(--border-color)] shrink-0">
+      <div>
+        <div class="mono-eyebrow text-[10px] text-[var(--text-tertiary)] uppercase mb-0.5">Quick Reference</div>
+        <h2 id="shortcuts-modal-title" class="text-base font-semibold tracking-tight text-[var(--text-main)]">
+          Keyboard Shortcuts
+        </h2>
+      </div>
+      <button
+        id="close-shortcuts-btn"
+        class="w-7 h-7 flex items-center justify-center rounded-[6px] text-[var(--text-tertiary)] hover:text-[var(--text-main)] hover:bg-[var(--bg-subtle)] transition-colors"
+        aria-label="Close Shortcuts Modal"
+      >
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Shortcuts List -->
+    <div class="p-5 overflow-y-auto space-y-2.5 text-xs">
+      <div class="flex items-center justify-between py-1 border-b border-[var(--border-color)]">
+        <span class="text-[var(--text-secondary)]">Inches (Imperial)</span>
+        <kbd class="px-2 py-0.5 rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--border-color)] font-mono font-semibold text-[var(--text-main)]">1</kbd>
+      </div>
+
+      <div class="flex items-center justify-between py-1 border-b border-[var(--border-color)]">
+        <span class="text-[var(--text-secondary)]">Centimeters (cm)</span>
+        <kbd class="px-2 py-0.5 rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--border-color)] font-mono font-semibold text-[var(--text-main)]">2</kbd>
+      </div>
+
+      <div class="flex items-center justify-between py-1 border-b border-[var(--border-color)]">
+        <span class="text-[var(--text-secondary)]">Millimeters (mm)</span>
+        <kbd class="px-2 py-0.5 rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--border-color)] font-mono font-semibold text-[var(--text-main)]">3</kbd>
+      </div>
+
+      <div class="flex items-center justify-between py-1 border-b border-[var(--border-color)]">
+        <span class="text-[var(--text-secondary)]">Pixels (px)</span>
+        <kbd class="px-2 py-0.5 rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--border-color)] font-mono font-semibold text-[var(--text-main)]">4</kbd>
+      </div>
+
+      <div class="flex items-center justify-between py-1 border-b border-[var(--border-color)]">
+        <span class="text-[var(--text-secondary)]">Toggle Edge Rulers</span>
+        <div class="flex gap-1 font-mono">
+          <kbd class="px-1.5 py-0.5 rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--border-color)] font-semibold text-[var(--text-main)]">T</kbd>
+          <kbd class="px-1.5 py-0.5 rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--border-color)] font-semibold text-[var(--text-main)]">L</kbd>
+          <kbd class="px-1.5 py-0.5 rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--border-color)] font-semibold text-[var(--text-main)]">B</kbd>
+          <kbd class="px-1.5 py-0.5 rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--border-color)] font-semibold text-[var(--text-main)]">R</kbd>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between py-1 border-b border-[var(--border-color)]">
+        <span class="text-[var(--text-secondary)]">Toggle Movable Floating Ruler</span>
+        <kbd class="px-2 py-0.5 rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--border-color)] font-mono font-semibold text-[var(--text-main)]">M</kbd>
+      </div>
+
+      <div class="flex items-center justify-between py-1 border-b border-[var(--border-color)]">
+        <span class="text-[var(--text-secondary)]">Toggle Dual Calipers</span>
+        <kbd class="px-2 py-0.5 rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--border-color)] font-mono font-semibold text-[var(--text-main)]">P</kbd>
+      </div>
+
+      <div class="flex items-center justify-between py-1 border-b border-[var(--border-color)]">
+        <span class="text-[var(--text-secondary)]">Toggle Guidelines</span>
+        <kbd class="px-2 py-0.5 rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--border-color)] font-mono font-semibold text-[var(--text-main)]">G</kbd>
+      </div>
+
+      <div class="flex items-center justify-between py-1 border-b border-[var(--border-color)]">
+        <span class="text-[var(--text-secondary)]">Toggle Live Crosshair</span>
+        <kbd class="px-2 py-0.5 rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--border-color)] font-mono font-semibold text-[var(--text-main)]">C</kbd>
+      </div>
+
+      <div class="flex items-center justify-between py-1 border-b border-[var(--border-color)]">
+        <span class="text-[var(--text-secondary)]">Toggle Dark / Light Mode</span>
+        <kbd class="px-2 py-0.5 rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--border-color)] font-mono font-semibold text-[var(--text-main)]">D</kbd>
+      </div>
+
+      <div class="flex items-center justify-between py-1 border-b border-[var(--border-color)]">
+        <span class="text-[var(--text-secondary)]">Toggle Fullscreen Mode</span>
+        <kbd class="px-2 py-0.5 rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--border-color)] font-mono font-semibold text-[var(--text-main)]">F</kbd>
+      </div>
+
+      <div class="flex items-center justify-between py-1">
+        <span class="text-[var(--text-secondary)]">Close Modals / Clear Guides</span>
+        <kbd class="px-2 py-0.5 rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--border-color)] font-mono font-semibold text-[var(--text-main)]">Esc</kbd>
+      </div>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="p-3 px-5 bg-[var(--bg-subtle)] border-t border-[var(--border-color)] flex justify-end shrink-0">
+      <button
+        id="btn-close-shortcuts-done"
+        class="h-7 px-3 rounded-full bg-[var(--color-primary)] text-[var(--color-on-primary)] text-xs font-medium hover:opacity-90 transition-opacity"
+      >
+        Got it
+      </button>
+    </div>
+
+  </div>
+</div>

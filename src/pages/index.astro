@@ -1,11 +1,34 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Header from '../components/Header.astro';
+import RulerCanvas from '../components/RulerCanvas.astro';
+import CalibrationModal from '../components/CalibrationModal.astro';
+import ObjectPresetsModal from '../components/ObjectPresetsModal.astro';
+import ShortcutsModal from '../components/ShortcutsModal.astro';
+import SeoContent from '../components/SeoContent.astro';
+import Footer from '../components/Footer.astro';
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+  title="Free Virtual Ruler — Accurate Online Ruler in Inches, cm & mm"
+  description="True actual-size online ruler in inches, centimeters, and millimeters. Precision calibrated for any laptop, monitor, or phone display. Auto-detect devices & screen diagonal calculation."
+>
+  <!-- Global Vercel-style App Chrome Header -->
+  <Header />
+
+  <!-- Main Interactive Virtual Ruler Workspace -->
+  <main id="main-content" class="relative">
+    <RulerCanvas />
+  </main>
+
+  <!-- Comprehensive SEO Guide, Fraction Charts & FAQs -->
+  <SeoContent />
+
+  <!-- Footer -->
+  <Footer />
+
+  <!-- Modals & Overlays -->
+  <CalibrationModal />
+  <ObjectPresetsModal />
+  <ShortcutsModal />
 </Layout>

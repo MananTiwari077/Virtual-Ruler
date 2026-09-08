@@ -1,0 +1,283 @@
+---
+// SeoContent.astro - Vercel Geist designed SEO section, guides, conversion tables & FAQ
+---
+
+<section id="guides-section" class="relative z-10 bg-[var(--bg-page)] border-t border-[var(--border-color)] pt-16 pb-24 overflow-hidden transition-colors duration-200">
+  
+  <!-- Subtle Hero Mesh Gradient Layer in background -->
+  <div class="absolute top-0 left-0 right-0 h-96 hero-mesh-gradient pointer-events-none opacity-60 dark:opacity-40"></div>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 space-y-20">
+    
+    <!-- Hero Title Band -->
+    <div class="text-center space-y-3 pt-6">
+      <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-card)] shadow-xs">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+        <span class="mono-eyebrow text-[10px] text-[var(--text-tertiary)]">Actual Size Online Ruler</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight text-[var(--text-main)] display-title">
+        Free Virtual Ruler — Measure in Inches, cm & mm
+      </h1>
+      <p class="text-sm sm:text-base text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed">
+        A precision, browser-based physical measurement tool calibrated to your display. Designed with developer-grade aesthetics, true fractional inch readouts, and sub-pixel edge alignment.
+      </p>
+    </div>
+
+    <!-- Feature Grid: 3 Hairline Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      
+      <!-- Card 1 -->
+      <div class="p-6 rounded-[12px] bg-[var(--bg-card)] border border-[var(--border-color)] shadow-[var(--shadow-whisper)] space-y-2.5">
+        <div class="w-8 h-8 rounded-[6px] bg-[#0070f3]/10 text-[#0070f3] flex items-center justify-center font-mono font-bold text-xs">
+          01
+        </div>
+        <h3 class="text-sm font-semibold tracking-tight text-[var(--text-main)]">True Actual Size</h3>
+        <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+          Standard screens assume 96 PPI, which is inaccurate on modern high-res displays. Our dual calibration locks onto your hardware's exact pixel pitch so 1 inch equals 1 physical inch.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="p-6 rounded-[12px] bg-[var(--bg-card)] border border-[var(--border-color)] shadow-[var(--shadow-whisper)] space-y-2.5">
+        <div class="w-8 h-8 rounded-[6px] bg-[#7928ca]/10 text-[#7928ca] flex items-center justify-center font-mono font-bold text-xs">
+          02
+        </div>
+        <h3 class="text-sm font-semibold tracking-tight text-[var(--text-main)]">Imperial Fractional Readout</h3>
+        <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+          Engineered for carpenters, craftspeople, and students: real-time dual calipers display measurements in both exact fractions (e.g. 3 5/16") and thousandths of an inch with 1-click clipboard copy.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="p-6 rounded-[12px] bg-[var(--bg-card)] border border-[var(--border-color)] shadow-[var(--shadow-whisper)] space-y-2.5">
+        <div class="w-8 h-8 rounded-[6px] bg-[#00dfd8]/10 text-[#00a8a2] dark:text-[#00dfd8] flex items-center justify-center font-mono font-bold text-xs">
+          03
+        </div>
+        <h3 class="text-sm font-semibold tracking-tight text-[var(--text-main)]">Multi-Edge & Floating Stick</h3>
+        <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+          Activate rulers on the top, bottom, left, or right screen bezels simultaneously, or deploy the movable, rotatable floating ruler stick anywhere in your browser workspace.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Calibration Deep-Dive: Method 1 & Method 2 -->
+    <div class="p-8 rounded-[16px] bg-[var(--bg-card)] border border-[var(--border-color)] shadow-[var(--shadow-whisper)] space-y-6">
+      <div>
+        <div class="mono-eyebrow text-[11px] text-[var(--text-tertiary)] mb-1">Calibration Science</div>
+        <h2 class="text-xl font-semibold tracking-tight text-[var(--text-main)] heading-section">
+          How to Calibrate Your Virtual Ruler for 100% Accuracy
+        </h2>
+      </div>
+
+      <div class="space-y-4 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+        <p>
+          Every computer display and smartphone panel has a unique physical pixel density, measured in <strong>Pixels Per Inch (PPI)</strong>. A 13.3-inch laptop at 1080p has roughly 166 PPI, whereas a 27-inch 1080p desktop monitor has only 82 PPI. If a website draws a ruler with arbitrary CSS pixels, an "inch" on your screen could be off by as much as 40%.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+          <div class="p-4 rounded-[8px] bg-[var(--bg-subtle)] border border-[var(--border-color)] space-y-2">
+            <h4 class="text-xs font-semibold text-[var(--text-main)] flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#0070f3]"></span>
+              Method 1: Auto-Detect Hardware
+            </h4>
+            <p class="text-xs text-[var(--text-secondary)]">
+              Automatically inspects your browser environment (<span class="font-mono">window.screen</span>, <span class="font-mono">devicePixelRatio</span>, user-agent) and matches it against our built-in database of Apple, Samsung, Google, and standard laptop panels.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-[8px] bg-[var(--bg-subtle)] border border-[var(--border-color)] space-y-2">
+            <h4 class="text-xs font-semibold text-[var(--text-main)] flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#7928ca]"></span>
+              Method 2: Screen Diagonal (Pythagoras)
+            </h4>
+            <p class="text-xs text-[var(--text-secondary)]">
+              Input your monitor's advertised diagonal size in inches (e.g. 14", 15.6", 24", 27"). The calculator calculates:
+              <span class="block font-mono text-[11px] text-[var(--text-main)] mt-1">CSS PPI = √(Width² + Height²) / Diagonal</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fractional Inches Quick Reference Chart -->
+    <div class="space-y-4">
+      <div>
+        <div class="mono-eyebrow text-[11px] text-[var(--text-tertiary)] mb-1">Imperial Conversion</div>
+        <h2 class="text-xl font-semibold tracking-tight text-[var(--text-main)] heading-section">
+          Inches to Metric Conversion & Fractional Table
+        </h2>
+      </div>
+
+      <div class="rounded-[12px] border border-[var(--border-color)] bg-[var(--bg-card)] overflow-hidden shadow-[var(--shadow-whisper)]">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs font-mono">
+            <thead class="bg-[var(--bg-subtle)] border-b border-[var(--border-color)] text-[var(--text-tertiary)] uppercase text-[10px]">
+              <tr>
+                <th class="p-3 px-4">Fraction (in)</th>
+                <th class="p-3 px-4">Decimal (in)</th>
+                <th class="p-3 px-4">Millimeters (mm)</th>
+                <th class="p-3 px-4">Centimeters (cm)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[var(--border-color)] text-[var(--text-main)]">
+              <tr class="hover:bg-[var(--bg-subtle)]/50 transition-colors">
+                <td class="p-3 px-4 font-semibold text-[#0070f3]">1/16"</td>
+                <td class="p-3 px-4">0.0625"</td>
+                <td class="p-3 px-4">1.588 mm</td>
+                <td class="p-3 px-4">0.159 cm</td>
+              </tr>
+              <tr class="hover:bg-[var(--bg-subtle)]/50 transition-colors">
+                <td class="p-3 px-4 font-semibold text-[#0070f3]">1/8"</td>
+                <td class="p-3 px-4">0.1250"</td>
+                <td class="p-3 px-4">3.175 mm</td>
+                <td class="p-3 px-4">0.318 cm</td>
+              </tr>
+              <tr class="hover:bg-[var(--bg-subtle)]/50 transition-colors">
+                <td class="p-3 px-4 font-semibold text-[#0070f3]">1/4"</td>
+                <td class="p-3 px-4">0.2500"</td>
+                <td class="p-3 px-4">6.350 mm</td>
+                <td class="p-3 px-4">0.635 cm</td>
+              </tr>
+              <tr class="hover:bg-[var(--bg-subtle)]/50 transition-colors">
+                <td class="p-3 px-4 font-semibold text-[#0070f3]">3/8"</td>
+                <td class="p-3 px-4">0.3750"</td>
+                <td class="p-3 px-4">9.525 mm</td>
+                <td class="p-3 px-4">0.953 cm</td>
+              </tr>
+              <tr class="hover:bg-[var(--bg-subtle)]/50 transition-colors">
+                <td class="p-3 px-4 font-semibold text-[#0070f3]">1/2"</td>
+                <td class="p-3 px-4">0.5000"</td>
+                <td class="p-3 px-4">12.700 mm</td>
+                <td class="p-3 px-4">1.270 cm</td>
+              </tr>
+              <tr class="hover:bg-[var(--bg-subtle)]/50 transition-colors">
+                <td class="p-3 px-4 font-semibold text-[#0070f3]">3/4"</td>
+                <td class="p-3 px-4">0.7500"</td>
+                <td class="p-3 px-4">19.050 mm</td>
+                <td class="p-3 px-4">1.905 cm</td>
+              </tr>
+              <tr class="hover:bg-[var(--bg-subtle)]/50 transition-colors bg-[var(--bg-subtle)]/30 font-semibold">
+                <td class="p-3 px-4 text-[#0070f3]">1" (One Inch)</td>
+                <td class="p-3 px-4">1.0000"</td>
+                <td class="p-3 px-4">25.400 mm</td>
+                <td class="p-3 px-4">2.540 cm</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Frequently Asked Questions (Accordion) -->
+    <div class="space-y-4">
+      <div>
+        <div class="mono-eyebrow text-[11px] text-[var(--text-tertiary)] mb-1">Common Questions</div>
+        <h2 class="text-xl font-semibold tracking-tight text-[var(--text-main)] heading-section">
+          Frequently Asked Questions
+        </h2>
+      </div>
+
+      <div class="space-y-2">
+        
+        <!-- FAQ 1 -->
+        <details class="group rounded-[10px] border border-[var(--border-color)] bg-[var(--bg-card)] transition-all">
+          <summary class="flex items-center justify-between p-4 cursor-pointer text-xs sm:text-sm font-semibold text-[var(--text-main)] select-none">
+            <span>Is this online ruler truly accurate to actual physical size?</span>
+            <svg class="w-4 h-4 text-[var(--text-tertiary)] group-open:rotate-180 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </summary>
+          <div class="px-4 pb-4 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed border-t border-[var(--border-color)] pt-3">
+            Yes. Once calibrated through our <strong>Auto-Detect</strong> or <strong>Screen Diagonal</strong> tool, the ticks on your screen match physical calipers within a fraction of a millimeter. You can instantly confirm calibration by comparing an everyday object like a credit card (3.370" wide) or US Quarter (0.955" diameter).
+          </div>
+        </details>
+
+        <!-- FAQ 2 -->
+        <details class="group rounded-[10px] border border-[var(--border-color)] bg-[var(--bg-card)] transition-all">
+          <summary class="flex items-center justify-between p-4 cursor-pointer text-xs sm:text-sm font-semibold text-[var(--text-main)] select-none">
+            <span>How do I measure an object placed on my screen?</span>
+            <summary class="hidden"></summary>
+            <span>How do I measure an object placed on my screen?</span>
+            <svg class="w-4 h-4 text-[var(--text-tertiary)] group-open:rotate-180 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </summary>
+          <div class="px-4 pb-4 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed border-t border-[var(--border-color)] pt-3">
+            Simply activate an edge ruler (Top, Bottom, Left, or Right) and align your physical item against the glass bezel. For objects placed in the center of your screen, turn on the <strong>Floating Ruler Stick</strong> or drag the <strong>Dual Calipers (Point A & B)</strong> to encompass the item's edges.
+          </div>
+        </details>
+
+        <!-- FAQ 3 -->
+        <details class="group rounded-[10px] border border-[var(--border-color)] bg-[var(--bg-card)] transition-all">
+          <summary class="flex items-center justify-between p-4 cursor-pointer text-xs sm:text-sm font-semibold text-[var(--text-main)] select-none">
+            <span>Can I switch between Inches, cm, and mm?</span>
+            <svg class="w-4 h-4 text-[var(--text-tertiary)] group-open:rotate-180 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </summary>
+          <div class="px-4 pb-4 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed border-t border-[var(--border-color)] pt-3">
+            Yes. The ruler defaults to <strong>Inches (in)</strong> with fractional ticks. You can instantly toggle to <strong>Centimeters (cm)</strong>, <strong>Millimeters (mm)</strong>, or <strong>Pixels (px)</strong> by clicking the unit buttons in the toolbar or pressing keyboard shortcuts <kbd class="px-1.5 py-0.5 rounded border border-[var(--border-color)] font-mono text-xs">1</kbd>, <kbd class="px-1.5 py-0.5 rounded border border-[var(--border-color)] font-mono text-xs">2</kbd>, <kbd class="px-1.5 py-0.5 rounded border border-[var(--border-color)] font-mono text-xs">3</kbd>, or <kbd class="px-1.5 py-0.5 rounded border border-[var(--border-color)] font-mono text-xs">4</kbd>.
+          </div>
+        </details>
+
+        <!-- FAQ 4 -->
+        <details class="group rounded-[10px] border border-[var(--border-color)] bg-[var(--bg-card)] transition-all">
+          <summary class="flex items-center justify-between p-4 cursor-pointer text-xs sm:text-sm font-semibold text-[var(--text-main)] select-none">
+            <span>Does this require downloading any software or app?</span>
+            <svg class="w-4 h-4 text-[var(--text-tertiary)] group-open:rotate-180 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </summary>
+          <div class="px-4 pb-4 text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed border-t border-[var(--border-color)] pt-3">
+            No. FreeVirtualRuler.com is 100% web-based and runs entirely in your browser without plugins, ads, or sign-up. It automatically stores your calibration in your browser's local memory so it remains accurate every time you revisit.
+          </div>
+        </details>
+
+      </div>
+    </div>
+
+    <!-- Structured Data for FAQPage -->
+    <script type="application/ld+json" is:inline>
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is this online ruler truly accurate to actual physical size?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Once calibrated through Auto-Detect or Screen Diagonal calculation, ruler tick marks match physical measurement tools to within a fraction of a millimeter."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I measure an object placed on my screen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Activate any screen edge ruler (Top, Bottom, Left, or Right) or deploy the movable Floating Ruler Stick to measure items anywhere on your screen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I switch between Inches, cm, and mm?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Free Virtual Ruler supports Inches (default), Centimeters, Millimeters, and Pixels with instant keyboard shortcuts."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this require downloading any software or app?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Free Virtual Ruler runs directly in any modern browser without app downloads or user accounts."
+          }
+        }
+      ]
+    }
+    </script>
+
+  </div>
+</section>

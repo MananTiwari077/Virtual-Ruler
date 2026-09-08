@@ -1,23 +1,101 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = 'Free Virtual Ruler — Accurate Online Ruler in Inches, cm & mm',
+	description = 'Free, highly accurate online virtual ruler calibrated to your screen. Measure physical objects in inches, centimeters, and millimeters directly in your browser. Auto device detection & screen diagonal calibration.'
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, 'https://freevirtualruler.com');
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
+		<!-- Theme init script to prevent theme flash -->
+		<script is:inline>
+			(function() {
+				try {
+					var storedTheme = localStorage.getItem('fvr_theme');
+					var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+					if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+						document.documentElement.classList.add('dark');
+					} else {
+						document.documentElement.classList.remove('dark');
+					}
+				} catch (e) {}
+			})();
+		</script>
+
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<link rel="canonical" href={canonicalURL} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+
+		<!-- Primary SEO Meta Tags -->
+		<title>{title}</title>
+		<meta name="title" content={title} />
+		<meta name="description" content={description} />
+		<meta name="keywords" content="online ruler, virtual ruler, free virtual ruler, online ruler inches, actual size ruler, screen ruler, accurate online ruler, mm ruler online, cm ruler online, 12 inch online ruler, screen diagonal calibration, measure on screen" />
+		<meta name="author" content="Free Virtual Ruler" />
+		<meta name="robots" content="index, follow" />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:site_name" content="Free Virtual Ruler" />
+
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:url" content={canonicalURL} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+
+		<!-- Google Fonts preconnect & Geist fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+		<!-- JSON-LD Structured Data for WebApplication -->
+		<script type="application/ld+json" is:inline>
+		{
+			"@context": "https://schema.org",
+			"@type": "WebApplication",
+			"name": "Free Virtual Ruler",
+			"url": "https://freevirtualruler.com",
+			"applicationCategory": "UtilitiesApplication",
+			"operatingSystem": "All Web Browsers",
+			"inLanguage": "en-US",
+			"isAccessibleForFree": true,
+			"offers": {
+				"@type": "Offer",
+				"price": "0",
+				"priceCurrency": "USD"
+			},
+			"featureList": [
+				"True actual-size on-screen virtual ruler in Inches, Centimeters, Millimeters, and Pixels",
+				"Imperial fractional readout with 1/16 and 1/32 inch precision",
+				"Auto device detection calibration with known factory PPI profiles",
+				"Screen diagonal Pythagorean calibration calculator",
+				"Interactive dual caliper measurement sliders",
+				"Movable and rotatable floating ruler stick",
+				"Four edge rulers: Top, Bottom, Left, and Right",
+				"Click-to-drop alignment guides and crosshair coordinate HUD",
+				"Everyday pocket object comparison silhouettes"
+			]
+		}
+		</script>
 	</head>
-	<body>
+	<body class="bg-[var(--bg-page)] text-[var(--text-main)] transition-colors duration-200 selection:bg-[var(--accent)] selection:text-white">
 		<slot />
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

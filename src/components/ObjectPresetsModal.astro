@@ -1,0 +1,151 @@
+---
+// ObjectPresetsModal.astro - Real-world object scale reference overlay
+---
+
+<div
+  id="objects-modal"
+  class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="objects-modal-title"
+>
+  <div class="relative w-full max-w-md bg-[var(--bg-card)] border border-[var(--border-color)] rounded-[12px] shadow-[var(--shadow-floating)] overflow-hidden transition-transform duration-200 scale-95 flex flex-col max-h-[85vh]">
+    
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between px-5 pt-5 pb-3 border-b border-[var(--border-color)] shrink-0">
+      <div>
+        <div class="mono-eyebrow text-[10px] text-[var(--text-tertiary)] uppercase mb-0.5">Physical Verification</div>
+        <h2 id="objects-modal-title" class="text-base font-semibold tracking-tight text-[var(--text-main)]">
+          Everyday Object References
+        </h2>
+      </div>
+      <button
+        id="close-objects-btn"
+        class="w-7 h-7 flex items-center justify-center rounded-[6px] text-[var(--text-tertiary)] hover:text-[var(--text-main)] hover:bg-[var(--bg-subtle)] transition-colors"
+        aria-label="Close Object Reference Modal"
+      >
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Object Grid -->
+    <div class="p-5 overflow-y-auto space-y-3">
+      <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+        Select a real-world object to display its 1:1 actual-size silhouette on the canvas. Place your physical item directly against the screen to verify calibration:
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        
+        <!-- Credit Card -->
+        <button
+          type="button"
+          class="object-ref-card p-3 rounded-[8px] border border-[var(--border-color)] bg-[var(--bg-subtle)] hover:border-[#0070f3] hover:bg-[var(--bg-card)] transition-all text-left group"
+          data-obj-name="Credit / Debit Card"
+          data-obj-width-in="3.370"
+          data-obj-height-in="2.125"
+          data-obj-shape="rect"
+        >
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-[var(--text-main)] group-hover:text-[#0070f3] transition-colors">Credit Card / ID</span>
+            <span class="text-[10px] font-mono text-[var(--text-tertiary)]">85.6 × 54 mm</span>
+          </div>
+          <div class="text-[11px] font-mono text-[var(--text-secondary)] mt-1">3.37" × 2.13"</div>
+        </button>
+
+        <!-- US Quarter -->
+        <button
+          type="button"
+          class="object-ref-card p-3 rounded-[8px] border border-[var(--border-color)] bg-[var(--bg-subtle)] hover:border-[#0070f3] hover:bg-[var(--bg-card)] transition-all text-left group"
+          data-obj-name="US Quarter Coin"
+          data-obj-width-in="0.955"
+          data-obj-height-in="0.955"
+          data-obj-shape="circle"
+        >
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-[var(--text-main)] group-hover:text-[#0070f3] transition-colors">US Quarter</span>
+            <span class="text-[10px] font-mono text-[var(--text-tertiary)]">Ø 24.26 mm</span>
+          </div>
+          <div class="text-[11px] font-mono text-[var(--text-secondary)] mt-1">0.955" Diameter</div>
+        </button>
+
+        <!-- US Penny -->
+        <button
+          type="button"
+          class="object-ref-card p-3 rounded-[8px] border border-[var(--border-color)] bg-[var(--bg-subtle)] hover:border-[#0070f3] hover:bg-[var(--bg-card)] transition-all text-left group"
+          data-obj-name="US Penny Coin"
+          data-obj-width-in="0.750"
+          data-obj-height-in="0.750"
+          data-obj-shape="circle"
+        >
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-[var(--text-main)] group-hover:text-[#0070f3] transition-colors">US Penny</span>
+            <span class="text-[10px] font-mono text-[var(--text-tertiary)]">Ø 19.05 mm</span>
+          </div>
+          <div class="text-[11px] font-mono text-[var(--text-secondary)] mt-1">0.750" (3/4")</div>
+        </button>
+
+        <!-- US Dollar Bill -->
+        <button
+          type="button"
+          class="object-ref-card p-3 rounded-[8px] border border-[var(--border-color)] bg-[var(--bg-subtle)] hover:border-[#0070f3] hover:bg-[var(--bg-card)] transition-all text-left group"
+          data-obj-name="US Dollar Bill"
+          data-obj-width-in="6.14"
+          data-obj-height-in="2.61"
+          data-obj-shape="rect"
+        >
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-[var(--text-main)] group-hover:text-[#0070f3] transition-colors">US Dollar Bill</span>
+            <span class="text-[10px] font-mono text-[var(--text-tertiary)]">156 × 66 mm</span>
+          </div>
+          <div class="text-[11px] font-mono text-[var(--text-secondary)] mt-1">6.14" × 2.61"</div>
+        </button>
+
+        <!-- Post-it Note -->
+        <button
+          type="button"
+          class="object-ref-card p-3 rounded-[8px] border border-[var(--border-color)] bg-[var(--bg-subtle)] hover:border-[#0070f3] hover:bg-[var(--bg-card)] transition-all text-left group"
+          data-obj-name="Sticky Note (3x3)"
+          data-obj-width-in="3.0"
+          data-obj-height-in="3.0"
+          data-obj-shape="rect"
+        >
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-[var(--text-main)] group-hover:text-[#0070f3] transition-colors">Post-it Note (3x3)</span>
+            <span class="text-[10px] font-mono text-[var(--text-tertiary)]">76.2 × 76.2 mm</span>
+          </div>
+          <div class="text-[11px] font-mono text-[var(--text-secondary)] mt-1">3.00" × 3.00"</div>
+        </button>
+
+        <!-- Standard A4 Width -->
+        <button
+          type="button"
+          class="object-ref-card p-3 rounded-[8px] border border-[var(--border-color)] bg-[var(--bg-subtle)] hover:border-[#0070f3] hover:bg-[var(--bg-card)] transition-all text-left group"
+          data-obj-name="A4 Paper Width"
+          data-obj-width-in="8.27"
+          data-obj-height-in="2.5"
+          data-obj-shape="rect"
+        >
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-[var(--text-main)] group-hover:text-[#0070f3] transition-colors">A4 Short Edge</span>
+            <span class="text-[10px] font-mono text-[var(--text-tertiary)]">210 mm</span>
+          </div>
+          <div class="text-[11px] font-mono text-[var(--text-secondary)] mt-1">8.27" Width</div>
+        </button>
+
+      </div>
+
+      <div class="pt-2">
+        <button
+          id="btn-clear-active-object"
+          class="w-full h-8 rounded-[6px] border border-[var(--border-color)] text-xs text-[var(--text-secondary)] hover:bg-[var(--bg-subtle)] hover:text-[var(--text-main)] transition-colors"
+        >
+          Hide Object Overlay
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,1657 @@
+---
+// RulerCanvas.astro - Sub-pixel High-DPI Virtual Ruler Canvas Engine
+---
+
+<div id="ruler-workspace" class="relative w-full overflow-hidden bg-[var(--bg-page)] select-none cursor-default" style="height: calc(100vh - var(--header-h, 92px)); margin-top: var(--header-h, 92px);">
+  
+  <!-- Canvas Elements for Screen Edges -->
+  <canvas id="ruler-top" class="absolute top-0 left-0 right-0 z-20 pointer-events-auto" style="height: 44px; width: 100%;"></canvas>
+  <canvas id="ruler-bottom" class="absolute bottom-0 left-0 right-0 z-20 pointer-events-auto hidden" style="height: 44px; width: 100%;"></canvas>
+  <canvas id="ruler-left" class="absolute top-0 left-0 bottom-0 z-20 pointer-events-auto hidden" style="width: 44px; height: 100%;"></canvas>
+  <canvas id="ruler-right" class="absolute top-0 right-0 bottom-0 z-20 pointer-events-auto hidden" style="width: 44px; height: 100%;"></canvas>
+
+  <!-- Interactive Calipers (Point A and Point B) Layer -->
+  <div id="calipers-container" class="absolute inset-0 pointer-events-none z-30">
+    
+    <!-- Caliper A Handle & Line -->
+    <div id="caliper-a-wrapper" class="absolute top-0 bottom-0 pointer-events-auto cursor-ew-resize group" style="left: 60px; width: 48px; margin-left: -24px; touch-action: none;">
+      <!-- Vertical Line -->
+      <div class="absolute top-0 bottom-0 left-[23px] w-[2px] bg-[var(--accent)]/60 group-hover:bg-[var(--accent)] group-active:bg-[var(--accent)] transition-all"></div>
+      <!-- Top Handle Badge -->
+      <div class="absolute top-12 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-[6px] bg-[var(--accent)] text-white text-[11px] font-mono font-bold shadow flex items-center justify-center">
+        A
+      </div>
+      <!-- Mobile Touch Thumb Grip (at bottom) - larger for touch -->
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-[var(--accent)] text-white text-sm font-mono font-bold shadow-lg flex items-center justify-center active:scale-110 transition-transform">
+        A
+      </div>
+    </div>
+
+    <!-- Caliper B Handle & Line -->
+    <div id="caliper-b-wrapper" class="absolute top-0 bottom-0 pointer-events-auto cursor-ew-resize group" style="left: 280px; width: 48px; margin-left: -24px; touch-action: none;">
+      <!-- Vertical Line -->
+      <div class="absolute top-0 bottom-0 left-[23px] w-[2px] bg-[var(--accent)]/60 group-hover:bg-[var(--accent)] group-active:bg-[var(--accent)] transition-all"></div>
+      <!-- Top Handle Badge -->
+      <div class="absolute top-12 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-[6px] bg-[var(--accent)] text-white text-[11px] font-mono font-bold shadow flex items-center justify-center">
+        B
+      </div>
+      <!-- Mobile Touch Thumb Grip (at bottom) - larger for touch -->
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-[var(--accent)] text-white text-sm font-mono font-bold shadow-lg flex items-center justify-center active:scale-110 transition-transform">
+        B
+      </div>
+    </div>
+
+    <!-- Measurement Readout Floating HUD between A and B -->
+    <div
+      id="caliper-distance-badge"
+      class="absolute pointer-events-auto -translate-x-1/2 flex items-center gap-2 px-3 py-2 rounded-full bg-[var(--bg-card)]/95 border border-[var(--accent-border)] shadow-[var(--shadow-floating)] backdrop-blur-sm"
+      style="top: 56px; left: 170px;"
+    >
+      <div class="flex flex-col">
+        <span id="caliper-fraction-val" class="font-mono font-bold text-xs text-[var(--text-main)]">2 1/4"</span>
+        <span id="caliper-decimal-val" class="font-mono text-[10px] text-[var(--text-secondary)]">2.250 in (57.2 mm)</span>
+      </div>
+      <button
+        id="btn-copy-measurement"
+        class="h-7 px-2.5 rounded-full bg-[var(--accent-light)] text-[10px] font-medium text-[var(--accent)] border border-[var(--accent-border)] flex items-center gap-1 transition-colors touch-manipulation"
+        title="Copy measurement"
+      >
+        <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+        </svg>
+        <span>Copy</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Draggable / Rotatable / Resizable Floating Ruler -->
+  <div
+    id="floating-ruler-stick"
+    class="absolute z-30 pointer-events-auto rounded-[8px] bg-[var(--bg-card)] border-2 border-[var(--accent-border)] shadow-[var(--shadow-floating)] cursor-grab active:cursor-grabbing hidden select-none"
+    style="width: min(280px, 90vw); height: 68px; top: 100px; left: 20px; transform-origin: center center; transition: width 0.12s ease; touch-action: none;"
+  >
+    <!-- Stick Canvas -->
+    <canvas id="floating-ruler-canvas" class="w-full h-full rounded-[6px]"></canvas>
+
+    <!-- Controls strip BELOW ruler on mobile, above on desktop -->
+    <div class="absolute -bottom-9 left-0 right-0 flex items-center justify-between gap-1 px-1 pointer-events-auto">
+      
+      <!-- Rotation controls -->
+      <div class="flex items-center gap-0.5 bg-[var(--bg-card)] px-1 py-0.5 rounded-full border border-[var(--accent-border)] shadow-sm flex-shrink-0">
+        <button id="btn-rotate-step-prev"
+          class="w-7 h-7 rounded-full text-base flex items-center justify-center hover:bg-[var(--accent-light)] hover:text-[var(--accent)] text-[var(--text-secondary)] transition-colors font-bold touch-manipulation"
+          title="-1°">−</button>
+        <span id="floating-ruler-angle" class="text-[10px] font-mono font-semibold text-[var(--accent)] min-w-[34px] text-center">0.0°</span>
+        <button id="btn-rotate-step-next"
+          class="w-7 h-7 rounded-full text-base flex items-center justify-center hover:bg-[var(--accent-light)] hover:text-[var(--accent)] text-[var(--text-secondary)] transition-colors font-bold touch-manipulation"
+          title="+1°">+</button>
+        <button id="btn-rotate-zero"
+          class="text-[9px] font-mono px-1.5 py-0.5 rounded-full hover:bg-[var(--accent-light)] hover:text-[var(--accent)] text-[var(--text-tertiary)] transition-colors touch-manipulation"
+          title="Reset">0°</button>
+      </div>
+
+      <div class="flex items-center gap-1 flex-shrink-0">
+        <!-- Rotate drag handle -->
+        <div id="rotate-handle"
+          class="h-7 px-2.5 rounded-full bg-[var(--accent)] text-white flex items-center gap-1 cursor-grab active:cursor-grabbing shadow hover:bg-[var(--accent-hover)] transition-all text-[10px] font-medium"
+          style="touch-action: none;"
+          title="Drag to rotate">
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+          </svg>
+          <span class="hidden sm:inline">Rotate</span>
+        </div>
+
+        <!-- Length badge -->
+        <span id="floating-ruler-length-badge" class="hidden sm:inline text-[9px] font-mono text-[var(--text-tertiary)]">5.00"</span>
+
+        <!-- Close -->
+        <div id="close-floating-ruler"
+          class="w-7 h-7 rounded-full bg-[var(--bg-subtle)] text-[var(--text-secondary)] border border-[var(--border-color)] flex items-center justify-center cursor-pointer shadow-xs hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950 dark:hover:text-red-400 transition-colors touch-manipulation"
+          title="Close">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Resize Handle -->
+    <div id="floating-ruler-resize-handle"
+      class="absolute top-0 bottom-0 -right-4 w-8 flex items-center justify-center cursor-ew-resize pointer-events-auto group"
+      style="touch-action: none;"
+      title="Drag to resize">
+      <div class="w-3 h-10 rounded-full bg-[var(--accent)] group-hover:scale-110 group-hover:bg-[var(--accent-hover)] transition-all flex items-center justify-center shadow-md">
+        <div class="w-0.5 h-5 bg-white/60 rounded-full"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guidelines Layer -->
+  <div id="guides-layer" class="absolute inset-0 pointer-events-none z-10"></div>
+
+  <!-- Live Crosshair HUD -->
+  <div id="crosshair-x" class="absolute left-0 right-0 h-px bg-[#0070f3]/40 pointer-events-none z-10 hidden"></div>
+  <div id="crosshair-y" class="absolute top-0 bottom-0 w-px bg-[#0070f3]/40 pointer-events-none z-10 hidden"></div>
+  <div
+    id="crosshair-hud"
+    class="absolute pointer-events-none z-20 px-2 py-1 rounded-[4px] bg-[var(--accent)] text-white font-mono text-[10px] font-medium shadow-md hidden"
+  >
+    X: 0.00" · Y: 0.00"
+  </div>
+
+  <!-- Object Reference Overlay Box (Draggable) -->
+  <div
+    id="object-ref-overlay"
+    class="absolute z-20 pointer-events-auto rounded-[8px] border-2 border-dashed border-[#0070f3] bg-[#0070f3]/10 flex flex-col items-center justify-center text-center p-2 cursor-grab active:cursor-grabbing shadow-sm hidden touch-none"
+    style="top: 140px; left: 60px;"
+  >
+    <div id="object-ref-title" class="text-xs font-semibold text-[var(--text-main)]">Object Silhouette</div>
+    <div id="object-ref-dim" class="text-[10px] font-mono text-[#0070f3] font-medium mt-0.5">3.370" × 2.125"</div>
+    <div class="text-[9px] text-[var(--text-tertiary)] mt-1">Place physical item against screen</div>
+  </div>
+
+  <!-- Status Banner -->
+  <div id="quick-orientation-banner" class="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 w-[calc(100%-24px)] max-w-sm pointer-events-auto transition-all duration-300">
+    <div class="py-2 px-3 rounded-[10px] bg-[var(--bg-card)]/95 border border-[var(--border-color)] shadow-[var(--shadow-floating)] backdrop-blur-md flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 min-w-0">
+        <span id="cal-status-dot-banner" class="w-2 h-2 rounded-full bg-amber-500 animate-pulse shrink-0"></span>
+        <div class="min-w-0">
+          <div class="text-xs font-medium text-[var(--text-main)] truncate" id="banner-unit-text">Inches · 1/16" precision</div>
+          <div class="text-[10px] font-mono text-[var(--text-secondary)] truncate" id="banner-ppi-text">96 PPI · Tap Calibrate to set</div>
+        </div>
+      </div>
+      <button id="btn-dismiss-banner"
+        class="h-7 w-7 rounded-full bg-[var(--bg-subtle)] text-[11px] font-medium text-[var(--text-secondary)] flex items-center justify-center transition-colors shrink-0 touch-manipulation">
+        ✕
+      </button>
+    </div>
+  </div>
+
+  <!-- Copy Notification Toast -->
+  <div
+    id="copy-toast"
+    class="fixed bottom-16 left-1/2 -translate-x-1/2 z-50 px-3 py-1.5 rounded-full bg-[var(--text-main)] text-[var(--bg-card)] font-mono text-xs shadow-lg opacity-0 pointer-events-none transition-opacity duration-200"
+  >
+    Copied to clipboard!
+  </div>
+
+</div>
+
+<!-- Client-side Logic -->
+<script>
+  import { calculateCssPpiFromDiagonal, detectDevice, formatFractionalInches, CREDIT_CARD_WIDTH_IN, KNOWN_DEVICES } from '../utils/calibration';
+
+  // State
+  let currentUnit: 'in' | 'cm' | 'mm' | 'px' = 'in';
+  let cssPpi = 96;
+  let isCalibrated = false;
+  let deviceName = 'Standard Display';
+
+  // Active edges
+  const edges = {
+    top: true,
+    bottom: false,
+    left: false,
+    right: false
+  };
+
+  // Tools state
+  let floatingRulerActive = false;
+  let floatingRulerAngle = 0;
+  let floatingRulerWidth = 480; // resizable length
+  let calipersActive = true;
+  let guidesActive = false;
+  let crosshairActive = false;
+  let caliperAPos = 60;
+  let caliperBPos = 280;
+
+  // DOM Elements
+  const canvasTop = document.getElementById('ruler-top') as HTMLCanvasElement;
+  const canvasBottom = document.getElementById('ruler-bottom') as HTMLCanvasElement;
+  const canvasLeft = document.getElementById('ruler-left') as HTMLCanvasElement;
+  const canvasRight = document.getElementById('ruler-right') as HTMLCanvasElement;
+  const floatingCanvas = document.getElementById('floating-ruler-canvas') as HTMLCanvasElement;
+
+  const floatingRulerEl = document.getElementById('floating-ruler-stick');
+  const rotateHandle = document.getElementById('rotate-handle');
+  const floatingRulerResizeHandle = document.getElementById('floating-ruler-resize-handle');
+  const closeFloatingBtn = document.getElementById('close-floating-ruler');
+  const floatingAngleLabel = document.getElementById('floating-ruler-angle');
+  const floatingLengthBadge = document.getElementById('floating-ruler-length-badge');
+  const btnRotateStepPrev = document.getElementById('btn-rotate-step-prev');
+  const btnRotateStepNext = document.getElementById('btn-rotate-step-next');
+  const btnRotateZero = document.getElementById('btn-rotate-zero');
+
+  const calipersContainer = document.getElementById('calipers-container');
+  const caliperA = document.getElementById('caliper-a-wrapper');
+  const caliperB = document.getElementById('caliper-b-wrapper');
+  const caliperBadge = document.getElementById('caliper-distance-badge');
+  const caliperFraction = document.getElementById('caliper-fraction-val');
+  const caliperDecimal = document.getElementById('caliper-decimal-val');
+  const btnCopyMeasurement = document.getElementById('btn-copy-measurement');
+  const copyToast = document.getElementById('copy-toast');
+
+  const guidesLayer = document.getElementById('guides-layer');
+  const crosshairX = document.getElementById('crosshair-x');
+  const crosshairY = document.getElementById('crosshair-y');
+  const crosshairHud = document.getElementById('crosshair-hud');
+  const workspace = document.getElementById('ruler-workspace');
+
+  const objectOverlay = document.getElementById('object-ref-overlay');
+  const objectTitle = document.getElementById('object-ref-title');
+  const objectDim = document.getElementById('object-ref-dim');
+
+  const bannerUnitText = document.getElementById('banner-unit-text');
+  const bannerPpiText = document.getElementById('banner-ppi-text');
+  const calStatusDot = document.getElementById('cal-status-dot');
+  const quickBanner = document.getElementById('quick-orientation-banner');
+  const btnDismissBanner = document.getElementById('btn-dismiss-banner');
+
+  // Modals
+  const calModal = document.getElementById('calibration-modal');
+  const openCalBtn = document.getElementById('open-calibrate-btn');
+  const closeCalBtn = document.getElementById('close-calibration-btn');
+  const calTabBtns = document.querySelectorAll('.cal-tab-btn');
+  const calPanels = document.querySelectorAll('.cal-panel');
+
+  const autoDevName = document.getElementById('auto-device-name');
+  const autoDevSpecs = document.getElementById('auto-device-specs');
+  const autoDevPpi = document.getElementById('auto-detected-ppi');
+  const btnApplyAuto = document.getElementById('btn-apply-auto');
+
+  // Manual device selector elements
+  const deviceSearchInput = document.getElementById('device-search-input') as HTMLInputElement;
+  const deviceCatFilters = document.querySelectorAll('.device-cat-filter');
+  const deviceSelectItems = document.querySelectorAll('.device-select-item');
+
+  // Manual custom PPI elements
+  const manualPpiInput = document.getElementById('manual-ppi-input') as HTMLInputElement;
+  const btnApplyManualPpi = document.getElementById('btn-apply-manual-ppi');
+
+  const diagonalInput = document.getElementById('diagonal-input') as HTMLInputElement;
+  const btnApplyDiagonal = document.getElementById('btn-apply-diagonal');
+  const diagonalChips = document.querySelectorAll('.diagonal-chip');
+  const diagPreviewRes = document.getElementById('diag-preview-res');
+  const diagPreviewPpi = document.getElementById('diag-preview-ppi');
+
+  const cardScaleSlider = document.getElementById('card-scale-slider') as HTMLInputElement;
+  const cardCalibrateBox = document.getElementById('card-calibrate-box');
+  const cardSliderPpi = document.getElementById('card-slider-ppi');
+  const btnApplyCard = document.getElementById('btn-apply-card');
+  const currentCalText = document.getElementById('current-cal-text');
+  const currentCalIndicator = document.getElementById('current-cal-indicator');
+  const btnResetCal = document.getElementById('btn-reset-cal');
+
+  const objectsModal = document.getElementById('objects-modal');
+  const openObjectsBtn = document.getElementById('open-objects-btn');
+  const closeObjectsBtn = document.getElementById('close-objects-btn');
+  const objectRefCards = document.querySelectorAll('.object-ref-card');
+  const btnClearActiveObject = document.getElementById('btn-clear-active-object');
+
+  const shortcutsModal = document.getElementById('shortcuts-modal');
+  const openShortcutsBtn = document.getElementById('open-shortcuts-btn');
+  const closeShortcutsBtn = document.getElementById('close-shortcuts-btn');
+  const btnCloseShortcutsDone = document.getElementById('btn-close-shortcuts-done');
+
+  // Responsive & Mobile Tool Buttons
+  const fsBtn = document.getElementById('fullscreen-toggle-btn');
+  const fsEnterIcon = document.getElementById('fs-enter-icon');
+  const fsExitIcon = document.getElementById('fs-exit-icon');
+  const themeToggleBtn = document.getElementById('theme-toggle-btn');
+
+  const edgeBtns = document.querySelectorAll('.edge-btn');
+  const unitBtns = document.querySelectorAll('.unit-btn');
+  const toggleFloatingBtn = document.getElementById('toggle-floating-btn');
+  const toggleCalipersBtn = document.getElementById('toggle-calipers-btn');
+  const toggleGuidesBtn = document.getElementById('toggle-guides-btn');
+  const toggleCrosshairBtn = document.getElementById('toggle-crosshair-btn');
+
+  const mobileToggleFloatingBtn = document.getElementById('mobile-toggle-floating-btn');
+  const mobileToggleCalipersBtn = document.getElementById('mobile-toggle-calipers-btn');
+  const mobileOpenObjectsBtn = document.getElementById('mobile-open-objects-btn');
+  const mobileFullscreenBtn = document.getElementById('mobile-fullscreen-btn');
+
+  // Measure actual header height and set CSS custom property so workspace fills exactly
+  function updateHeaderHeight() {
+    const header = document.getElementById('main-header');
+    if (header) {
+      const h = header.getBoundingClientRect().height;
+      document.documentElement.style.setProperty('--header-h', `${h}px`);
+    }
+  }
+
+  // Init from localStorage
+  function initConfig() {
+    try {
+      const storedPpi = localStorage.getItem('fvr_calibrated_ppi');
+      const storedUnit = localStorage.getItem('fvr_unit') as any;
+      const storedDev = localStorage.getItem('fvr_device_name');
+      const storedCalibrated = localStorage.getItem('fvr_is_calibrated');
+
+      if (storedPpi && !isNaN(parseFloat(storedPpi))) {
+        cssPpi = parseFloat(storedPpi);
+        isCalibrated = storedCalibrated === 'true';
+        deviceName = storedDev || 'Calibrated Screen';
+      } else {
+        const detected = detectDevice();
+        cssPpi = detected.cssPpi;
+        deviceName = detected.description;
+        isCalibrated = detected.confidence === 'exact';
+      }
+
+      if (storedUnit && ['in', 'cm', 'mm', 'px'].includes(storedUnit)) {
+        currentUnit = storedUnit;
+      } else {
+        currentUnit = 'in'; // INCHES IS DEFAULT
+      }
+    } catch (e) {
+      cssPpi = 96;
+      currentUnit = 'in';
+    }
+
+    updateUnitUI();
+    updateCalUI();
+    updateHeaderHeight();
+    renderAllRulers();
+    updateCalipersHUD();
+    // Init floating ruler size based on screen width
+    floatingRulerWidth = Math.min(280, window.innerWidth * 0.85);
+    updateFloatingRulerSize();
+  }
+
+  function updateUnitUI() {
+    unitBtns.forEach((btn) => {
+      const unit = btn.getAttribute('data-unit');
+      if (unit === currentUnit) {
+        btn.classList.add('bg-[var(--accent)]', 'text-white', 'font-semibold');
+        btn.classList.remove('text-[var(--text-secondary)]', 'bg-transparent');
+        btn.setAttribute('aria-checked', 'true');
+      } else {
+        btn.classList.remove('bg-[var(--accent)]', 'text-white', 'font-semibold');
+        btn.classList.add('text-[var(--text-secondary)]');
+        btn.setAttribute('aria-checked', 'false');
+      }
+    });
+
+    if (bannerUnitText) {
+      if (currentUnit === 'in') bannerUnitText.textContent = 'Inches (1/16" precision)';
+      else if (currentUnit === 'cm') bannerUnitText.textContent = 'Centimeters (mm ticks)';
+      else if (currentUnit === 'mm') bannerUnitText.textContent = 'Millimeters (1 mm ticks)';
+      else bannerUnitText.textContent = 'CSS Pixels';
+    }
+  }
+
+  function updateCalUI() {
+    if (bannerPpiText) {
+      bannerPpiText.textContent = `${cssPpi.toFixed(1)} CSS PPI · ${deviceName}`;
+    }
+    if (calStatusDot) {
+      calStatusDot.className = isCalibrated ? 'w-2 h-2 rounded-full bg-emerald-500 shrink-0' : 'w-2 h-2 rounded-full bg-amber-500 animate-pulse shrink-0';
+    }
+    if (currentCalIndicator) {
+      currentCalIndicator.className = isCalibrated ? 'w-2 h-2 rounded-full bg-emerald-500 shrink-0' : 'w-2 h-2 rounded-full bg-amber-500 shrink-0';
+    }
+    if (currentCalText) {
+      currentCalText.textContent = `Current: ${cssPpi.toFixed(1)} CSS PPI (${deviceName})`;
+    }
+  }
+
+  function saveConfig() {
+    try {
+      localStorage.setItem('fvr_calibrated_ppi', cssPpi.toString());
+      localStorage.setItem('fvr_unit', currentUnit);
+      localStorage.setItem('fvr_device_name', deviceName);
+      localStorage.setItem('fvr_is_calibrated', isCalibrated.toString());
+    } catch (e) {}
+  }
+
+  function getPixelsPerUnit(): number {
+    if (currentUnit === 'in') return cssPpi;
+    if (currentUnit === 'cm') return cssPpi / 2.54;
+    if (currentUnit === 'mm') return cssPpi / 25.4;
+    return 1;
+  }
+
+  function setupCanvas(canvas: HTMLCanvasElement): CanvasRenderingContext2D | null {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    const w = Math.round(rect.width);
+    const h = Math.round(rect.height);
+
+    if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+    }
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+    ctx.resetTransform();
+    ctx.scale(dpr, dpr);
+    return ctx;
+  }
+
+  function getThemeColors() {
+    const isDark = document.documentElement.classList.contains('dark');
+    return {
+      bg: isDark ? '#111113' : '#ffffff',
+      majorTick: isDark ? '#e4e4e7' : '#0f0f10',
+      subTick: isDark ? '#71717a' : '#6b7280',
+      minorTick: isDark ? '#3f3f46' : '#d1d5db',
+      text: isDark ? '#a1a1aa' : '#374151',
+      border: isDark ? '#27272a' : '#e4e4e7',
+      // Blue accent tick color for the zero/origin mark
+      accent: isDark ? '#3b9eff' : '#0070f3',
+    };
+  }
+
+
+  /**
+   * Render Horizontal Rulers (Top & Bottom)
+   * REQUIREMENT: Markings MUST be flush with the physical edge of the device!
+   * - Top Ruler: Ticks start at y = 0 (top bezel edge) pointing down!
+   * - Bottom Ruler: Ticks start at y = h (bottom bezel edge) pointing up!
+   */
+  function renderHorizontalRuler(canvas: HTMLCanvasElement, isBottom: boolean) {
+    const ctx = setupCanvas(canvas);
+    if (!ctx) return;
+
+    const w = canvas.getBoundingClientRect().width;
+    const h = canvas.getBoundingClientRect().height;
+    const colors = getThemeColors();
+    const ppu = getPixelsPerUnit();
+
+    ctx.fillStyle = colors.bg;
+    ctx.fillRect(0, 0, w, h);
+
+    // Border separating ruler from canvas
+    ctx.fillStyle = colors.border;
+    if (isBottom) {
+      ctx.fillRect(0, 0, w, 1);
+    } else {
+      ctx.fillRect(0, h - 1, w, 1);
+    }
+
+    ctx.font = '500 11px Geist, -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+
+    if (currentUnit === 'in') {
+      const totalInches = Math.ceil(w / ppu) + 1;
+      const step32 = ppu / 32;
+
+      for (let i = 0; i <= totalInches * 32; i++) {
+        const x = Math.round(i * step32) + 0.5;
+        if (x > w) break;
+
+        const isWhole = i % 32 === 0;
+        const isHalf = i % 16 === 0;
+        const isQuarter = i % 8 === 0;
+        const isEighth = i % 4 === 0;
+        const isSixteenth = i % 2 === 0;
+
+        let tickHeight = 5;
+        let strokeColor = colors.minorTick;
+
+        if (isWhole) {
+          tickHeight = 22;
+          strokeColor = colors.majorTick;
+        } else if (isHalf) {
+          tickHeight = 16;
+          strokeColor = colors.subTick;
+        } else if (isQuarter) {
+          tickHeight = 12;
+          strokeColor = colors.subTick;
+        } else if (isEighth) {
+          tickHeight = 8;
+          strokeColor = colors.minorTick;
+        } else if (isSixteenth) {
+          tickHeight = 5;
+          strokeColor = colors.minorTick;
+        } else {
+          continue;
+        }
+
+        ctx.fillStyle = strokeColor;
+        // EDGE-FLUSH MARKINGS:
+        // Top: ticks start at y = 0, length = tickHeight
+        // Bottom: ticks start at y = h - tickHeight, length = tickHeight
+        const y = isBottom ? h - tickHeight : 0;
+        ctx.fillRect(x, y, 1, tickHeight);
+
+        // Labels
+        if (isWhole && i > 0) {
+          ctx.fillStyle = colors.text;
+          ctx.textBaseline = isBottom ? 'bottom' : 'top';
+          const labelY = isBottom ? h - tickHeight - 4 : tickHeight + 3;
+          ctx.fillText((i / 32).toString(), x, labelY);
+        }
+      }
+
+      ctx.fillStyle = colors.subTick;
+      ctx.font = '500 9px "Geist Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = isBottom ? 'bottom' : 'top';
+      ctx.fillText('IN', 4, isBottom ? 12 : h - 12);
+
+    } else if (currentUnit === 'cm') {
+      const totalMm = Math.ceil(w / (ppu / 10)) + 1;
+      const stepMm = ppu / 10;
+
+      for (let mm = 0; mm <= totalMm; mm++) {
+        const x = Math.round(mm * stepMm) + 0.5;
+        if (x > w) break;
+
+        const isCm = mm % 10 === 0;
+        const isHalfCm = mm % 5 === 0;
+
+        let tickHeight = 5;
+        let strokeColor = colors.minorTick;
+
+        if (isCm) {
+          tickHeight = 22;
+          strokeColor = colors.majorTick;
+        } else if (isHalfCm) {
+          tickHeight = 12;
+          strokeColor = colors.subTick;
+        }
+
+        ctx.fillStyle = strokeColor;
+        const y = isBottom ? h - tickHeight : 0;
+        ctx.fillRect(x, y, 1, tickHeight);
+
+        if (isCm && mm > 0) {
+          ctx.fillStyle = colors.text;
+          ctx.textBaseline = isBottom ? 'bottom' : 'top';
+          const labelY = isBottom ? h - tickHeight - 4 : tickHeight + 3;
+          ctx.fillText((mm / 10).toString(), x, labelY);
+        }
+      }
+
+      ctx.fillStyle = colors.subTick;
+      ctx.font = '500 9px "Geist Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = isBottom ? 'bottom' : 'top';
+      ctx.fillText('CM', 4, isBottom ? 12 : h - 12);
+
+    } else if (currentUnit === 'mm') {
+      const totalMm = Math.ceil(w / ppu) + 1;
+
+      for (let mm = 0; mm <= totalMm; mm++) {
+        const x = Math.round(mm * ppu) + 0.5;
+        if (x > w) break;
+
+        const is10Mm = mm % 10 === 0;
+        const is5Mm = mm % 5 === 0;
+
+        let tickHeight = is10Mm ? 22 : is5Mm ? 12 : 5;
+        ctx.fillStyle = is10Mm ? colors.majorTick : is5Mm ? colors.subTick : colors.minorTick;
+        const y = isBottom ? h - tickHeight : 0;
+        ctx.fillRect(x, y, 1, tickHeight);
+
+        if (is10Mm && mm > 0) {
+          ctx.fillStyle = colors.text;
+          ctx.textBaseline = isBottom ? 'bottom' : 'top';
+          const labelY = isBottom ? h - tickHeight - 4 : tickHeight + 3;
+          ctx.fillText(mm.toString(), x, labelY);
+        }
+      }
+
+      ctx.fillStyle = colors.subTick;
+      ctx.font = '500 9px "Geist Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = isBottom ? 'bottom' : 'top';
+      ctx.fillText('MM', 4, isBottom ? 12 : h - 12);
+
+    } else {
+      // Pixels
+      for (let px = 0; px <= w; px += 10) {
+        const x = px + 0.5;
+        const is100 = px % 100 === 0;
+        const is50 = px % 50 === 0;
+
+        let tickHeight = is100 ? 22 : is50 ? 12 : 5;
+        ctx.fillStyle = is100 ? colors.majorTick : is50 ? colors.subTick : colors.minorTick;
+        const y = isBottom ? h - tickHeight : 0;
+        ctx.fillRect(x, y, 1, tickHeight);
+
+        if (is100 && px > 0) {
+          ctx.fillStyle = colors.text;
+          ctx.textBaseline = isBottom ? 'bottom' : 'top';
+          const labelY = isBottom ? h - tickHeight - 4 : tickHeight + 3;
+          ctx.fillText(px.toString(), x, labelY);
+        }
+      }
+
+      ctx.fillStyle = colors.subTick;
+      ctx.font = '500 9px "Geist Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = isBottom ? 'bottom' : 'top';
+      ctx.fillText('PX', 4, isBottom ? 12 : h - 12);
+    }
+  }
+
+  /**
+   * Render Vertical Rulers (Left & Right)
+   * REQUIREMENT: Markings MUST be flush with the physical edge of the device!
+   * - Left Ruler: Ticks start at x = 0 (left bezel edge) pointing right!
+   * - Right Ruler: Ticks start at x = w (right bezel edge) pointing left!
+   */
+  function renderVerticalRuler(canvas: HTMLCanvasElement, isRight: boolean) {
+    const ctx = setupCanvas(canvas);
+    if (!ctx) return;
+
+    const w = canvas.getBoundingClientRect().width;
+    const h = canvas.getBoundingClientRect().height;
+    const colors = getThemeColors();
+    const ppu = getPixelsPerUnit();
+
+    ctx.fillStyle = colors.bg;
+    ctx.fillRect(0, 0, w, h);
+
+    // Dividing border
+    ctx.fillStyle = colors.border;
+    if (isRight) {
+      ctx.fillRect(0, 0, 1, h);
+    } else {
+      ctx.fillRect(w - 1, 0, 1, h);
+    }
+
+    ctx.font = '500 11px Geist, -apple-system, sans-serif';
+    ctx.textBaseline = 'middle';
+
+    if (currentUnit === 'in') {
+      const totalInches = Math.ceil(h / ppu) + 1;
+      const step16 = ppu / 16;
+
+      for (let i = 0; i <= totalInches * 16; i++) {
+        const y = Math.round(i * step16) + 0.5;
+        if (y > h) break;
+
+        const isWhole = i % 16 === 0;
+        const isHalf = i % 8 === 0;
+        const isQuarter = i % 4 === 0;
+
+        let tickWidth = isWhole ? 22 : isHalf ? 15 : isQuarter ? 10 : 5;
+        ctx.fillStyle = isWhole ? colors.majorTick : isHalf ? colors.subTick : colors.minorTick;
+        // EDGE-FLUSH MARKINGS:
+        // Left: start at x = 0, width = tickWidth
+        // Right: start at x = w - tickWidth, width = tickWidth
+        const x = isRight ? w - tickWidth : 0;
+        ctx.fillRect(x, y, tickWidth, 1);
+
+        if (isWhole && i > 0) {
+          ctx.fillStyle = colors.text;
+          ctx.textAlign = isRight ? 'right' : 'left';
+          const labelX = isRight ? w - tickWidth - 4 : tickWidth + 4;
+          ctx.fillText((i / 16).toString(), labelX, y);
+        }
+      }
+    } else {
+      const step = currentUnit === 'mm' ? ppu : currentUnit === 'cm' ? ppu / 10 : 10;
+      const totalSteps = Math.ceil(h / step) + 1;
+
+      for (let s = 0; s <= totalSteps; s++) {
+        const y = Math.round(s * step) + 0.5;
+        if (y > h) break;
+
+        const isMajor = s % 10 === 0;
+        const isMid = s % 5 === 0;
+
+        let tickWidth = isMajor ? 22 : isMid ? 12 : 5;
+        ctx.fillStyle = isMajor ? colors.majorTick : isMid ? colors.subTick : colors.minorTick;
+        const x = isRight ? w - tickWidth : 0;
+        ctx.fillRect(x, y, tickWidth, 1);
+
+        if (isMajor && s > 0) {
+          ctx.fillStyle = colors.text;
+          ctx.textAlign = isRight ? 'right' : 'left';
+          const label = currentUnit === 'cm' ? (s / 10).toString() : s.toString();
+          const labelX = isRight ? w - tickWidth - 4 : tickWidth + 4;
+          ctx.fillText(label, labelX, y);
+        }
+      }
+    }
+  }
+
+  /**
+   * Render Floating Ruler Stick
+   */
+  function renderFloatingRuler() {
+    if (!floatingRulerActive || !floatingCanvas) return;
+    const ctx = setupCanvas(floatingCanvas);
+    if (!ctx) return;
+
+    const w = floatingCanvas.getBoundingClientRect().width;
+    const h = floatingCanvas.getBoundingClientRect().height;
+    const colors = getThemeColors();
+    const ppu = getPixelsPerUnit();
+
+    ctx.fillStyle = colors.bg;
+    ctx.fillRect(0, 0, w, h);
+
+    // Top and bottom borders on the stick
+    ctx.fillStyle = colors.border;
+    ctx.fillRect(0, 0, w, 1);
+    ctx.fillRect(0, h - 1, w, 1);
+
+    ctx.font = '500 10px Geist, sans-serif';
+    ctx.textAlign = 'center';
+
+    if (currentUnit === 'in') {
+      const step16 = ppu / 16;
+      const totalSteps = Math.floor(w / step16);
+
+      for (let i = 0; i <= totalSteps; i++) {
+        const x = Math.round(i * step16) + 0.5;
+        const isWhole = i % 16 === 0;
+        const isHalf = i % 8 === 0;
+        const isQuarter = i % 4 === 0;
+
+        const tickHeight = isWhole ? 18 : isHalf ? 12 : isQuarter ? 8 : 4;
+        ctx.fillStyle = isWhole ? colors.majorTick : isHalf ? colors.subTick : colors.minorTick;
+        ctx.fillRect(x, 0, 1, tickHeight);
+
+        if (isWhole && i > 0) {
+          ctx.fillStyle = colors.text;
+          ctx.textBaseline = 'top';
+          ctx.fillText((i / 16).toString(), x, 22);
+        }
+      }
+    } else {
+      const step = currentUnit === 'mm' ? ppu : ppu / 10;
+      const totalSteps = Math.floor(w / step);
+
+      for (let s = 0; s <= totalSteps; s++) {
+        const x = Math.round(s * step) + 0.5;
+        const isMajor = s % 10 === 0;
+        const isMid = s % 5 === 0;
+
+        const tickHeight = isMajor ? 18 : isMid ? 11 : 4;
+        ctx.fillStyle = isMajor ? colors.majorTick : isMid ? colors.subTick : colors.minorTick;
+        ctx.fillRect(x, 0, 1, tickHeight);
+
+        if (isMajor && s > 0) {
+          ctx.fillStyle = colors.text;
+          ctx.textBaseline = 'top';
+          const val = currentUnit === 'cm' ? (s / 10).toString() : s.toString();
+          ctx.fillText(val, x, 22);
+        }
+      }
+    }
+  }
+
+  function renderAllRulers() {
+    if (edges.top && canvasTop) renderHorizontalRuler(canvasTop, false);
+    if (edges.bottom && canvasBottom) renderHorizontalRuler(canvasBottom, true);
+    if (edges.left && canvasLeft) renderVerticalRuler(canvasLeft, false);
+    if (edges.right && canvasRight) renderVerticalRuler(canvasRight, true);
+    if (floatingRulerActive) renderFloatingRuler();
+  }
+
+  // --- Calipers HUD & Math ---
+  function updateCalipersHUD() {
+    const diffPx = Math.abs(caliperBPos - caliperAPos);
+    const centerPx = Math.min(caliperAPos, caliperBPos) + diffPx / 2;
+
+    if (caliperBadge) {
+      caliperBadge.style.left = `${centerPx}px`;
+    }
+
+    const inches = diffPx / cssPpi;
+    const cm = inches * 2.54;
+    const mm = cm * 10;
+
+    if (currentUnit === 'in') {
+      const frac = formatFractionalInches(inches);
+      if (caliperFraction) caliperFraction.textContent = frac.fraction;
+      if (caliperDecimal) caliperDecimal.textContent = `${frac.decimal} in (${mm.toFixed(1)} mm)`;
+    } else if (currentUnit === 'cm') {
+      if (caliperFraction) caliperFraction.textContent = `${cm.toFixed(2)} cm`;
+      if (caliperDecimal) caliperDecimal.textContent = `${mm.toFixed(1)} mm (${inches.toFixed(3)} in)`;
+    } else if (currentUnit === 'mm') {
+      if (caliperFraction) caliperFraction.textContent = `${mm.toFixed(1)} mm`;
+      if (caliperDecimal) caliperDecimal.textContent = `${cm.toFixed(2)} cm (${inches.toFixed(3)} in)`;
+    } else {
+      if (caliperFraction) caliperFraction.textContent = `${Math.round(diffPx)} px`;
+      if (caliperDecimal) caliperDecimal.textContent = `${inches.toFixed(2)} in (${cm.toFixed(2)} cm)`;
+    }
+  }
+
+  // Mobile & Desktop Caliper Dragging
+  function makeCaliperDraggable(el: HTMLElement, isA: boolean) {
+    let isDragging = false;
+
+    const onStart = (clientX: number) => {
+      isDragging = true;
+    };
+
+    const onMove = (clientX: number) => {
+      if (!isDragging) return;
+      const newX = Math.max(10, Math.min(window.innerWidth - 10, clientX));
+      if (isA) {
+        caliperAPos = newX;
+        el.style.left = `${newX}px`;
+      } else {
+        caliperBPos = newX;
+        el.style.left = `${newX}px`;
+      }
+      updateCalipersHUD();
+    };
+
+    const onEnd = () => { isDragging = false; };
+
+    el.addEventListener('mousedown', (e) => {
+      onStart(e.clientX);
+      e.preventDefault();
+    });
+
+    window.addEventListener('mousemove', (e) => onMove(e.clientX));
+    window.addEventListener('mouseup', onEnd);
+
+    el.addEventListener('touchstart', (e) => {
+      if (e.touches[0]) onStart(e.touches[0].clientX);
+    }, { passive: false });
+
+    window.addEventListener('touchmove', (e) => {
+      if (!isDragging || !e.touches[0]) return;
+      onMove(e.touches[0].clientX);
+      e.preventDefault();
+    }, { passive: false });
+
+    window.addEventListener('touchend', onEnd);
+  }
+
+  if (caliperA && caliperB) {
+    makeCaliperDraggable(caliperA, true);
+    makeCaliperDraggable(caliperB, false);
+  }
+
+  // Copy measurement
+  if (btnCopyMeasurement) {
+    btnCopyMeasurement.addEventListener('click', () => {
+      const text = `${caliperFraction?.textContent || ''} · ${caliperDecimal?.textContent || ''}`;
+      navigator.clipboard.writeText(text).then(() => {
+        if (copyToast) {
+          copyToast.style.opacity = '1';
+          setTimeout(() => { copyToast.style.opacity = '0'; }, 1800);
+        }
+      });
+    });
+  }
+
+  // --- Smooth Rotation & Resize for Floating Ruler ---
+  function updateFloatingRulerSize() {
+    if (!floatingRulerEl) return;
+    floatingRulerEl.style.width = `${floatingRulerWidth}px`;
+    
+    // Update length badge
+    const inVal = floatingRulerWidth / cssPpi;
+    const cmVal = inVal * 2.54;
+    if (floatingLengthBadge) {
+      floatingLengthBadge.textContent = `${inVal.toFixed(2)}" (${cmVal.toFixed(1)} cm)`;
+    }
+    renderFloatingRuler();
+  }
+
+  function applyFloatingRulerTransform(animated = false) {
+    if (!floatingRulerEl) return;
+    // Add brief CSS transition for step-based rotations for a smooth animated feel
+    if (animated) {
+      floatingRulerEl.style.transition = 'transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.12s ease';
+    } else {
+      floatingRulerEl.style.transition = 'width 0.12s ease'; // No delay during drag
+    }
+    floatingRulerEl.style.transform = `rotate(${floatingRulerAngle.toFixed(2)}deg)`;
+    if (floatingAngleLabel) {
+      floatingAngleLabel.textContent = `${floatingRulerAngle.toFixed(1)}°`;
+    }
+  }
+
+  function initFloatingRuler() {
+    if (!floatingRulerEl) return;
+
+    // 1. Move/Drag Stick
+    let isMoving = false;
+    let startX = 0, startY = 0;
+    let initialLeft = 60, initialTop = 140;
+
+    floatingRulerEl.addEventListener('pointerdown', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('#rotate-handle') || target.closest('#floating-ruler-resize-handle') || target.closest('button')) return;
+      isMoving = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      const rect = floatingRulerEl.getBoundingClientRect();
+      initialLeft = rect.left;
+      initialTop = rect.top;
+      e.preventDefault();
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (!isMoving) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      floatingRulerEl.style.left = `${initialLeft + dx}px`;
+      floatingRulerEl.style.top = `${initialTop + dy}px`;
+    });
+
+    window.addEventListener('pointerup', () => { isMoving = false; });
+
+    // 2. Smooth Fluid Rotation Drag
+    let isRotating = false;
+    if (rotateHandle) {
+      rotateHandle.addEventListener('pointerdown', (e) => {
+        isRotating = true;
+        rotateHandle.setPointerCapture(e.pointerId);
+        e.preventDefault();
+        e.stopPropagation();
+      });
+
+      window.addEventListener('pointermove', (e) => {
+        if (!isRotating || !floatingRulerEl) return;
+        const rect = floatingRulerEl.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const rad = Math.atan2(e.clientY - cy, e.clientX - cx);
+        let deg = rad * (180 / Math.PI);
+        if (e.shiftKey) deg = Math.round(deg / 15) * 15;
+        floatingRulerAngle = (deg + 360) % 360;
+        applyFloatingRulerTransform();
+      });
+
+      window.addEventListener('pointerup', (e) => {
+        if (isRotating) {
+          isRotating = false;
+          try { rotateHandle.releasePointerCapture(e.pointerId); } catch(err) {}
+        }
+      });
+    }
+
+    // Step Rotation & Reset Controls (1° per click, with smooth animation)
+    if (btnRotateStepPrev) {
+      btnRotateStepPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        floatingRulerAngle = (floatingRulerAngle - 1 + 360) % 360;
+        applyFloatingRulerTransform(true); // animated
+      });
+    }
+    if (btnRotateStepNext) {
+      btnRotateStepNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        floatingRulerAngle = (floatingRulerAngle + 1) % 360;
+        applyFloatingRulerTransform(true); // animated
+      });
+    }
+    if (btnRotateZero) {
+      btnRotateZero.addEventListener('click', (e) => {
+        e.stopPropagation();
+        floatingRulerAngle = 0;
+        applyFloatingRulerTransform(true); // animated
+      });
+    }
+
+    // 3. Extend / Shorten Ruler Length (Resize Handle)
+    let isResizing = false;
+    let resizeStartX = 0;
+    let resizeStartY = 0;
+    let initialRulerW = floatingRulerWidth;
+
+    if (floatingRulerResizeHandle) {
+      floatingRulerResizeHandle.addEventListener('pointerdown', (e) => {
+        isResizing = true;
+        resizeStartX = e.clientX;
+        resizeStartY = e.clientY;
+        initialRulerW = floatingRulerWidth;
+        floatingRulerResizeHandle.setPointerCapture(e.pointerId);
+        e.preventDefault();
+        e.stopPropagation();
+      });
+
+      window.addEventListener('pointermove', (e) => {
+        if (!isResizing) return;
+        const rad = floatingRulerAngle * (Math.PI / 180);
+        const dx = e.clientX - resizeStartX;
+        const dy = e.clientY - resizeStartY;
+        // Project onto ruler axis
+        const delta = dx * Math.cos(rad) + dy * Math.sin(rad);
+        floatingRulerWidth = Math.max(160, Math.min(window.innerWidth * 2, initialRulerW + delta));
+        updateFloatingRulerSize();
+      });
+
+      window.addEventListener('pointerup', (e) => {
+        if (isResizing) {
+          isResizing = false;
+          try { floatingRulerResizeHandle.releasePointerCapture(e.pointerId); } catch(err) {}
+        }
+      });
+    }
+
+    if (closeFloatingBtn) {
+      closeFloatingBtn.addEventListener('click', () => {
+        floatingRulerActive = false;
+        floatingRulerEl.classList.add('hidden');
+        if (toggleFloatingBtn) toggleFloatingBtn.setAttribute('aria-pressed', 'false');
+      });
+    }
+  }
+
+  // --- Crosshair Live Tracking (bounds checked) ---
+  window.addEventListener('mousemove', (e) => {
+    if (!crosshairActive) return;
+    if (crosshairX && crosshairY && crosshairHud && workspace) {
+      const rect = workspace.getBoundingClientRect();
+      const relX = e.clientX - rect.left;
+      const relY = e.clientY - rect.top;
+
+      if (relX < 0 || relY < 0 || relX > rect.width || relY > rect.height) {
+        crosshairX.classList.add('hidden');
+        crosshairY.classList.add('hidden');
+        crosshairHud.classList.add('hidden');
+        return;
+      }
+
+      crosshairX.classList.remove('hidden');
+      crosshairY.classList.remove('hidden');
+      crosshairHud.classList.remove('hidden');
+
+      crosshairX.style.top = `${relY}px`;
+      crosshairY.style.left = `${relX}px`;
+      crosshairHud.style.top = `${relY + 12}px`;
+      crosshairHud.style.left = `${relX + 12}px`;
+
+      const xIn = relX / cssPpi;
+      const yIn = relY / cssPpi;
+
+      if (currentUnit === 'in') {
+        crosshairHud.textContent = `X: ${xIn.toFixed(2)}" · Y: ${yIn.toFixed(2)}"`;
+      } else if (currentUnit === 'cm') {
+        crosshairHud.textContent = `X: ${(xIn * 2.54).toFixed(1)}cm · Y: ${(yIn * 2.54).toFixed(1)}cm`;
+      } else if (currentUnit === 'mm') {
+        crosshairHud.textContent = `X: ${(xIn * 25.4).toFixed(0)}mm · Y: ${(yIn * 25.4).toFixed(0)}mm`;
+      } else {
+        crosshairHud.textContent = `X: ${Math.round(relX)}px · Y: ${Math.round(relY)}px`;
+      }
+    }
+  });
+
+  // --- Guides System ---
+  if (workspace) {
+    workspace.addEventListener('click', (e) => {
+      if (!guidesActive) return;
+      if ((e.target as HTMLElement).closest('#main-header') || (e.target as HTMLElement).closest('.cal-panel')) return;
+
+      const rect = workspace.getBoundingClientRect();
+      const relX = e.clientX - rect.left;
+      const relY = e.clientY - rect.top;
+
+      const guideLine = document.createElement('div');
+      guideLine.className = 'absolute bg-[#0070f3]/60 z-10 pointer-events-none transition-opacity';
+      
+      if (relY < 60) {
+        guideLine.style.cssText = `top: 0; bottom: 0; left: ${relX}px; width: 1px; border-left: 1px dashed #0070f3;`;
+      } else {
+        guideLine.style.cssText = `left: 0; right: 0; top: ${relY}px; height: 1px; border-top: 1px dashed #0070f3;`;
+      }
+
+      if (guidesLayer) guidesLayer.appendChild(guideLine);
+    });
+  }
+
+  // --- Modals Logic ---
+  function toggleModal(modal: HTMLElement | null, open: boolean) {
+    if (!modal) return;
+    if (open) {
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      const inner = modal.querySelector('div');
+      if (inner) inner.classList.remove('scale-95');
+    } else {
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      const inner = modal.querySelector('div');
+      if (inner) inner.classList.add('scale-95');
+    }
+  }
+
+  // Open Calibration Modal
+  if (openCalBtn) {
+    openCalBtn.addEventListener('click', () => {
+      const detected = detectDevice();
+      if (autoDevName) autoDevName.textContent = detected.description;
+      if (autoDevSpecs) autoDevSpecs.textContent = `Screen: ${window.screen.width}×${window.screen.height} CSS · DPR: ${window.devicePixelRatio || 1}x · Confidence: ${detected.confidence}`;
+      if (autoDevPpi) autoDevPpi.textContent = `Calculated: ${detected.cssPpi.toFixed(1)} CSS PPI (${detected.physicalPpi} Physical PPI)`;
+
+      if (diagPreviewRes) diagPreviewRes.textContent = `${window.screen.width} × ${window.screen.height} px`;
+      if (diagonalInput && diagonalInput.value) {
+        const ppi = calculateCssPpiFromDiagonal(parseFloat(diagonalInput.value));
+        if (diagPreviewPpi) diagPreviewPpi.textContent = `${ppi.toFixed(1)} CSS PPI`;
+      }
+
+      toggleModal(calModal, true);
+    });
+  }
+
+  if (closeCalBtn) closeCalBtn.addEventListener('click', () => toggleModal(calModal, false));
+
+  // Tabs inside Calibration Modal
+  calTabBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const tab = btn.getAttribute('data-cal-tab');
+      calTabBtns.forEach(b => {
+        b.classList.remove('bg-[var(--bg-card)]', 'text-[var(--text-main)]', 'shadow-sm');
+        b.classList.add('text-[var(--text-secondary)]');
+      });
+      btn.classList.add('bg-[var(--bg-card)]', 'text-[var(--text-main)]', 'shadow-sm');
+      btn.classList.remove('text-[var(--text-secondary)]');
+
+      calPanels.forEach(p => p.classList.add('hidden'));
+      const activePanel = document.getElementById(`cal-panel-${tab}`);
+      if (activePanel) activePanel.classList.remove('hidden');
+    });
+  });
+
+  // Apply Auto Calibration
+  if (btnApplyAuto) {
+    btnApplyAuto.addEventListener('click', () => {
+      const detected = detectDevice();
+      cssPpi = detected.cssPpi;
+      deviceName = detected.description;
+      isCalibrated = true;
+      saveConfig();
+      updateCalUI();
+      renderAllRulers();
+      updateCalipersHUD();
+      updateFloatingRulerSize();
+      toggleModal(calModal, false);
+    });
+  }
+
+  // Manual Device Selector Filter & Selection
+  if (deviceSearchInput) {
+    deviceSearchInput.addEventListener('input', () => {
+      const q = deviceSearchInput.value.toLowerCase().trim();
+      deviceSelectItems.forEach((item) => {
+        const name = (item.getAttribute('data-dev-name') || '').toLowerCase();
+        const cat = (item.getAttribute('data-dev-category') || '').toLowerCase();
+        if (!q || name.includes(q) || cat.includes(q)) {
+          (item as HTMLElement).style.display = 'flex';
+        } else {
+          (item as HTMLElement).style.display = 'none';
+        }
+      });
+    });
+  }
+
+  deviceCatFilters.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const cat = chip.getAttribute('data-category');
+      deviceCatFilters.forEach(c => c.classList.remove('bg-[var(--text-main)]', 'text-[var(--bg-card)]'));
+      chip.classList.add('bg-[var(--text-main)]', 'text-[var(--bg-card)]');
+
+      deviceSelectItems.forEach((item) => {
+        const devCat = item.getAttribute('data-dev-category');
+        if (cat === 'all' || devCat === cat) {
+          (item as HTMLElement).style.display = 'flex';
+        } else {
+          (item as HTMLElement).style.display = 'none';
+        }
+      });
+    });
+  });
+
+  deviceSelectItems.forEach((item) => {
+    item.addEventListener('click', () => {
+      const name = item.getAttribute('data-dev-name') || 'Selected Device';
+      const physicalPpi = parseFloat(item.getAttribute('data-dev-ppi') || '96');
+      const devDpr = parseFloat(item.getAttribute('data-dev-dpr') || '1');
+      const devDiag = parseFloat(item.getAttribute('data-dev-diagonal') || '0');
+
+      // Calculate CSS PPI
+      if (devDiag > 0) {
+        cssPpi = calculateCssPpiFromDiagonal(devDiag);
+      } else {
+        const dpr = window.devicePixelRatio || devDpr || 1;
+        cssPpi = physicalPpi / dpr;
+      }
+
+      deviceName = name;
+      isCalibrated = true;
+      saveConfig();
+      updateCalUI();
+      renderAllRulers();
+      updateCalipersHUD();
+      updateFloatingRulerSize();
+      toggleModal(calModal, false);
+    });
+  });
+
+  // Manual Direct Custom PPI Entry
+  if (btnApplyManualPpi && manualPpiInput) {
+    btnApplyManualPpi.addEventListener('click', () => {
+      const val = parseFloat(manualPpiInput.value);
+      if (isNaN(val) || val <= 30 || val > 800) {
+        alert('Please enter a valid CSS PPI between 40 and 600.');
+        return;
+      }
+      cssPpi = val;
+      deviceName = `Custom ${val.toFixed(1)} PPI`;
+      isCalibrated = true;
+      saveConfig();
+      updateCalUI();
+      renderAllRulers();
+      updateCalipersHUD();
+      updateFloatingRulerSize();
+      toggleModal(calModal, false);
+    });
+  }
+
+  // Diagonal Calibration
+  if (diagonalInput) {
+    diagonalInput.addEventListener('input', () => {
+      const diag = parseFloat(diagonalInput.value);
+      if (!isNaN(diag) && diag > 0) {
+        const ppi = calculateCssPpiFromDiagonal(diag);
+        if (diagPreviewPpi) diagPreviewPpi.textContent = `${ppi.toFixed(1)} CSS PPI`;
+      }
+    });
+  }
+
+  diagonalChips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const diag = chip.getAttribute('data-diag');
+      if (diag && diagonalInput) {
+        diagonalInput.value = diag;
+        const ppi = calculateCssPpiFromDiagonal(parseFloat(diag));
+        if (diagPreviewPpi) diagPreviewPpi.textContent = `${ppi.toFixed(1)} CSS PPI`;
+      }
+    });
+  });
+
+  if (btnApplyDiagonal) {
+    btnApplyDiagonal.addEventListener('click', () => {
+      const diag = parseFloat(diagonalInput?.value || '');
+      if (isNaN(diag) || diag <= 0) {
+        alert('Please enter a valid diagonal in inches (e.g. 15.6)');
+        return;
+      }
+      cssPpi = calculateCssPpiFromDiagonal(diag);
+      deviceName = `${diag}" Screen Diagonal`;
+      isCalibrated = true;
+      saveConfig();
+      updateCalUI();
+      renderAllRulers();
+      updateCalipersHUD();
+      updateFloatingRulerSize();
+      toggleModal(calModal, false);
+    });
+  }
+
+  // Credit Card Slider
+  if (cardScaleSlider) {
+    cardScaleSlider.addEventListener('input', () => {
+      const ppi = parseFloat(cardScaleSlider.value);
+      if (cardSliderPpi) cardSliderPpi.textContent = `${ppi.toFixed(1)} PPI`;
+      if (cardCalibrateBox) {
+        const w = ppi * CREDIT_CARD_WIDTH_IN;
+        const h = w * (53.98 / 85.60);
+        cardCalibrateBox.style.width = `${w}px`;
+        cardCalibrateBox.style.height = `${h}px`;
+      }
+    });
+  }
+
+  if (btnApplyCard) {
+    btnApplyCard.addEventListener('click', () => {
+      const ppi = parseFloat(cardScaleSlider?.value || '96');
+      cssPpi = ppi;
+      deviceName = 'Credit Card Calibrated';
+      isCalibrated = true;
+      saveConfig();
+      updateCalUI();
+      renderAllRulers();
+      updateCalipersHUD();
+      updateFloatingRulerSize();
+      toggleModal(calModal, false);
+    });
+  }
+
+  if (btnResetCal) {
+    btnResetCal.addEventListener('click', () => {
+      cssPpi = 96;
+      deviceName = 'Standard 96 PPI';
+      isCalibrated = false;
+      saveConfig();
+      updateCalUI();
+      renderAllRulers();
+      updateCalipersHUD();
+      updateFloatingRulerSize();
+    });
+  }
+
+  // Object Overlay
+  function setRefObject(name: string, widthIn: number, heightIn: number, shape: string) {
+    if (!objectOverlay) return;
+    const wPx = widthIn * cssPpi;
+    const hPx = heightIn * cssPpi;
+
+    objectOverlay.style.width = `${wPx}px`;
+    objectOverlay.style.height = `${hPx}px`;
+    objectOverlay.style.borderRadius = shape === 'circle' ? '50%' : '8px';
+    if (objectTitle) objectTitle.textContent = name;
+    if (objectDim) objectDim.textContent = `${widthIn.toFixed(2)}" × ${heightIn.toFixed(2)}" (${(widthIn * 25.4).toFixed(1)} × ${(heightIn * 25.4).toFixed(1)} mm)`;
+    objectOverlay.classList.remove('hidden');
+
+    // Make object draggable
+    let isDragging = false;
+    let startX = 0, startY = 0;
+    let initX = 60, initY = 140;
+
+    objectOverlay.onpointerdown = (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      const rect = objectOverlay.getBoundingClientRect();
+      initX = rect.left;
+      initY = rect.top;
+      objectOverlay.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    };
+
+    window.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      objectOverlay.style.left = `${initX + (e.clientX - startX)}px`;
+      objectOverlay.style.top = `${initY + (e.clientY - startY)}px`;
+    });
+
+    window.addEventListener('pointerup', () => { isDragging = false; });
+  }
+
+  if (openObjectsBtn) openObjectsBtn.addEventListener('click', () => toggleModal(objectsModal, true));
+  if (mobileOpenObjectsBtn) mobileOpenObjectsBtn.addEventListener('click', () => toggleModal(objectsModal, true));
+  if (closeObjectsBtn) closeObjectsBtn.addEventListener('click', () => toggleModal(objectsModal, false));
+  
+  objectRefCards.forEach((card) => {
+    card.addEventListener('click', () => {
+      const name = card.getAttribute('data-obj-name') || '';
+      const w = parseFloat(card.getAttribute('data-obj-width-in') || '0');
+      const h = parseFloat(card.getAttribute('data-obj-height-in') || '0');
+      const shape = card.getAttribute('data-obj-shape') || 'rect';
+      setRefObject(name, w, h, shape);
+      toggleModal(objectsModal, false);
+    });
+  });
+
+  if (btnClearActiveObject) {
+    btnClearActiveObject.addEventListener('click', () => {
+      if (objectOverlay) objectOverlay.classList.add('hidden');
+      toggleModal(objectsModal, false);
+    });
+  }
+
+  // Shortcuts Modal
+  if (openShortcutsBtn) openShortcutsBtn.addEventListener('click', () => toggleModal(shortcutsModal, true));
+  if (closeShortcutsBtn) closeShortcutsBtn.addEventListener('click', () => toggleModal(shortcutsModal, false));
+  if (btnCloseShortcutsDone) btnCloseShortcutsDone.addEventListener('click', () => toggleModal(shortcutsModal, false));
+
+  // Unit Switching
+  unitBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const unit = btn.getAttribute('data-unit') as any;
+      if (unit && ['in', 'cm', 'mm', 'px'].includes(unit)) {
+        currentUnit = unit;
+        saveConfig();
+        updateUnitUI();
+        renderAllRulers();
+        updateCalipersHUD();
+        updateFloatingRulerSize();
+      }
+    });
+  });
+
+  // Edge Toggles (Sync both desktop and mobile buttons)
+  edgeBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const edge = btn.getAttribute('data-edge') as 'top' | 'bottom' | 'left' | 'right';
+      if (edge) {
+        edges[edge] = !edges[edge];
+        
+        // Sync all matching edge buttons with blue active state
+        document.querySelectorAll(`[data-edge="${edge}"]`).forEach(b => {
+          b.setAttribute('aria-pressed', edges[edge].toString());
+          if (edges[edge]) {
+            b.classList.add('bg-[var(--accent)]', 'text-white');
+            b.classList.remove('bg-[var(--bg-card)]', 'text-[var(--text-secondary)]', 'border', 'border-[var(--border-color)]');
+          } else {
+            b.classList.remove('bg-[var(--accent)]', 'text-white');
+            b.classList.add('bg-[var(--bg-card)]', 'text-[var(--text-secondary)]', 'border', 'border-[var(--border-color)]');
+          }
+        });
+
+        const canvas = document.getElementById(`ruler-${edge}`);
+        if (canvas) {
+          if (edges[edge]) {
+            canvas.classList.remove('hidden');
+            if (edge === 'top' || edge === 'bottom') renderHorizontalRuler(canvas as HTMLCanvasElement, edge === 'bottom');
+            else renderVerticalRuler(canvas as HTMLCanvasElement, edge === 'right');
+          } else {
+            canvas.classList.add('hidden');
+          }
+        }
+      }
+    });
+  });
+
+  // Floating Ruler Toggles
+  function toggleFloatingAction() {
+    floatingRulerActive = !floatingRulerActive;
+    if (toggleFloatingBtn) {
+      toggleFloatingBtn.setAttribute('aria-pressed', floatingRulerActive.toString());
+      if (floatingRulerActive) {
+        toggleFloatingBtn.classList.add('bg-[var(--accent-light)]', 'border-[var(--accent-border)]', 'text-[var(--accent)]');
+        toggleFloatingBtn.classList.remove('hover:bg-[var(--accent-light)]', 'text-[var(--text-secondary)]');
+      } else {
+        toggleFloatingBtn.classList.remove('bg-[var(--accent-light)]', 'border-[var(--accent-border)]', 'text-[var(--accent)]');
+        toggleFloatingBtn.classList.add('text-[var(--text-secondary)]');
+      }
+    }
+    if (mobileToggleFloatingBtn) {
+      mobileToggleFloatingBtn.setAttribute('aria-pressed', floatingRulerActive.toString());
+      if (floatingRulerActive) {
+        mobileToggleFloatingBtn.classList.add('bg-[var(--accent-light)]', 'border-[var(--accent-border)]', 'text-[var(--accent)]');
+        mobileToggleFloatingBtn.classList.remove('bg-[var(--bg-card)]', 'text-[var(--text-secondary)]');
+      } else {
+        mobileToggleFloatingBtn.classList.remove('bg-[var(--accent-light)]', 'border-[var(--accent-border)]', 'text-[var(--accent)]');
+        mobileToggleFloatingBtn.classList.add('bg-[var(--bg-card)]', 'text-[var(--text-secondary)]');
+      }
+    }
+    if (floatingRulerEl) {
+      if (floatingRulerActive) {
+        floatingRulerEl.classList.remove('hidden');
+        renderFloatingRuler();
+      } else {
+        floatingRulerEl.classList.add('hidden');
+      }
+    }
+  }
+
+  // Calipers Toggles
+  function toggleCalipersAction() {
+    calipersActive = !calipersActive;
+    if (toggleCalipersBtn) {
+      toggleCalipersBtn.setAttribute('aria-pressed', calipersActive.toString());
+      if (calipersActive) {
+        toggleCalipersBtn.classList.add('bg-[var(--accent-light)]', 'border-[var(--accent-border)]', 'text-[var(--accent)]');
+        toggleCalipersBtn.classList.remove('hover:bg-[var(--accent)]', 'hover:text-white', 'bg-[var(--bg-card)]', 'text-[var(--text-secondary)]');
+      } else {
+        toggleCalipersBtn.classList.remove('bg-[var(--accent-light)]', 'border-[var(--accent-border)]', 'text-[var(--accent)]');
+        toggleCalipersBtn.classList.add('bg-[var(--bg-card)]', 'text-[var(--text-secondary)]');
+      }
+    }
+    if (mobileToggleCalipersBtn) {
+      mobileToggleCalipersBtn.setAttribute('aria-pressed', calipersActive.toString());
+      if (calipersActive) {
+        mobileToggleCalipersBtn.classList.add('bg-[var(--accent-light)]', 'border-[var(--accent-border)]', 'text-[var(--accent)]');
+        mobileToggleCalipersBtn.classList.remove('bg-[var(--bg-card)]', 'text-[var(--text-secondary)]');
+      } else {
+        mobileToggleCalipersBtn.classList.remove('bg-[var(--accent-light)]', 'border-[var(--accent-border)]', 'text-[var(--accent)]');
+        mobileToggleCalipersBtn.classList.add('bg-[var(--bg-card)]', 'text-[var(--text-secondary)]');
+      }
+    }
+    if (calipersContainer) {
+      calipersContainer.style.display = calipersActive ? 'block' : 'none';
+    }
+  }
+
+  if (toggleFloatingBtn) toggleFloatingBtn.addEventListener('click', toggleFloatingAction);
+  if (mobileToggleFloatingBtn) mobileToggleFloatingBtn.addEventListener('click', toggleFloatingAction);
+
+  if (toggleCalipersBtn) toggleCalipersBtn.addEventListener('click', toggleCalipersAction);
+  if (mobileToggleCalipersBtn) mobileToggleCalipersBtn.addEventListener('click', toggleCalipersAction);
+
+  if (toggleGuidesBtn) {
+    toggleGuidesBtn.addEventListener('click', () => {
+      guidesActive = !guidesActive;
+      toggleGuidesBtn.setAttribute('aria-pressed', guidesActive.toString());
+      if (guidesActive) {
+        toggleGuidesBtn.classList.add('bg-[var(--accent-light)]', 'border-[var(--accent-border)]', 'text-[var(--accent)]');
+        toggleGuidesBtn.classList.remove('hover:bg-[var(--accent-light)]', 'text-[var(--text-secondary)]');
+      } else {
+        toggleGuidesBtn.classList.remove('bg-[var(--accent-light)]', 'border-[var(--accent-border)]', 'text-[var(--accent)]');
+        toggleGuidesBtn.classList.add('text-[var(--text-secondary)]');
+      }
+    });
+  }
+
+  if (toggleCrosshairBtn) {
+    toggleCrosshairBtn.addEventListener('click', () => {
+      crosshairActive = !crosshairActive;
+      toggleCrosshairBtn.setAttribute('aria-pressed', crosshairActive.toString());
+      if (crosshairActive) {
+        toggleCrosshairBtn.classList.add('bg-[var(--accent-light)]', 'border-[var(--accent-border)]', 'text-[var(--accent)]');
+        toggleCrosshairBtn.classList.remove('hover:bg-[var(--accent-light)]', 'text-[var(--text-secondary)]');
+      } else {
+        toggleCrosshairBtn.classList.remove('bg-[var(--accent-light)]', 'border-[var(--accent-border)]', 'text-[var(--accent)]');
+        toggleCrosshairBtn.classList.add('text-[var(--text-secondary)]');
+      }
+      if (crosshairX && crosshairY && crosshairHud) {
+        crosshairX.classList.toggle('hidden', !crosshairActive);
+        crosshairY.classList.toggle('hidden', !crosshairActive);
+        crosshairHud.classList.toggle('hidden', !crosshairActive);
+      }
+    });
+  }
+
+  // Fullscreen
+  if (fsBtn) {
+    fsBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+        fsEnterIcon?.classList.add('hidden');
+        fsExitIcon?.classList.remove('hidden');
+      } else {
+        document.exitFullscreen().catch(() => {});
+        fsEnterIcon?.classList.remove('hidden');
+        fsExitIcon?.classList.add('hidden');
+      }
+    });
+  }
+
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+      fsEnterIcon?.classList.remove('hidden');
+      fsExitIcon?.classList.add('hidden');
+    }
+    setTimeout(renderAllRulers, 100);
+  });
+
+  // Dark Mode Toggle
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      try {
+        localStorage.setItem('fvr_theme', isDark ? 'dark' : 'light');
+      } catch (e) {}
+      renderAllRulers();
+    });
+  }
+
+  if (btnDismissBanner && quickBanner) {
+    btnDismissBanner.addEventListener('click', () => {
+      quickBanner.style.opacity = '0';
+      quickBanner.style.pointerEvents = 'none';
+    });
+  }
+
+  // Keyboard Shortcuts
+  window.addEventListener('keydown', (e) => {
+    if ((e.target as HTMLElement).tagName === 'INPUT') return;
+
+    if (e.key === '1') {
+      currentUnit = 'in';
+      saveConfig();
+      updateUnitUI();
+      renderAllRulers();
+      updateCalipersHUD();
+      updateFloatingRulerSize();
+    } else if (e.key === '2') {
+      currentUnit = 'cm';
+      saveConfig();
+      updateUnitUI();
+      renderAllRulers();
+      updateCalipersHUD();
+      updateFloatingRulerSize();
+    } else if (e.key === '3') {
+      currentUnit = 'mm';
+      saveConfig();
+      updateUnitUI();
+      renderAllRulers();
+      updateCalipersHUD();
+      updateFloatingRulerSize();
+    } else if (e.key === '4') {
+      currentUnit = 'px';
+      saveConfig();
+      updateUnitUI();
+      renderAllRulers();
+      updateCalipersHUD();
+      updateFloatingRulerSize();
+    } else if (e.key.toLowerCase() === 't') {
+      document.getElementById('edge-top-btn')?.click();
+    } else if (e.key.toLowerCase() === 'l') {
+      document.getElementById('edge-left-btn')?.click();
+    } else if (e.key.toLowerCase() === 'b') {
+      document.getElementById('edge-bottom-btn')?.click();
+    } else if (e.key.toLowerCase() === 'r') {
+      document.getElementById('edge-right-btn')?.click();
+    } else if (e.key.toLowerCase() === 'm') {
+      toggleFloatingAction();
+    } else if (e.key.toLowerCase() === 'p') {
+      toggleCalipersAction();
+    } else if (e.key.toLowerCase() === 'g') {
+      toggleGuidesBtn?.click();
+    } else if (e.key.toLowerCase() === 'c') {
+      toggleCrosshairBtn?.click();
+    } else if (e.key.toLowerCase() === 'd') {
+      themeToggleBtn?.click();
+    } else if (e.key.toLowerCase() === 'f') {
+      fsBtn?.click();
+    } else if (e.key === '?') {
+      toggleModal(shortcutsModal, true);
+    } else if (e.key === 'Escape') {
+      toggleModal(calModal, false);
+      toggleModal(objectsModal, false);
+      toggleModal(shortcutsModal, false);
+      if (guidesLayer) guidesLayer.innerHTML = '';
+      if (objectOverlay) objectOverlay.classList.add('hidden');
+    }
+  });
+
+  // Window Resize
+  window.addEventListener('resize', () => {
+    renderAllRulers();
+    updateCalipersHUD();
+  });
+
+  // Start
+  initConfig();
+  initFloatingRuler();
+</script>

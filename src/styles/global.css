@@ -1,0 +1,289 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-canvas: #fafafa;
+  --color-canvas-elevated: #ffffff;
+  --color-canvas-soft: #f4f4f5;
+  --color-canvas-soft-2: #ebebeb;
+  
+  --color-ink: #171717;
+  --color-body: #4d4d4d;
+  --color-mute: #8f8f8f;
+  --color-faint: #a1a1a1;
+  
+  --color-hairline: #ebebeb;
+  --color-hairline-strong: #d4d4d4;
+  --color-hairline-soft: #f2f2f2;
+  
+  /* Blue as primary accent */
+  --color-primary: #0070f3;
+  --color-primary-hover: #0060d0;
+  --color-primary-light: #e6f0ff;
+  --color-on-primary: #ffffff;
+  
+  --color-brand-blue: #0070f3;
+  --color-brand-cyan: #00dfd8;
+  --color-brand-violet: #7928ca;
+  --color-brand-pink: #ff0080;
+  --color-brand-amber: #f9cb28;
+  
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+}
+
+/* ===================================================
+   LIGHT MODE (default)
+   =================================================== */
+:root {
+  --bg-page: #fafafa;
+  --bg-card: #ffffff;
+  --bg-subtle: #f4f4f5;
+  --bg-subtle-2: #ebebeb;
+
+  --text-main: #171717;
+  --text-secondary: #4d4d4d;
+  --text-tertiary: #888888;
+
+  --border-color: #e4e4e7;
+  --border-strong: #d4d4d4;
+
+  /* Blue accent system */
+  --accent: #0070f3;
+  --accent-hover: #0060d0;
+  --accent-light: #eff6ff;
+  --accent-border: #bfdbfe;
+  --on-accent: #ffffff;
+
+  /* Active/selected button state uses BLUE */
+  --btn-active-bg: #0070f3;
+  --btn-active-text: #ffffff;
+  --btn-active-border: #0060d0;
+
+  /* Ruler canvas colors */
+  --ruler-bg: #ffffff;
+  --ruler-tick: #171717;
+  --ruler-major: #000000;
+  --ruler-label: #444444;
+  --ruler-minor: #bbbbbb;
+  --ruler-sub: #888888;
+
+  --shadow-whisper: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-floating: 0 4px 20px -2px rgba(0, 0, 0, 0.10), 0 2px 6px -1px rgba(0, 0, 0, 0.06);
+  --shadow-modal: 0 20px 60px -12px rgba(0, 0, 0, 0.15), 0 4px 20px -4px rgba(0, 0, 0, 0.08);
+}
+
+/* ===================================================
+   DARK MODE
+   =================================================== */
+html.dark {
+  --bg-page: #09090b;
+  --bg-card: #111113;
+  --bg-subtle: #18181b;
+  --bg-subtle-2: #222225;
+
+  --text-main: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-tertiary: #71717a;
+
+  --border-color: #27272a;
+  --border-strong: #3f3f46;
+
+  /* Blue accent stays vibrant in dark mode */
+  --accent: #3b9eff;
+  --accent-hover: #60aeff;
+  --accent-light: #0c2a4a;
+  --accent-border: #1e4a7a;
+  --on-accent: #ffffff;
+
+  --btn-active-bg: #3b9eff;
+  --btn-active-text: #000000;
+  --btn-active-border: #60aeff;
+
+  --ruler-bg: #111113;
+  --ruler-tick: #e4e4e7;
+  --ruler-major: #ffffff;
+  --ruler-label: #a1a1aa;
+  --ruler-minor: #3f3f46;
+  --ruler-sub: #71717a;
+
+  --shadow-whisper: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-floating: 0 4px 20px -2px rgba(0, 0, 0, 0.6), 0 2px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-modal: 0 20px 60px -12px rgba(0, 0, 0, 0.7), 0 4px 20px -4px rgba(0, 0, 0, 0.5);
+}
+
+/* ===================================================
+   GLOBAL BASE
+   =================================================== */
+html {
+  font-family: var(--font-sans);
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===================================================
+   TYPOGRAPHY HELPERS
+   =================================================== */
+.display-title {
+  letter-spacing: -0.05em;
+  font-weight: 600;
+}
+
+.heading-section {
+  letter-spacing: -0.035em;
+  font-weight: 600;
+}
+
+.mono-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ===================================================
+   HERO MESH GRADIENT
+   =================================================== */
+.hero-mesh-gradient {
+  background-image: 
+    radial-gradient(at 10% 15%, rgba(0, 112, 243, 0.10) 0px, transparent 50%),
+    radial-gradient(at 90% 10%, rgba(59, 158, 255, 0.08) 0px, transparent 50%),
+    radial-gradient(at 50% 80%, rgba(0, 112, 243, 0.06) 0px, transparent 50%);
+}
+
+html.dark .hero-mesh-gradient {
+  background-image: 
+    radial-gradient(at 10% 15%, rgba(59, 158, 255, 0.12) 0px, transparent 50%),
+    radial-gradient(at 90% 10%, rgba(0, 112, 243, 0.10) 0px, transparent 50%),
+    radial-gradient(at 50% 80%, rgba(59, 158, 255, 0.08) 0px, transparent 50%);
+}
+
+/* ===================================================
+   CUSTOM SCROLLBARS
+   =================================================== */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(120, 120, 120, 0.20);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===================================================
+   RANGE INPUT STYLING
+   =================================================== */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: var(--border-color);
+  border-radius: 9999px;
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid var(--bg-card);
+  box-shadow: 0 1px 4px rgba(0, 112, 243, 0.4);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 8px rgba(0, 112, 243, 0.5);
+}
+
+/* ===================================================
+   BLUE ACCENT BUTTON VARIANT
+   =================================================== */
+.btn-accent {
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 1px solid var(--accent-hover);
+}
+.btn-accent:hover {
+  background: var(--accent-hover);
+}
+
+/* ===================================================
+   FLOATING RULER SMOOTH ROTATION
+   =================================================== */
+#floating-ruler-stick {
+  transition: width 0.1s ease;
+  will-change: transform;
+}
+
+/* ===================================================
+   PREVENT TEXT SELECTION DURING DRAG
+   =================================================== */
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ===================================================
+   MOBILE TOUCH OPTIMIZATION
+   =================================================== */
+@media (max-width: 768px) {
+  /* Larger tap targets for touch */
+  button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  
+  /* Floating ruler on mobile - wider touch targets */
+  #rotate-handle {
+    min-width: 48px;
+    min-height: 32px;
+  }
+  
+  #floating-ruler-resize-handle {
+    width: 36px;
+  }
+}
+
+/* ===================================================
+   FOCUS STYLES
+   =================================================== */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
