@@ -1,16 +1,16 @@
 ---
-// Header.astro - Mobile-first responsive ruler toolbar
+// Header.astro - Mobile-optimized responsive ruler toolbar
 ---
 
 <header id="main-header" class="fixed top-0 left-0 right-0 z-50 bg-[var(--bg-page)]/95 backdrop-blur-md border-b border-[var(--border-color)] transition-colors duration-200 select-none">
   
-  <!-- Primary Row -->
-  <div class="px-3 sm:px-4 h-12 flex items-center justify-between gap-2">
+  <!-- Primary Row (Height: 48px) -->
+  <div class="px-2.5 sm:px-4 h-12 flex items-center justify-between gap-2 max-w-full">
     
     <!-- Left: Logo -->
-    <div class="flex items-center gap-2 shrink-0">
+    <div class="flex items-center gap-1.5 shrink-0">
       <a href="/" class="flex items-center gap-1.5 text-[var(--text-main)] hover:opacity-80 transition-opacity" aria-label="Free Virtual Ruler Home">
-        <div class="w-7 h-7 rounded-[6px] bg-[var(--accent)] text-white flex items-center justify-center shrink-0">
+        <div class="w-7 h-7 rounded-[6px] bg-[var(--accent)] text-white flex items-center justify-center shrink-0 shadow-sm">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"></path>
             <path d="m14.5 12.5 2-2"></path>
@@ -19,11 +19,14 @@
             <path d="m17.5 15.5 2-2"></path>
           </svg>
         </div>
-        <span class="font-semibold text-[13px] tracking-tight hidden xs:block sm:block">Free Virtual Ruler</span>
+        <span class="font-semibold text-xs sm:text-[13px] tracking-tight text-[var(--text-main)]">
+          <span class="inline sm:hidden">Free Ruler</span>
+          <span class="hidden sm:inline">Free Virtual Ruler</span>
+        </span>
       </a>
     </div>
 
-    <!-- Desktop Center Controls (≥ md) -->
+    <!-- Desktop Center Controls (>= md) -->
     <div class="hidden md:flex items-center gap-1.5 flex-1 justify-center" role="group" aria-label="Ruler Controls">
       <!-- Edge Toggles -->
       <div class="flex items-center gap-0.5 p-0.5 rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-subtle)]">
@@ -89,22 +92,22 @@
     </div>
 
     <!-- Right: Units + Calibrate + Utilities -->
-    <div class="flex items-center gap-1.5 shrink-0">
+    <div class="flex items-center gap-1 sm:gap-1.5 shrink-0">
       
       <!-- Unit Selector -->
       <div id="unit-selector" class="flex items-center rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] p-0.5" role="radiogroup" aria-label="Measurement Units">
-        <button data-unit="in" class="unit-btn px-2 h-7 rounded-[4px] text-[11px] font-semibold transition-all bg-[var(--accent)] text-white" role="radio" aria-checked="true" title="Inches">in</button>
-        <button data-unit="cm" class="unit-btn px-2 h-7 rounded-[4px] text-[11px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-main)] transition-all" role="radio" aria-checked="false" title="Centimeters">cm</button>
-        <button data-unit="mm" class="unit-btn px-2 h-7 rounded-[4px] text-[11px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-main)] transition-all" role="radio" aria-checked="false" title="Millimeters">mm</button>
+        <button data-unit="in" class="unit-btn px-1.5 sm:px-2 h-7 rounded-[4px] text-[11px] font-semibold transition-all bg-[var(--accent)] text-white" role="radio" aria-checked="true" title="Inches">in</button>
+        <button data-unit="cm" class="unit-btn px-1.5 sm:px-2 h-7 rounded-[4px] text-[11px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-main)] transition-all" role="radio" aria-checked="false" title="Centimeters">cm</button>
+        <button data-unit="mm" class="unit-btn px-1.5 sm:px-2 h-7 rounded-[4px] text-[11px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-main)] transition-all" role="radio" aria-checked="false" title="Millimeters">mm</button>
         <button data-unit="px" class="unit-btn px-2 h-7 rounded-[4px] text-[11px] font-medium text-[var(--text-secondary)] hover:text-[var(--text-main)] transition-all hidden lg:block" role="radio" aria-checked="false" title="Pixels">px</button>
       </div>
 
       <!-- Calibrate -->
       <button id="open-calibrate-btn"
-        class="h-7 px-2.5 flex items-center gap-1.5 rounded-[6px] border border-[var(--accent-border)] bg-[var(--accent-light)] hover:bg-[var(--accent)] hover:text-white text-[var(--accent)] text-[11px] font-medium transition-all"
+        class="h-7 px-2 sm:px-2.5 flex items-center gap-1.5 rounded-[6px] border border-[var(--accent-border)] bg-[var(--accent-light)] hover:bg-[var(--accent)] hover:text-white text-[var(--accent)] text-[11px] font-medium transition-all shrink-0"
         title="Calibrate Screen">
         <span id="cal-status-dot" class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse shrink-0"></span>
-        <span>Calibrate</span>
+        <span class="hidden min-[360px]:inline">Calibrate</span>
       </button>
 
       <!-- Compare (desktop only) -->
@@ -118,14 +121,14 @@
         <span>Compare</span>
       </button>
 
-      <!-- Shortcuts (hidden on xs/sm) -->
+      <!-- Shortcuts (hidden on mobile) -->
       <button id="open-shortcuts-btn"
         class="h-7 w-7 hidden md:flex items-center justify-center rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--accent-light)] hover:border-[var(--accent-border)] hover:text-[var(--accent)] text-[var(--text-secondary)] text-xs font-mono transition-all"
         title="Shortcuts (?)" aria-label="Keyboard Shortcuts">?</button>
 
       <!-- Theme Toggle -->
       <button id="theme-toggle-btn"
-        class="h-7 w-7 flex items-center justify-center rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--accent-light)] hover:border-[var(--accent-border)] hover:text-[var(--accent)] text-[var(--text-main)] transition-all"
+        class="h-7 w-7 flex items-center justify-center rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--accent-light)] hover:border-[var(--accent-border)] hover:text-[var(--accent)] text-[var(--text-main)] transition-all shrink-0"
         title="Toggle Theme (D)" aria-label="Toggle Theme">
         <svg id="theme-sun-icon" class="w-3.5 h-3.5 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="4"></circle>
@@ -136,9 +139,9 @@
         </svg>
       </button>
 
-      <!-- Fullscreen -->
+      <!-- Fullscreen (desktop) -->
       <button id="fullscreen-toggle-btn"
-        class="h-7 w-7 hidden sm:flex items-center justify-center rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--accent-light)] hover:border-[var(--accent-border)] hover:text-[var(--accent)] text-[var(--text-main)] transition-all"
+        class="h-7 w-7 hidden sm:flex items-center justify-center rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--accent-light)] hover:border-[var(--accent-border)] hover:text-[var(--accent)] text-[var(--text-main)] transition-all shrink-0"
         title="Fullscreen (F)" aria-label="Toggle Fullscreen">
         <svg id="fs-enter-icon" class="w-3.5 h-3.5 block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"></path>
@@ -150,61 +153,65 @@
     </div>
   </div>
 
-  <!-- Mobile Controls Bar (< md) — scrollable -->
-  <div id="mobile-controls-bar" class="md:hidden border-t border-[var(--border-color)] bg-[var(--bg-subtle)]">
-    <div class="flex items-center gap-1.5 px-3 py-2 overflow-x-auto no-scrollbar">
+  <!-- Mobile Controls Bar (< md) — NEVER OVERFLOWS, ALL BUTTONS FIT ON SCREEN -->
+  <div id="mobile-controls-bar" class="md:hidden border-t border-[var(--border-color)] bg-[var(--bg-subtle)] px-2 py-1.5">
+    <div class="flex items-center justify-between gap-1 w-full max-w-full">
       
-      <!-- Edge Toggles -->
-      <div class="flex items-center gap-1 shrink-0">
-        <span class="text-[10px] text-[var(--text-tertiary)] font-mono uppercase tracking-wide shrink-0">Edges</span>
-        <button data-edge="top" class="edge-btn h-8 px-3 rounded-[6px] bg-[var(--accent)] text-white text-xs font-medium touch-manipulation shrink-0" aria-pressed="true">Top</button>
-        <button data-edge="left" class="edge-btn h-8 px-3 rounded-[6px] bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-secondary)] text-xs font-medium touch-manipulation shrink-0" aria-pressed="false">Left</button>
-        <button data-edge="bottom" class="edge-btn h-8 px-3 rounded-[6px] bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-secondary)] text-xs font-medium touch-manipulation shrink-0" aria-pressed="false">Bot</button>
-        <button data-edge="right" class="edge-btn h-8 px-3 rounded-[6px] bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-secondary)] text-xs font-medium touch-manipulation shrink-0" aria-pressed="false">Right</button>
+      <!-- Left: Compact Edge Selector Segment (T | L | B | R) -->
+      <div class="flex items-center rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] p-0.5 shrink-0" role="group" aria-label="Ruler Edges">
+        <button data-edge="top" class="edge-btn h-7 px-2 rounded-[4px] bg-[var(--accent)] text-white text-[11px] font-semibold transition-all" title="Top Edge" aria-pressed="true">T</button>
+        <button data-edge="left" class="edge-btn h-7 px-2 rounded-[4px] text-[var(--text-secondary)] hover:text-[var(--text-main)] text-[11px] font-medium transition-all" title="Left Edge" aria-pressed="false">L</button>
+        <button data-edge="bottom" class="edge-btn h-7 px-2 rounded-[4px] text-[var(--text-secondary)] hover:text-[var(--text-main)] text-[11px] font-medium transition-all" title="Bottom Edge" aria-pressed="false">B</button>
+        <button data-edge="right" class="edge-btn h-7 px-2 rounded-[4px] text-[var(--text-secondary)] hover:text-[var(--text-main)] text-[11px] font-medium transition-all" title="Right Edge" aria-pressed="false">R</button>
       </div>
 
-      <div class="h-5 w-px bg-[var(--border-color)] shrink-0"></div>
+      <!-- Right: Mobile Tools (Floating, Calipers, Compare, Fullscreen) -->
+      <div class="flex items-center gap-1 shrink-0">
+        
+        <!-- Floating Ruler -->
+        <button id="mobile-toggle-floating-btn"
+          class="h-7 px-2 rounded-[6px] bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--accent)] hover:border-[var(--accent-border)] text-[11px] font-medium flex items-center gap-1 transition-all"
+          title="Floating Ruler" aria-pressed="false">
+          <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="1.5" y="5.5" width="13" height="5" rx="1" transform="rotate(-10 8 8)"></rect>
+            <line x1="5" y1="6.5" x2="6" y2="9.5"></line>
+            <line x1="8.5" y1="6" x2="9.5" y2="10"></line>
+          </svg>
+          <span class="hidden min-[370px]:inline">Float</span>
+        </button>
 
-      <!-- Tool Buttons -->
-      <button id="mobile-toggle-floating-btn"
-        class="h-8 px-3 rounded-[6px] bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-secondary)] text-xs font-medium flex items-center gap-1.5 touch-manipulation shrink-0">
-        <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="1.5" y="5.5" width="13" height="5" rx="1" transform="rotate(-10 8 8)"></rect>
-          <line x1="5" y1="6.5" x2="6" y2="9.5"></line>
-          <line x1="8.5" y1="6" x2="9.5" y2="10"></line>
-        </svg>
-        <span>Float</span>
-      </button>
+        <!-- Calipers -->
+        <button id="mobile-toggle-calipers-btn"
+          class="h-7 px-2 rounded-[6px] bg-[var(--accent-light)] border border-[var(--accent-border)] text-[var(--accent)] text-[11px] font-medium flex items-center gap-1 transition-all"
+          title="Calipers" aria-pressed="true">
+          <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <line x1="3" y1="2" x2="3" y2="14" stroke-linecap="round"></line>
+            <line x1="13" y1="2" x2="13" y2="14" stroke-linecap="round"></line>
+            <line x1="3" y1="8" x2="13" y2="8" stroke-dasharray="2 1.5"></line>
+          </svg>
+          <span class="hidden min-[370px]:inline">Calipers</span>
+        </button>
 
-      <button id="mobile-toggle-calipers-btn"
-        class="h-8 px-3 rounded-[6px] bg-[var(--accent-light)] border border-[var(--accent-border)] text-[var(--accent)] text-xs font-medium flex items-center gap-1.5 touch-manipulation shrink-0">
-        <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-          <line x1="3" y1="2" x2="3" y2="14" stroke-linecap="round"></line>
-          <line x1="13" y1="2" x2="13" y2="14" stroke-linecap="round"></line>
-          <line x1="3" y1="8" x2="13" y2="8" stroke-dasharray="2 1.5"></line>
-        </svg>
-        <span>Calipers</span>
-      </button>
+        <!-- Compare Objects -->
+        <button id="mobile-open-objects-btn"
+          class="h-7 w-7 rounded-[6px] bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--accent)] flex items-center justify-center transition-all shrink-0"
+          title="Compare Everyday Objects">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="4" width="12" height="8" rx="1.5"></rect>
+            <line x1="2" y1="7" x2="14" y2="7"></line>
+          </svg>
+        </button>
 
-      <button id="mobile-open-objects-btn"
-        class="h-8 px-3 rounded-[6px] bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-secondary)] text-xs font-medium flex items-center gap-1.5 touch-manipulation shrink-0">
-        <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-          <rect x="2" y="4" width="12" height="8" rx="1.5"></rect>
-          <line x1="2" y1="7" x2="14" y2="7"></line>
-        </svg>
-        <span>Compare</span>
-      </button>
+        <!-- Fullscreen -->
+        <button id="mobile-fullscreen-btn"
+          class="h-7 w-7 rounded-[6px] bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--accent)] flex items-center justify-center transition-all shrink-0"
+          title="Toggle Fullscreen" aria-label="Toggle Fullscreen">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"></path>
+          </svg>
+        </button>
 
-      <div class="h-5 w-px bg-[var(--border-color)] shrink-0"></div>
-
-      <!-- Fullscreen on mobile -->
-      <button id="mobile-fullscreen-btn"
-        class="h-8 w-8 rounded-[6px] bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-secondary)] flex items-center justify-center touch-manipulation shrink-0"
-        title="Fullscreen" aria-label="Toggle Fullscreen">
-        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"></path>
-        </svg>
-      </button>
+      </div>
     </div>
   </div>
 

@@ -22,7 +22,7 @@
         A
       </div>
       <!-- Mobile Touch Thumb Grip (at bottom) - larger for touch -->
-      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-[var(--accent)] text-white text-sm font-mono font-bold shadow-lg flex items-center justify-center active:scale-110 transition-transform">
+      <div class="absolute bottom-16 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-[var(--accent)] text-white text-sm font-mono font-bold shadow-lg flex items-center justify-center active:scale-110 transition-transform">
         A
       </div>
     </div>
@@ -36,7 +36,7 @@
         B
       </div>
       <!-- Mobile Touch Thumb Grip (at bottom) - larger for touch -->
-      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-[var(--accent)] text-white text-sm font-mono font-bold shadow-lg flex items-center justify-center active:scale-110 transition-transform">
+      <div class="absolute bottom-16 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-[var(--accent)] text-white text-sm font-mono font-bold shadow-lg flex items-center justify-center active:scale-110 transition-transform">
         B
       </div>
     </div>
@@ -44,7 +44,7 @@
     <!-- Measurement Readout Floating HUD between A and B -->
     <div
       id="caliper-distance-badge"
-      class="absolute pointer-events-auto -translate-x-1/2 flex items-center gap-2 px-3 py-2 rounded-full bg-[var(--bg-card)]/95 border border-[var(--accent-border)] shadow-[var(--shadow-floating)] backdrop-blur-sm"
+      class="absolute pointer-events-auto -translate-x-1/2 flex items-center gap-2 px-3 py-2 rounded-full bg-[var(--bg-card)]/95 border border-[var(--accent-border)] shadow-[var(--shadow-floating)] backdrop-blur-sm whitespace-nowrap"
       style="top: 56px; left: 170px;"
     >
       <div class="flex flex-col">
@@ -69,13 +69,13 @@
   <div
     id="floating-ruler-stick"
     class="absolute z-30 pointer-events-auto rounded-[8px] bg-[var(--bg-card)] border-2 border-[var(--accent-border)] shadow-[var(--shadow-floating)] cursor-grab active:cursor-grabbing hidden select-none"
-    style="width: min(280px, 90vw); height: 68px; top: 100px; left: 20px; transform-origin: center center; transition: width 0.12s ease; touch-action: none;"
+    style="width: min(280px, 85vw); height: 68px; top: 80px; left: 20px; transform-origin: center center; transition: width 0.12s ease; touch-action: none;"
   >
     <!-- Stick Canvas -->
     <canvas id="floating-ruler-canvas" class="w-full h-full rounded-[6px]"></canvas>
 
-    <!-- Controls strip BELOW ruler on mobile, above on desktop -->
-    <div class="absolute -bottom-9 left-0 right-0 flex items-center justify-between gap-1 px-1 pointer-events-auto">
+    <!-- Desktop-only controls strip directly on ruler -->
+    <div class="hidden md:flex absolute -bottom-9 left-0 right-0 items-center justify-between gap-1 px-1 pointer-events-auto">
       
       <!-- Rotation controls -->
       <div class="flex items-center gap-0.5 bg-[var(--bg-card)] px-1 py-0.5 rounded-full border border-[var(--accent-border)] shadow-sm flex-shrink-0">
@@ -127,6 +127,50 @@
         <div class="w-0.5 h-5 bg-white/60 rounded-full"></div>
       </div>
     </div>
+  </div>
+
+  <!-- Dedicated Floating Ruler Control Dock (Mobile & Universal: Pinned at bottom, never moves out of screen!) -->
+  <div
+    id="floating-ruler-dock"
+    class="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 px-2.5 py-1.5 rounded-full bg-[var(--bg-card)]/95 border border-[var(--accent-border)] shadow-[var(--shadow-floating)] backdrop-blur-md hidden items-center gap-1.5 select-none max-w-[calc(100vw-16px)]"
+  >
+    <!-- Rotation controls -->
+    <div class="flex items-center gap-0.5 bg-[var(--bg-subtle)] px-1 py-0.5 rounded-full border border-[var(--border-color)]">
+      <button id="dock-rotate-prev"
+        class="w-7 h-7 rounded-full text-sm flex items-center justify-center hover:bg-[var(--accent-light)] hover:text-[var(--accent)] text-[var(--text-secondary)] font-bold active:scale-95 transition-all touch-manipulation"
+        title="Rotate -1°">−</button>
+      <span id="dock-ruler-angle" class="text-[11px] font-mono font-bold text-[var(--accent)] min-w-[34px] text-center">0.0°</span>
+      <button id="dock-rotate-next"
+        class="w-7 h-7 rounded-full text-sm flex items-center justify-center hover:bg-[var(--accent-light)] hover:text-[var(--accent)] text-[var(--text-secondary)] font-bold active:scale-95 transition-all touch-manipulation"
+        title="Rotate +1°">+</button>
+      <button id="dock-rotate-zero"
+        class="text-[10px] font-mono px-1.5 py-0.5 rounded-full hover:bg-[var(--accent-light)] hover:text-[var(--accent)] text-[var(--text-tertiary)] font-semibold transition-colors touch-manipulation"
+        title="Reset to 0°">0°</button>
+    </div>
+
+    <!-- Fluid Rotate Handle -->
+    <div id="dock-rotate-handle"
+      class="h-7 px-2.5 rounded-full bg-[var(--accent)] text-white flex items-center gap-1 cursor-grab active:cursor-grabbing shadow-sm hover:bg-[var(--accent-hover)] text-[10px] font-semibold transition-all touch-none"
+      title="Hold and drag to rotate smoothly">
+      <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+      </svg>
+      <span>Rotate</span>
+    </div>
+
+    <!-- Resize buttons -->
+    <div class="flex items-center gap-0.5 bg-[var(--bg-subtle)] px-1 py-0.5 rounded-full border border-[var(--border-color)]">
+      <button id="dock-resize-shrink" class="w-6 h-6 rounded-full flex items-center justify-center hover:bg-[var(--accent-light)] hover:text-[var(--accent)] text-[var(--text-secondary)] text-[10px] font-bold active:scale-95 touch-manipulation" title="Shorten ruler">◀</button>
+      <span id="dock-length-badge" class="text-[10px] font-mono text-[var(--text-secondary)] min-w-[34px] text-center font-medium">5.0"</span>
+      <button id="dock-resize-grow" class="w-6 h-6 rounded-full flex items-center justify-center hover:bg-[var(--accent-light)] hover:text-[var(--accent)] text-[var(--text-secondary)] text-[10px] font-bold active:scale-95 touch-manipulation" title="Extend ruler">▶</button>
+    </div>
+
+    <!-- Close button -->
+    <button id="dock-close-floating"
+      class="w-7 h-7 rounded-full bg-[var(--bg-subtle)] text-[var(--text-secondary)] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950 flex items-center justify-center transition-colors touch-manipulation"
+      title="Close floating ruler">
+      ✕
+    </button>
   </div>
 
   <!-- Guidelines Layer -->
@@ -356,9 +400,19 @@
     updateCalUI();
     updateHeaderHeight();
     renderAllRulers();
-    updateCalipersHUD();
-    // Init floating ruler size based on screen width
-    floatingRulerWidth = Math.min(280, window.innerWidth * 0.85);
+    // Responsive initial caliper positions and floating ruler placement
+    const w = window.innerWidth;
+    caliperAPos = Math.max(20, Math.round(w * 0.15));
+    caliperBPos = Math.min(w - 20, Math.round(w * 0.85));
+    if (caliperA) caliperA.style.left = `${caliperAPos}px`;
+    if (caliperB) caliperB.style.left = `${caliperBPos}px`;
+
+    floatingRulerWidth = Math.min(280, Math.floor(w * 0.85));
+    if (floatingRulerEl) {
+      const initLeft = Math.max(10, Math.round((w - floatingRulerWidth) / 2));
+      floatingRulerEl.style.left = `${initLeft}px`;
+      floatingRulerEl.style.top = `70px`;
+    }
     updateFloatingRulerSize();
   }
 
@@ -796,7 +850,11 @@
     const centerPx = Math.min(caliperAPos, caliperBPos) + diffPx / 2;
 
     if (caliperBadge) {
-      caliperBadge.style.left = `${centerPx}px`;
+      const workspaceW = workspace ? workspace.clientWidth : window.innerWidth;
+      const badgeW = caliperBadge.offsetWidth || 180;
+      const halfW = badgeW / 2 + 10;
+      const clampedX = Math.max(halfW, Math.min(workspaceW - halfW, centerPx));
+      caliperBadge.style.left = `${clampedX}px`;
     }
 
     const inches = diffPx / cssPpi;
@@ -819,7 +877,7 @@
     }
   }
 
-  // Mobile & Desktop Caliper Dragging
+  // Mobile & Desktop Caliper Dragging (Strictly bounded so handles never move out of screen)
   function makeCaliperDraggable(el: HTMLElement, isA: boolean) {
     let isDragging = false;
 
@@ -829,7 +887,8 @@
 
     const onMove = (clientX: number) => {
       if (!isDragging) return;
-      const newX = Math.max(10, Math.min(window.innerWidth - 10, clientX));
+      const workspaceW = workspace ? workspace.clientWidth : window.innerWidth;
+      const newX = Math.max(16, Math.min(workspaceW - 16, clientX));
       if (isA) {
         caliperAPos = newX;
         el.style.left = `${newX}px`;
@@ -892,30 +951,37 @@
     if (floatingLengthBadge) {
       floatingLengthBadge.textContent = `${inVal.toFixed(2)}" (${cmVal.toFixed(1)} cm)`;
     }
+    const dockLengthBadge = document.getElementById('dock-length-badge');
+    if (dockLengthBadge) {
+      dockLengthBadge.textContent = `${inVal.toFixed(1)}"`;
+    }
     renderFloatingRuler();
   }
 
   function applyFloatingRulerTransform(animated = false) {
     if (!floatingRulerEl) return;
-    // Add brief CSS transition for step-based rotations for a smooth animated feel
     if (animated) {
       floatingRulerEl.style.transition = 'transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.12s ease';
     } else {
-      floatingRulerEl.style.transition = 'width 0.12s ease'; // No delay during drag
+      floatingRulerEl.style.transition = 'width 0.12s ease';
     }
     floatingRulerEl.style.transform = `rotate(${floatingRulerAngle.toFixed(2)}deg)`;
     if (floatingAngleLabel) {
       floatingAngleLabel.textContent = `${floatingRulerAngle.toFixed(1)}°`;
+    }
+    const dockRulerAngle = document.getElementById('dock-ruler-angle');
+    if (dockRulerAngle) {
+      dockRulerAngle.textContent = `${floatingRulerAngle.toFixed(1)}°`;
     }
   }
 
   function initFloatingRuler() {
     if (!floatingRulerEl) return;
 
-    // 1. Move/Drag Stick
+    // 1. Move/Drag Stick (Uses offsetLeft/offsetTop & strict boundary clamping)
     let isMoving = false;
     let startX = 0, startY = 0;
-    let initialLeft = 60, initialTop = 140;
+    let initialLeft = 20, initialTop = 80;
 
     floatingRulerEl.addEventListener('pointerdown', (e) => {
       const target = e.target as HTMLElement;
@@ -923,23 +989,35 @@
       isMoving = true;
       startX = e.clientX;
       startY = e.clientY;
-      const rect = floatingRulerEl.getBoundingClientRect();
-      initialLeft = rect.left;
-      initialTop = rect.top;
+      initialLeft = floatingRulerEl.offsetLeft;
+      initialTop = floatingRulerEl.offsetTop;
+      try { floatingRulerEl.setPointerCapture(e.pointerId); } catch(err) {}
       e.preventDefault();
     });
 
-    window.addEventListener('pointermove', (e) => {
+    floatingRulerEl.addEventListener('pointermove', (e) => {
       if (!isMoving) return;
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
-      floatingRulerEl.style.left = `${initialLeft + dx}px`;
-      floatingRulerEl.style.top = `${initialTop + dy}px`;
+      const workspaceW = workspace ? workspace.clientWidth : window.innerWidth;
+      const workspaceH = workspace ? workspace.clientHeight : window.innerHeight;
+      const rulerW = floatingRulerEl.offsetWidth || floatingRulerWidth;
+      const rulerH = floatingRulerEl.offsetHeight || 68;
+
+      const newX = Math.max(4, Math.min(workspaceW - rulerW - 4, initialLeft + dx));
+      const newY = Math.max(4, Math.min(workspaceH - rulerH - 4, initialTop + dy));
+      floatingRulerEl.style.left = `${newX}px`;
+      floatingRulerEl.style.top = `${newY}px`;
     });
 
-    window.addEventListener('pointerup', () => { isMoving = false; });
+    floatingRulerEl.addEventListener('pointerup', (e) => {
+      if (isMoving) {
+        isMoving = false;
+        try { floatingRulerEl.releasePointerCapture(e.pointerId); } catch(err) {}
+      }
+    });
 
-    // 2. Smooth Fluid Rotation Drag
+    // 2. Smooth Fluid Rotation Drag (from ruler handle)
     let isRotating = false;
     if (rotateHandle) {
       rotateHandle.addEventListener('pointerdown', (e) => {
@@ -969,30 +1047,119 @@
       });
     }
 
-    // Step Rotation & Reset Controls (1° per click, with smooth animation)
+    // Step Rotation & Reset Controls (Desktop strip)
     if (btnRotateStepPrev) {
       btnRotateStepPrev.addEventListener('click', (e) => {
         e.stopPropagation();
         floatingRulerAngle = (floatingRulerAngle - 1 + 360) % 360;
-        applyFloatingRulerTransform(true); // animated
+        applyFloatingRulerTransform(true);
       });
     }
     if (btnRotateStepNext) {
       btnRotateStepNext.addEventListener('click', (e) => {
         e.stopPropagation();
         floatingRulerAngle = (floatingRulerAngle + 1) % 360;
-        applyFloatingRulerTransform(true); // animated
+        applyFloatingRulerTransform(true);
       });
     }
     if (btnRotateZero) {
       btnRotateZero.addEventListener('click', (e) => {
         e.stopPropagation();
         floatingRulerAngle = 0;
-        applyFloatingRulerTransform(true); // animated
+        applyFloatingRulerTransform(true);
       });
     }
 
-    // 3. Extend / Shorten Ruler Length (Resize Handle)
+    // 3. Mobile Dock Controls Wiring (Never rotate off-screen!)
+    const dockRotatePrev = document.getElementById('dock-rotate-prev');
+    const dockRotateNext = document.getElementById('dock-rotate-next');
+    const dockRotateZero = document.getElementById('dock-rotate-zero');
+    const dockRotateHandle = document.getElementById('dock-rotate-handle');
+    const dockResizeShrink = document.getElementById('dock-resize-shrink');
+    const dockResizeGrow = document.getElementById('dock-resize-grow');
+    const dockCloseFloating = document.getElementById('dock-close-floating');
+
+    if (dockRotatePrev) {
+      dockRotatePrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        floatingRulerAngle = (floatingRulerAngle - 1 + 360) % 360;
+        applyFloatingRulerTransform(true);
+      });
+    }
+    if (dockRotateNext) {
+      dockRotateNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        floatingRulerAngle = (floatingRulerAngle + 1) % 360;
+        applyFloatingRulerTransform(true);
+      });
+    }
+    if (dockRotateZero) {
+      dockRotateZero.addEventListener('click', (e) => {
+        e.stopPropagation();
+        floatingRulerAngle = 0;
+        applyFloatingRulerTransform(true);
+      });
+    }
+    if (dockResizeShrink) {
+      dockResizeShrink.addEventListener('click', (e) => {
+        e.stopPropagation();
+        floatingRulerWidth = Math.max(160, floatingRulerWidth - 30);
+        updateFloatingRulerSize();
+      });
+    }
+    if (dockResizeGrow) {
+      dockResizeGrow.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const maxW = (workspace ? workspace.clientWidth : window.innerWidth) - 20;
+        floatingRulerWidth = Math.min(maxW, floatingRulerWidth + 30);
+        updateFloatingRulerSize();
+      });
+    }
+    if (dockCloseFloating) {
+      dockCloseFloating.addEventListener('click', () => {
+        toggleFloatingAction();
+      });
+    }
+
+    if (dockRotateHandle) {
+      let isDockRotating = false;
+      let startAngle = 0;
+      let startPointerAngle = 0;
+
+      dockRotateHandle.addEventListener('pointerdown', (e) => {
+        isDockRotating = true;
+        try { dockRotateHandle.setPointerCapture(e.pointerId); } catch(err) {}
+        startAngle = floatingRulerAngle;
+        const rect = floatingRulerEl ? floatingRulerEl.getBoundingClientRect() : { left: 0, top: 0, width: 0, height: 0 };
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        startPointerAngle = Math.atan2(e.clientY - cy, e.clientX - cx) * (180 / Math.PI);
+        e.preventDefault();
+        e.stopPropagation();
+      });
+
+      window.addEventListener('pointermove', (e) => {
+        if (!isDockRotating || !floatingRulerEl) return;
+        const rect = floatingRulerEl.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const currentPointerAngle = Math.atan2(e.clientY - cy, e.clientX - cx) * (180 / Math.PI);
+        let delta = currentPointerAngle - startPointerAngle;
+        let newAngle = (startAngle + delta + 360) % 360;
+        if (e.shiftKey) newAngle = Math.round(newAngle / 15) * 15;
+        floatingRulerAngle = newAngle;
+        applyFloatingRulerTransform();
+      });
+
+      window.addEventListener('pointerup', (e) => {
+        if (isDockRotating) {
+          isDockRotating = false;
+          try { dockRotateHandle.releasePointerCapture(e.pointerId); } catch(err) {}
+        }
+      });
+    }
+
+    // 4. Extend / Shorten Ruler Length (Resize Handle on ruler stick)
     let isResizing = false;
     let resizeStartX = 0;
     let resizeStartY = 0;
@@ -1472,6 +1639,20 @@
         floatingRulerEl.classList.add('hidden');
       }
     }
+    const floatingDock = document.getElementById('floating-ruler-dock');
+    if (floatingDock) {
+      if (floatingRulerActive) {
+        floatingDock.classList.remove('hidden');
+        floatingDock.classList.add('flex');
+      } else {
+        floatingDock.classList.add('hidden');
+        floatingDock.classList.remove('flex');
+      }
+    }
+    if (quickBanner) {
+      quickBanner.style.opacity = floatingRulerActive ? '0' : '1';
+      quickBanner.style.pointerEvents = floatingRulerActive ? 'none' : 'auto';
+    }
   }
 
   // Calipers Toggles
@@ -1647,6 +1828,7 @@
 
   // Window Resize
   window.addEventListener('resize', () => {
+    updateHeaderHeight();
     renderAllRulers();
     updateCalipersHUD();
   });
