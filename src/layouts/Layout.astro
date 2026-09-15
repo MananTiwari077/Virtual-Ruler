@@ -133,6 +133,15 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freevirtualruler.com')
 			]
 		}
 		</script>
+
+		<!-- Google Analytics 4 (GA4) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-2L8XK8TW55" is:inline></script>
+		<script is:inline>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+		  gtag('config', 'G-2L8XK8TW55');
+		</script>
 	</head>
 	<body class="bg-[var(--bg-page)] text-[var(--text-main)] transition-colors duration-200 selection:bg-[var(--accent)] selection:text-white">
 		<slot />
