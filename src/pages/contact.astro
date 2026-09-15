@@ -41,13 +41,13 @@ import Footer from '../components/Footer.astro';
         <div class="p-4 rounded-[12px] bg-[var(--bg-card)] border border-[var(--border-color)] space-y-2">
           <div class="w-7 h-7 rounded-[6px] bg-[var(--accent-light)] text-[var(--accent)] flex items-center justify-center">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
           </div>
-          <h2 class="text-xs font-semibold text-[var(--text-main)]">Direct Email</h2>
-          <a href="mailto:support@freevirtualruler.com" class="text-xs text-[var(--accent)] hover:underline block break-all font-mono">
-            support@freevirtualruler.com
+          <h2 class="text-xs font-semibold text-[var(--text-main)]">Contact Support</h2>
+          <a href="#send-message" class="text-xs text-[var(--accent)] hover:underline inline-flex items-center gap-1 font-medium">
+            <span>Send us a message</span>
+            <span>&darr;</span>
           </a>
         </div>
 
@@ -79,7 +79,7 @@ import Footer from '../components/Footer.astro';
       </div>
 
       <!-- Interactive Contact Form -->
-      <div class="p-6 sm:p-8 rounded-[16px] bg-[var(--bg-card)] border border-[var(--border-color)] shadow-[var(--shadow-whisper)] space-y-6">
+      <div id="send-message" class="p-6 sm:p-8 rounded-[16px] bg-[var(--bg-card)] border border-[var(--border-color)] shadow-[var(--shadow-whisper)] space-y-6 scroll-mt-20">
         <div>
           <h2 class="text-lg sm:text-xl font-semibold text-[var(--text-main)]">Send Us a Message</h2>
           <p class="text-xs text-[var(--text-secondary)] mt-1">
