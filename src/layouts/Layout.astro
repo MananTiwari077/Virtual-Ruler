@@ -1,6 +1,7 @@
----
 // Layout.astro - Complete SEO optimized layout with Open Graph, Twitter Cards & Structured Data
 import '../styles/global.css';
+import { getLangFromUrl, getHreflangList, getLocaleMeta, useTranslations } from '../i18n/utils';
+import { type SupportedLang, defaultLang } from '../i18n/ui';
 
 interface Props {
 	title?: string;
@@ -8,21 +9,28 @@ interface Props {
 	keywords?: string;
 	image?: string;
 	noindex?: boolean;
+	lang?: SupportedLang;
 }
 
+const currentLang = Astro.props.lang || getLangFromUrl(Astro.url);
+const meta = getLocaleMeta(currentLang);
+const t = useTranslations(currentLang);
+
 const {
-	title = 'Virtual Ruler — Accurate Online Ruler in Inches, cm & mm | Full Size Virtual Ruler',
-	description = 'Free, 100% accurate virtual ruler and online ruler for your screen. Measure physical objects in actual size with virtual ruler inches, online ruler in cm, mm, and 12 inch online ruler. Use as a mobile ruler or measuring tape full size virtual ruler app without installation.',
-	keywords = 'virtual ruler, full size virtual ruler, virtual ruler inches, virtual ruler app, actual virtual ruler, virtual ruler mm, measuring tape full size virtual ruler, online ruler, online ruler inches, online ruler in cm, online ruler mm, online ruler cm, free online ruler, 12 inch online ruler, online ruler 12 inch, accurate online ruler, mobile ruler',
+	title = t('meta.title'),
+	description = t('meta.description'),
+	keywords = t('meta.keywords'),
 	image = 'https://freevirtualruler.com/og-image.png',
-	noindex = false
+	noindex = false,
+	lang = currentLang,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, 'https://freevirtualruler.com');
+const hreflangs = getHreflangList(Astro.url.pathname, 'https://freevirtualruler.com');
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={meta.htmlLang} dir={meta.dir}>
 	<head>
 		<!-- Theme init script to prevent theme flash -->
 		<script is:inline>
@@ -42,6 +50,10 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freevirtualruler.com')
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
 		<link rel="canonical" href={canonicalURL} />
+		<!-- Multi-Language Hreflang Tags for International SEO -->
+		{hreflangs.map((item) => (
+			<link rel="alternate" hreflang={item.hreflang} href={item.href} />
+		))}
 		<!-- Favicon & PWA Icons -->
 		<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -74,7 +86,7 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freevirtualruler.com')
 		<meta property="og:image:height" content="630" />
 		<meta property="og:image:alt" content="Free Virtual Ruler - Accurate Online Ruler in Inches, cm & mm" />
 		<meta property="og:site_name" content="Free Virtual Ruler" />
-		<meta property="og:locale" content="en_US" />
+		<meta property="og:locale" content={meta.ogLocale} />
 
 		<!-- Twitter Card Meta Tags -->
 		<meta name="twitter:card" content="summary_large_image" />

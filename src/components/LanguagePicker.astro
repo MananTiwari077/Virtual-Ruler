@@ -1,0 +1,166 @@
+---
+// src/components/LanguagePicker.astro
+import { languages, type SupportedLang } from '../i18n/ui';
+import { getLangFromUrl, useTranslatedPath } from '../i18n/utils';
+
+interface Props {
+  variant?: 'header' | 'footer' | 'compact';
+  currentLang?: SupportedLang;
+  class?: string;
+}
+
+const {
+  variant = 'header',
+  currentLang = getLangFromUrl(Astro.url),
+  class: className = '',
+} = Astro.props;
+
+const translatePath = useTranslatedPath(currentLang);
+const currentPath = Astro.url.pathname;
+const currentLangLabel = languages[currentLang] || languages.en;
+---
+
+{variant === 'footer' ? (
+  <!-- Footer Multi-Language Grid for SEO Discovery and User Switching -->
+  <div class={`space-y-3 ${className}`}>
+    <h3 class="mono-eyebrow text-[11px] font-semibold text-[var(--text-main)] uppercase tracking-wider flex items-center gap-1.5">
+      <svg class="w-3.5 h-3.5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="2" y1="12" x2="22" y2="12"></line>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+      </svg>
+      <span>Languages</span>
+    </h3>
+    <ul class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+      {(Object.entries(languages) as [SupportedLang, string][]).map(([code, label]) => {
+        const isCurrent = code === currentLang;
+        const targetUrl = translatePath(currentPath, code);
+        return (
+          <li>
+            <a
+              href={targetUrl}
+              class={`flex items-center justify-between px-2.5 py-1.5 rounded-[6px] border transition-all text-xs ${
+                isCurrent
+                  ? 'border-[var(--accent)] bg-[var(--accent-light)] text-[var(--accent)] font-semibold shadow-xs'
+                  : 'border-[var(--border-color)] bg-[var(--bg-subtle)] text-[var(--text-secondary)] hover:border-[var(--accent-border)] hover:text-[var(--text-main)] hover:bg-[var(--bg-card)]'
+              }`}
+              hreflang={code}
+              aria-current={isCurrent ? 'page' : undefined}
+            >
+              <span>{label}</span>
+              <span class="text-[10px] font-mono uppercase opacity-60 ml-1.5">{code}</span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+) : (
+  <!-- Header / Compact Language Switcher Dropdown -->
+  <div class={`relative inline-block text-left lang-picker-container ${className}`}>
+    <button
+      type="button"
+      class="lang-picker-toggle h-7 px-2 flex items-center gap-1 rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--accent-light)] hover:border-[var(--accent-border)] hover:text-[var(--accent)] text-[var(--text-secondary)] text-[11px] font-medium transition-all"
+      aria-expanded="false"
+      aria-haspopup="true"
+      aria-label={`Current language: ${currentLangLabel}. Click to switch.`}
+      title="Switch Language"
+    >
+      <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="2" y1="12" x2="22" y2="12"></line>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+      </svg>
+      <span class="font-mono uppercase font-semibold text-[11px]">{currentLang}</span>
+      <svg class="w-3 h-3 opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </button>
+
+    <!-- Dropdown Menu -->
+    <div
+      class="lang-picker-menu hidden absolute right-0 mt-1.5 w-40 rounded-[8px] border border-[var(--border-color)] bg-[var(--bg-card)] shadow-[var(--shadow-floating)] py-1 z-50 text-xs backdrop-blur-md"
+      role="menu"
+      aria-orientation="vertical"
+    >
+      <div class="px-2.5 py-1 text-[10px] font-mono text-[var(--text-tertiary)] uppercase border-b border-[var(--border-color)]/60 mb-1">
+        Select Language
+      </div>
+      {(Object.entries(languages) as [SupportedLang, string][]).map(([code, label]) => {
+        const isCurrent = code === currentLang;
+        const targetUrl = translatePath(currentPath, code);
+        return (
+          <a
+            href={targetUrl}
+            class={`flex items-center justify-between px-3 py-1.5 transition-colors ${
+              isCurrent
+                ? 'bg-[var(--accent-light)] text-[var(--accent)] font-semibold'
+                : 'text-[var(--text-secondary)] hover:text-[var(--text-main)] hover:bg-[var(--bg-subtle)]'
+            }`}
+            role="menuitem"
+            hreflang={code}
+          >
+            <span>{label}</span>
+            <span class="text-[10px] font-mono uppercase opacity-60 ml-2">{code}</span>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+)}
+
+<script>
+  // Simple, accessible dropdown toggle functionality for Header LanguagePicker
+  function setupLangPickers() {
+    document.querySelectorAll('.lang-picker-container').forEach((container) => {
+      const toggle = container.querySelector<HTMLButtonElement>('.lang-picker-toggle');
+      const menu = container.querySelector<HTMLElement>('.lang-picker-menu');
+      if (!toggle || !menu) return;
+
+      const closeMenu = () => {
+        menu.classList.add('hidden');
+        toggle.setAttribute('aria-expanded', 'false');
+      };
+
+      const openMenu = () => {
+        // Close any other open menus
+        document.querySelectorAll('.lang-picker-menu').forEach((m) => m.classList.add('hidden'));
+        document.querySelectorAll('.lang-picker-toggle').forEach((t) => t.setAttribute('aria-expanded', 'false'));
+
+        menu.classList.remove('hidden');
+        toggle.setAttribute('aria-expanded', 'true');
+      };
+
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = !menu.classList.contains('hidden');
+        if (isOpen) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      });
+    });
+
+    // Close on outside click
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.lang-picker-menu').forEach((m) => m.classList.add('hidden'));
+      document.querySelectorAll('.lang-picker-toggle').forEach((t) => t.setAttribute('aria-expanded', 'false'));
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.lang-picker-menu').forEach((m) => m.classList.add('hidden'));
+        document.querySelectorAll('.lang-picker-toggle').forEach((t) => t.setAttribute('aria-expanded', 'false'));
+      }
+    });
+  }
+
+  // Run on initial load and view transitions
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupLangPickers);
+  } else {
+    setupLangPickers();
+  }
+</script>
