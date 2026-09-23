@@ -1,7 +1,7 @@
 ---
 // src/components/LanguagePicker.astro
 import { languages, type SupportedLang } from '../i18n/ui';
-import { getLangFromUrl, useTranslatedPath } from '../i18n/utils';
+import { getLangFromUrl, useTranslatedPath, useTranslations } from '../i18n/utils';
 
 interface Props {
   variant?: 'header' | 'footer' | 'compact';
@@ -15,6 +15,7 @@ const {
   class: className = '',
 } = Astro.props;
 
+const t = useTranslations(currentLang);
 const translatePath = useTranslatedPath(currentLang);
 const currentPath = Astro.url.pathname;
 const currentLangLabel = languages[currentLang] || languages.en;
@@ -28,7 +29,7 @@ const currentLangLabel = languages[currentLang] || languages.en;
         <line x1="2" y1="12" x2="22" y2="12"></line>
         <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
       </svg>
-      <span>Languages</span>
+      <span>{t('footer.languages_title')}</span>
     </h3>
     <ul class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
       {(Object.entries(languages) as [SupportedLang, string][]).map(([code, label]) => {
@@ -38,7 +39,7 @@ const currentLangLabel = languages[currentLang] || languages.en;
           <li>
             <a
               href={targetUrl}
-              class={`flex items-center justify-between px-2.5 py-1.5 rounded-[6px] border transition-all text-xs ${
+              class={`flex items-center justify-between px-2.5 py-2 rounded-[6px] border transition-all text-xs touch-manipulation ${
                 isCurrent
                   ? 'border-[var(--accent)] bg-[var(--accent-light)] text-[var(--accent)] font-semibold shadow-xs'
                   : 'border-[var(--border-color)] bg-[var(--bg-subtle)] text-[var(--text-secondary)] hover:border-[var(--accent-border)] hover:text-[var(--text-main)] hover:bg-[var(--bg-card)]'
@@ -58,13 +59,13 @@ const currentLangLabel = languages[currentLang] || languages.en;
   <div class={`relative inline-block text-left lang-picker-container ${className}`}>
     <button
       type="button"
-      class="lang-picker-toggle h-7 px-2 flex items-center gap-1 rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--accent-light)] hover:border-[var(--accent-border)] hover:text-[var(--accent)] text-[var(--text-secondary)] text-[11px] font-medium transition-all"
+      class="lang-picker-toggle h-7 px-2 flex items-center gap-1 rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--accent-light)] hover:border-[var(--accent-border)] hover:text-[var(--accent)] text-[var(--text-secondary)] text-[11px] font-medium transition-all touch-manipulation"
       aria-expanded="false"
       aria-haspopup="true"
       aria-label={`Current language: ${currentLangLabel}. Click to switch.`}
       title="Switch Language"
     >
-      <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg class="w-3.5 h-3.5 shrink-0 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10"></circle>
         <line x1="2" y1="12" x2="22" y2="12"></line>
         <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
@@ -76,12 +77,13 @@ const currentLangLabel = languages[currentLang] || languages.en;
     </button>
 
     <div
-      class="lang-picker-menu hidden absolute right-0 mt-1.5 w-40 rounded-[8px] border border-[var(--border-color)] bg-[var(--bg-card)] shadow-[var(--shadow-floating)] py-1 z-50 text-xs backdrop-blur-md"
+      class="lang-picker-menu hidden absolute right-0 mt-1.5 w-48 max-w-[calc(100vw-24px)] rounded-[8px] border border-[var(--border-color)] bg-[var(--bg-card)] shadow-[var(--shadow-floating)] py-1.5 z-[100] text-xs backdrop-blur-md"
       role="menu"
       aria-orientation="vertical"
     >
-      <div class="px-2.5 py-1 text-[10px] font-mono text-[var(--text-tertiary)] uppercase border-b border-[var(--border-color)]/60 mb-1">
-        Select Language
+      <div class="px-3 py-1.5 text-[10px] font-mono text-[var(--text-tertiary)] uppercase border-b border-[var(--border-color)]/60 mb-1 flex items-center justify-between">
+        <span>{t('footer.languages_title')}</span>
+        <span class="text-[9px] font-semibold text-[var(--accent)] uppercase">{currentLang}</span>
       </div>
       {(Object.entries(languages) as [SupportedLang, string][]).map(([code, label]) => {
         const isCurrent = code === currentLang;
@@ -89,7 +91,7 @@ const currentLangLabel = languages[currentLang] || languages.en;
         return (
           <a
             href={targetUrl}
-            class={`flex items-center justify-between px-3 py-1.5 transition-colors ${
+            class={`flex items-center justify-between px-3 py-2 sm:py-1.5 transition-colors touch-manipulation active:scale-[0.99] ${
               isCurrent
                 ? 'bg-[var(--accent-light)] text-[var(--accent)] font-semibold'
                 : 'text-[var(--text-secondary)] hover:text-[var(--text-main)] hover:bg-[var(--bg-subtle)]'
@@ -97,7 +99,7 @@ const currentLangLabel = languages[currentLang] || languages.en;
             role="menuitem"
             hreflang={code}
           >
-            <span>{label}</span>
+            <span class="font-medium">{label}</span>
             <span class="text-[10px] font-mono uppercase opacity-60 ml-2">{code}</span>
           </a>
         );

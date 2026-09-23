@@ -54,23 +54,23 @@ const translatePath = useTranslatedPath(lang);
       <!-- Privacy Card -->
       <div class="p-6 sm:p-8 rounded-[16px] bg-[var(--bg-card)] border border-[var(--border-color)] shadow-[var(--shadow-whisper)] space-y-6 text-sm text-[var(--text-secondary)] leading-relaxed">
         <section class="space-y-2">
-          <h2 class="text-lg font-semibold text-[var(--text-main)]">100% Client-Side Privacy Guarantee</h2>
+          <h2 class="text-lg font-semibold text-[var(--text-main)]">{t('privacy.section1_title')}</h2>
           <p>
-            At Free Virtual Ruler, your digital privacy is built into the architecture. All measurements, ruler calibrations, and user preferences are executed exclusively in your web browser.
+            {t('privacy.section1_body')}
           </p>
         </section>
 
         <section class="space-y-2">
-          <h2 class="text-lg font-semibold text-[var(--text-main)]">No Personal Data Collection</h2>
+          <h2 class="text-lg font-semibold text-[var(--text-main)]">{t('privacy.section2_title')}</h2>
           <p>
-            We do not require you to create an account, provide an email address, or enter any personal details to use our virtual ruler and measurement tools.
+            {t('privacy.section2_body')}
           </p>
         </section>
 
         <section class="space-y-2">
-          <h2 class="text-lg font-semibold text-[var(--text-main)]">Local Storage</h2>
+          <h2 class="text-lg font-semibold text-[var(--text-main)]">{t('privacy.section3_title')}</h2>
           <p>
-            Your calibrated screen PPI, preferred measurement units (inches, cm, mm), and dark/light mode preference are stored solely in your browser's <code class="px-1 py-0.5 rounded bg-[var(--bg-subtle)] font-mono text-xs text-[var(--text-main)]">localStorage</code> on your local device.
+            {t('privacy.section3_body')}
           </p>
         </section>
       </div>

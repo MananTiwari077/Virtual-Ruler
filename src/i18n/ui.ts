@@ -108,6 +108,38 @@ export const ui = {
     'seo.why_p1': 'Most standard online rulers fail because they assume every screen has a pixel density of 96 CSS pixels per inch (PPI). In reality, modern smartphone displays, Retina laptops, and 4K desktop monitors range from 110 PPI to over 460 PPI. Without proper calibration, an uncalibrated virtual ruler can be distorted by up to 40% or more.',
     'seo.why_p2': 'Free Virtual Ruler solves this completely. Our smart calibration engine reads your hardware device profile, screen resolution, and device pixel ratio (DPR) to calculate exact millimeter and inch dimensions.',
     'seo.faq_title': 'Frequently Asked Questions (FAQ)',
+
+    // Contact Page
+    'contact.form_title': 'Send Us a Message',
+    'contact.label_name': 'Your Name',
+    'contact.label_email': 'Email Address',
+    'contact.label_message': 'Message or Device Feedback',
+    'contact.placeholder_name': 'Name',
+    'contact.placeholder_email': 'you@example.com',
+    'contact.placeholder_message': 'How can we help or what device would you like calibrated?',
+    'contact.btn_send': 'Send Message',
+    'contact.success': 'Thank you! Your message has been received.',
+
+    // Privacy Page
+    'privacy.section1_title': '100% Client-Side Privacy Guarantee',
+    'privacy.section1_body': 'At Free Virtual Ruler, your digital privacy is built into the architecture. All measurements, ruler calibrations, and user preferences are executed exclusively in your web browser.',
+    'privacy.section2_title': 'No Personal Data Collection',
+    'privacy.section2_body': 'We do not require you to create an account, provide an email address, or enter any personal details to use our virtual ruler and measurement tools.',
+    'privacy.section3_title': 'Local Storage',
+    'privacy.section3_body': 'Your calibrated screen PPI, preferred measurement units (inches, cm, mm), and dark/light mode preference are stored solely in your browser\'s localStorage on your local device.',
+
+    // Terms Page
+    'terms.section1_title': 'Acceptance of Terms',
+    'terms.section1_body': 'By accessing and using Free Virtual Ruler (freevirtualruler.com), you agree to comply with and be bound by these Terms and Conditions.',
+    'terms.section2_title': 'Intended Use and Accuracy Disclaimer',
+    'terms.section2_body': 'Free Virtual Ruler is provided as a free, convenient, high-precision utility for everyday measurement and visual reference. Although our calibration algorithms provide 1:1 physical accuracy when correctly calibrated, the service is provided on an "as is" and "as available" basis.',
+    'terms.section3_title': 'Intellectual Property',
+    'terms.section3_body': 'The software, interactive ruler canvas, calibration algorithms, and interface designs are the intellectual property of Free Virtual Ruler.',
+
+    // Mobile Nav (SubpageHeader)
+    'mobile.menu_open': 'Open menu',
+    'mobile.menu_close': 'Close menu',
+    'mobile.nav_label': 'Site navigation',
   },
 
   es: {
@@ -189,6 +221,38 @@ export const ui = {
     'seo.why_p1': 'Las reglas web comunes asumen una resolución fija de 96 PPI. Los monitores modernos y teléfonos Retina tienen densidades de 120 a más de 450 PPI. Sin calibración, una regla online puede tener un error superior al 40%.',
     'seo.why_p2': 'Free Virtual Ruler resuelve esto con su motor de calibración por tarjeta, moneda, diagonal o base de datos de dispositivos para garantizar precisión milimétrica.',
     'seo.faq_title': 'Preguntas Frecuentes (FAQ)',
+
+    // Contact Page
+    'contact.form_title': 'Envíanos un Mensaje',
+    'contact.label_name': 'Tu Nombre',
+    'contact.label_email': 'Correo Electrónico',
+    'contact.label_message': 'Mensaje o Comentario sobre tu Dispositivo',
+    'contact.placeholder_name': 'Nombre',
+    'contact.placeholder_email': 'tu@ejemplo.com',
+    'contact.placeholder_message': '¿Cómo podemos ayudarte o qué dispositivo deseas calibrar?',
+    'contact.btn_send': 'Enviar Mensaje',
+    'contact.success': '¡Gracias! Tu mensaje ha sido recibido.',
+
+    // Privacy Page
+    'privacy.section1_title': 'Garantía Total de Privacidad en el Navegador',
+    'privacy.section1_body': 'En Free Virtual Ruler, tu privacidad digital está integrada en la arquitectura. Todas las mediciones, calibraciones y preferencias se procesan exclusivamente en tu navegador.',
+    'privacy.section2_title': 'Sin Recopilación de Datos Personales',
+    'privacy.section2_body': 'No te pedimos crear una cuenta, un email ni ningún dato personal para usar nuestra regla virtual y herramientas de medición.',
+    'privacy.section3_title': 'Almacenamiento Local',
+    'privacy.section3_body': 'Tu PPI calibrado, las unidades de medida preferidas (pulgadas, cm, mm) y el modo claro/oscuro se guardan únicamente en el localStorage de tu dispositivo.',
+
+    // Terms Page
+    'terms.section1_title': 'Aceptación de los Términos',
+    'terms.section1_body': 'Al acceder y usar Free Virtual Ruler (freevirtualruler.com), aceptas cumplir y quedar vinculado por estos Términos y Condiciones.',
+    'terms.section2_title': 'Uso Previsto y Exención de Responsabilidad',
+    'terms.section2_body': 'Free Virtual Ruler se ofrece como una utilidad gratuita y de alta precisión para medición cotidiana. Aunque nuestros algoritmos ofrecen precisión física 1:1, el servicio se proporciona "tal cual".',
+    'terms.section3_title': 'Propiedad Intelectual',
+    'terms.section3_body': 'El software, el lienzo de regla interactivo, los algoritmos de calibración y los diseños de interfaz son propiedad intelectual de Free Virtual Ruler.',
+
+    // Mobile Nav
+    'mobile.menu_open': 'Abrir menú',
+    'mobile.menu_close': 'Cerrar menú',
+    'mobile.nav_label': 'Navegación del sitio',
   },
 
   ja: {
@@ -270,6 +334,38 @@ export const ui = {
     'seo.why_p1': '一般的なWEB定規は全ての画面を一律「96PPI」と見なすため、高精細なスマホやRetinaモニターでは実寸と30%〜50%もズレて表示されます。',
     'seo.why_p2': '当サイトは端末データベース、クレジットカード（85.6mm）、硬貨などを使用した独自の校正システムにより、100%正確な実寸測定を実現しています。',
     'seo.faq_title': 'よくある質問 (FAQ)',
+
+    // Contact Page
+    'contact.form_title': 'メッセージを送る',
+    'contact.label_name': 'お名前',
+    'contact.label_email': 'メールアドレス',
+    'contact.label_message': 'メッセージまたはデバイスへのご意見',
+    'contact.placeholder_name': '名前',
+    'contact.placeholder_email': 'you@example.com',
+    'contact.placeholder_message': 'ご質問や測定したいデバイスをお知らせください。',
+    'contact.btn_send': '送信する',
+    'contact.success': 'ありがとうございます！メッセージを受け付けました。',
+
+    // Privacy Page
+    'privacy.section1_title': '100% クライアントサイドプライバシー保証',
+    'privacy.section1_body': 'Free Virtual Rulerでは、すべての測定・キャリブレーション・設定がお使いのブラウザ内でのみ処理されます。',
+    'privacy.section2_title': '個人情報の収集なし',
+    'privacy.section2_body': 'アカウント作成・メールアドレス・個人情報の入力は一切不要です。',
+    'privacy.section3_title': 'ローカルストレージ',
+    'privacy.section3_body': 'キャリブレーション済みのPPI・単位設定・テーマ設定はすべてお使いのブラウザのlocalStorageにのみ保存されます。',
+
+    // Terms Page
+    'terms.section1_title': '利用規約への同意',
+    'terms.section1_body': 'Free Virtual Ruler (freevirtualruler.com) にアクセス・ご利用いただくことで、本利用規約に同意したものとみなされます。',
+    'terms.section2_title': '利用目的および免責事項',
+    'terms.section2_body': 'Free Virtual Rulerは、日常の計測を目的とした無料の高精度ツールです。キャリブレーションが正しく行われた場合に1:1の物理的精度を提供しますが、「現状のまま」で提供されます。',
+    'terms.section3_title': '知的財産',
+    'terms.section3_body': 'ソフトウェア・定規キャンバス・キャリブレーションアルゴリズム・インターフェースデザインはFree Virtual Rulerの知的財産です。',
+
+    // Mobile Nav
+    'mobile.menu_open': 'メニューを開く',
+    'mobile.menu_close': 'メニューを閉じる',
+    'mobile.nav_label': 'サイトナビゲーション',
   },
 
   fr: {
@@ -351,6 +447,38 @@ export const ui = {
     'seo.why_p1': 'Les écrans récents affichent des résolutions allant de 110 à plus de 450 pixels par pouce. Les règles web basiques qui ignorent cela affichent des mesures erronées de 30% à 50%.',
     'seo.why_p2': 'Grâce à notre système de calibration par carte bancaire (format universel ID-1), pièce de monnaie ou diagonale, votre règle virtuelle devient rigoureusement exacte.',
     'seo.faq_title': 'Foire Aux Questions (FAQ)',
+
+    // Contact Page
+    'contact.form_title': 'Envoyez-nous un message',
+    'contact.label_name': 'Votre nom',
+    'contact.label_email': 'Adresse e-mail',
+    'contact.label_message': 'Message ou commentaire sur votre appareil',
+    'contact.placeholder_name': 'Nom',
+    'contact.placeholder_email': 'vous@exemple.com',
+    'contact.placeholder_message': 'Comment pouvons-nous vous aider ou quel appareil souhaitez-vous étalonner ?',
+    'contact.btn_send': 'Envoyer le message',
+    'contact.success': 'Merci ! Votre message a bien été reçu.',
+
+    // Privacy Page
+    'privacy.section1_title': 'Garantie de confidentialité 100 % côté client',
+    'privacy.section1_body': 'Chez Free Virtual Ruler, votre confidentialité numérique est intégrée à l\'architecture. Toutes les mesures, calibrations et préférences sont traitées exclusivement dans votre navigateur.',
+    'privacy.section2_title': 'Aucune collecte de données personnelles',
+    'privacy.section2_body': 'Nous ne vous demandons pas de créer un compte, de fournir une adresse e-mail ou de saisir des informations personnelles pour utiliser notre règle virtuelle.',
+    'privacy.section3_title': 'Stockage local',
+    'privacy.section3_body': 'Votre PPP calibré, vos unités préférées (pouces, cm, mm) et votre préférence de thème sont stockés uniquement dans le localStorage de votre appareil.',
+
+    // Terms Page
+    'terms.section1_title': 'Acceptation des conditions',
+    'terms.section1_body': 'En accédant à Free Virtual Ruler (freevirtualruler.com) et en l\'utilisant, vous acceptez les présentes Conditions générales.',
+    'terms.section2_title': 'Utilisation prévue et clause de non-responsabilité',
+    'terms.section2_body': 'Free Virtual Ruler est fourni comme un outil gratuit et de haute précision pour les mesures quotidiennes. Le service est fourni "tel quel".',
+    'terms.section3_title': 'Propriété intellectuelle',
+    'terms.section3_body': 'Le logiciel, le canevas de règle interactif, les algorithmes d\'étalonnage et les designs sont la propriété intellectuelle de Free Virtual Ruler.',
+
+    // Mobile Nav
+    'mobile.menu_open': 'Ouvrir le menu',
+    'mobile.menu_close': 'Fermer le menu',
+    'mobile.nav_label': 'Navigation du site',
   },
 
   de: {
@@ -432,6 +560,38 @@ export const ui = {
     'seo.why_p1': 'Moderne Bildschirme besitzen Punktdichten von 110 bis über 450 PPI. Ein nicht kalibriertes Browser-Lineal weicht dadurch oft um 30% bis 50% von der Realität ab.',
     'seo.why_p2': 'Mit unserer Kalibrierung per Kreditkarte (ISO/IEC 7810 Standard), Euromünze oder Zoll-Diagonale wird die Skalierung auf den Millimeter genau angepasst.',
     'seo.faq_title': 'Häufig gestellte Fragen (FAQ)',
+
+    // Contact Page
+    'contact.form_title': 'Nachricht senden',
+    'contact.label_name': 'Ihr Name',
+    'contact.label_email': 'E-Mail-Adresse',
+    'contact.label_message': 'Nachricht oder Gerätebewertung',
+    'contact.placeholder_name': 'Name',
+    'contact.placeholder_email': 'sie@beispiel.de',
+    'contact.placeholder_message': 'Wie können wir helfen oder welches Gerät möchten Sie kalibrieren?',
+    'contact.btn_send': 'Nachricht senden',
+    'contact.success': 'Danke! Ihre Nachricht wurde empfangen.',
+
+    // Privacy Page
+    'privacy.section1_title': '100 % Client-seitige Datenschutzgarantie',
+    'privacy.section1_body': 'Bei Free Virtual Ruler ist Ihr digitaler Datenschutz in die Architektur integriert. Alle Messungen, Kalibrierungen und Einstellungen werden ausschließlich in Ihrem Browser verarbeitet.',
+    'privacy.section2_title': 'Keine Erhebung personenbezogener Daten',
+    'privacy.section2_body': 'Wir verlangen weder Konto-Erstellung, E-Mail-Adresse noch persönliche Angaben zur Nutzung unserer virtuellen Lineal-Tools.',
+    'privacy.section3_title': 'Lokaler Speicher',
+    'privacy.section3_body': 'Ihr kalibrierter PPI-Wert, bevorzugte Einheiten (Zoll, cm, mm) und das Theme werden ausschließlich im localStorage Ihres Geräts gespeichert.',
+
+    // Terms Page
+    'terms.section1_title': 'Annahme der Nutzungsbedingungen',
+    'terms.section1_body': 'Durch den Zugriff auf Free Virtual Ruler (freevirtualruler.com) und dessen Nutzung stimmen Sie diesen Nutzungsbedingungen zu.',
+    'terms.section2_title': 'Bestimmungsgemäßer Gebrauch und Haftungsausschluss',
+    'terms.section2_body': 'Free Virtual Ruler wird als kostenloses, hochpräzises Messwerkzeug bereitgestellt. Der Dienst wird ohne Gewähr bereitgestellt.',
+    'terms.section3_title': 'Geistiges Eigentum',
+    'terms.section3_body': 'Die Software, das interaktive Lineal-Canvas, die Kalibrieralgorithmen und die Schnittstellendesigns sind geistiges Eigentum von Free Virtual Ruler.',
+
+    // Mobile Nav
+    'mobile.menu_open': 'Menü öffnen',
+    'mobile.menu_close': 'Menü schließen',
+    'mobile.nav_label': 'Seitennavigation',
   },
 
   pt: {
@@ -513,6 +673,38 @@ export const ui = {
     'seo.why_p1': 'Telas modernas têm entre 110 e 460 pixels por polegada. Réguas sem calibração distorcem medidas em mais de 40%.',
     'seo.why_p2': 'Ao calibrar com um cartão bancário comum ou selecionando seu modelo de aparelho, garantimos precisão absoluta.',
     'seo.faq_title': 'Perguntas Frequentes (FAQ)',
+
+    // Contact Page
+    'contact.form_title': 'Envie-nos uma Mensagem',
+    'contact.label_name': 'Seu Nome',
+    'contact.label_email': 'Endereço de E-mail',
+    'contact.label_message': 'Mensagem ou Comentário sobre o Dispositivo',
+    'contact.placeholder_name': 'Nome',
+    'contact.placeholder_email': 'voce@exemplo.com',
+    'contact.placeholder_message': 'Como podemos ajudar ou qual dispositivo gostaria de calibrar?',
+    'contact.btn_send': 'Enviar Mensagem',
+    'contact.success': 'Obrigado! Sua mensagem foi recebida.',
+
+    // Privacy Page
+    'privacy.section1_title': 'Garantia de Privacidade 100% no Lado do Cliente',
+    'privacy.section1_body': 'No Free Virtual Ruler, sua privacidade digital está integrada à arquitetura. Todas as medições, calibrações e preferências são executadas exclusivamente no seu navegador.',
+    'privacy.section2_title': 'Nenhuma Coleta de Dados Pessoais',
+    'privacy.section2_body': 'Não exigimos que você crie uma conta, forneça e-mail ou insira dados pessoais para usar nossas ferramentas de régua virtual.',
+    'privacy.section3_title': 'Armazenamento Local',
+    'privacy.section3_body': 'Seu PPI calibrado, unidades preferidas (polegadas, cm, mm) e preferência de tema são armazenados apenas no localStorage do seu dispositivo.',
+
+    // Terms Page
+    'terms.section1_title': 'Aceitação dos Termos',
+    'terms.section1_body': 'Ao acessar e usar o Free Virtual Ruler (freevirtualruler.com), você concorda em cumprir e ficar vinculado a estes Termos e Condições.',
+    'terms.section2_title': 'Uso Previsto e Isenção de Responsabilidade',
+    'terms.section2_body': 'O Free Virtual Ruler é fornecido como uma ferramenta gratuita e de alta precisão para medições cotidianas. O serviço é fornecido no estado em que se encontra.',
+    'terms.section3_title': 'Propriedade Intelectual',
+    'terms.section3_body': 'O software, a tela de régua interativa, os algoritmos de calibração e os designs de interface são propriedade intelectual do Free Virtual Ruler.',
+
+    // Mobile Nav
+    'mobile.menu_open': 'Abrir menu',
+    'mobile.menu_close': 'Fechar menu',
+    'mobile.nav_label': 'Navegação do site',
   },
 
   ko: {
@@ -594,6 +786,38 @@ export const ui = {
     'seo.why_p1': '시중의 모니터와 스마트폰은 디스플레이 해상도와 밀도가 천차만별입니다. 화면 보정 없이 단순 픽셀로 자를 그리면 40% 이상 오차가 발생합니다.',
     'seo.why_p2': '신용카드(표준 85.6mm)나 기기 모델 선택을 통한 원클릭 보정으로 오차 없는 정확한 측정이 가능합니다.',
     'seo.faq_title': '자주 묻는 질문 (FAQ)',
+
+    // Contact Page
+    'contact.form_title': '메시지 보내기',
+    'contact.label_name': '이름',
+    'contact.label_email': '이메일 주소',
+    'contact.label_message': '메시지 또는 기기 관련 의견',
+    'contact.placeholder_name': '이름',
+    'contact.placeholder_email': 'you@example.com',
+    'contact.placeholder_message': '궁금한 점이나 보정이 필요한 기기를 알려주세요.',
+    'contact.btn_send': '메시지 전송',
+    'contact.success': '감사합니다! 메시지가 접수되었습니다.',
+
+    // Privacy Page
+    'privacy.section1_title': '100% 클라이언트 사이드 개인정보 보호',
+    'privacy.section1_body': 'Free Virtual Ruler에서는 모든 측정, 보정, 설정이 브라우저 내에서만 처리됩니다.',
+    'privacy.section2_title': '개인정보 수집 없음',
+    'privacy.section2_body': '계정 생성, 이메일 주소 또는 개인정보 입력 없이도 가상 자 도구를 바로 이용할 수 있습니다.',
+    'privacy.section3_title': '로컬 스토리지',
+    'privacy.section3_body': '보정된 PPI, 선호 단위(인치, cm, mm) 및 테마 설정은 기기의 로컬 스토리지에만 저장됩니다.',
+
+    // Terms Page
+    'terms.section1_title': '이용 약관 동의',
+    'terms.section1_body': 'Free Virtual Ruler(freevirtualruler.com)에 접속하거나 사용함으로써 이 이용 약관에 동의하는 것으로 간주합니다.',
+    'terms.section2_title': '이용 목적 및 면책 조항',
+    'terms.section2_body': 'Free Virtual Ruler는 일상적인 측정을 위한 무료 고정밀 도구로 제공됩니다. 서비스는 있는 그대로 제공됩니다.',
+    'terms.section3_title': '지적 재산권',
+    'terms.section3_body': '소프트웨어, 인터랙티브 자 캔버스, 보정 알고리즘 및 인터페이스 디자인은 Free Virtual Ruler의 지적 재산입니다.',
+
+    // Mobile Nav
+    'mobile.menu_open': '메뉴 열기',
+    'mobile.menu_close': '메뉴 닫기',
+    'mobile.nav_label': '사이트 탐색',
   },
 
   it: {
@@ -675,5 +899,37 @@ export const ui = {
     'seo.why_p1': 'I display moderni hanno densità di pixel tra 110 e oltre 450 PPI. Senza calibrazione, un righello a schermo può sbagliare di oltre il 40%.',
     'seo.why_p2': 'Grazie alla calibrazione con carta di credito (standard ISO 85,6 mm) o moneta, garantiamo una precisione assoluta al millimetro.',
     'seo.faq_title': 'Domande Frequenti (FAQ)',
+
+    // Contact Page
+    'contact.form_title': 'Inviaci un Messaggio',
+    'contact.label_name': 'Il Tuo Nome',
+    'contact.label_email': 'Indirizzo E-mail',
+    'contact.label_message': 'Messaggio o Commento sul Dispositivo',
+    'contact.placeholder_name': 'Nome',
+    'contact.placeholder_email': 'tu@esempio.it',
+    'contact.placeholder_message': 'Come possiamo aiutarti o quale dispositivo vorresti calibrare?',
+    'contact.btn_send': 'Invia Messaggio',
+    'contact.success': 'Grazie! Il tuo messaggio è stato ricevuto.',
+
+    // Privacy Page
+    'privacy.section1_title': 'Garanzia di Privacy 100% Lato Client',
+    'privacy.section1_body': 'In Free Virtual Ruler, la tua privacy digitale è integrata nell\'architettura. Tutte le misurazioni, le calibrazioni e le preferenze vengono eseguite esclusivamente nel tuo browser.',
+    'privacy.section2_title': 'Nessuna Raccolta di Dati Personali',
+    'privacy.section2_body': 'Non ti chiediamo di creare un account, fornire un\'email o inserire dati personali per usare il nostro righello virtuale.',
+    'privacy.section3_title': 'Archiviazione Locale',
+    'privacy.section3_body': 'Il tuo PPI calibrato, le unità preferite (pollici, cm, mm) e la preferenza del tema sono memorizzati solo nel localStorage del tuo dispositivo.',
+
+    // Terms Page
+    'terms.section1_title': 'Accettazione dei Termini',
+    'terms.section1_body': 'Accedendo e utilizzando Free Virtual Ruler (freevirtualruler.com), accetti di rispettare e di essere vincolato dai presenti Termini e Condizioni.',
+    'terms.section2_title': 'Uso Previsto e Esclusione di Responsabilità',
+    'terms.section2_body': 'Free Virtual Ruler è fornito come uno strumento gratuito e di alta precisione per misurazioni quotidiane. Il servizio è fornito "così com\'è".',
+    'terms.section3_title': 'Proprietà Intellettuale',
+    'terms.section3_body': 'Il software, la tela del righello interattivo, gli algoritmi di calibrazione e i design dell\'interfaccia sono proprietà intellettuale di Free Virtual Ruler.',
+
+    // Mobile Nav
+    'mobile.menu_open': 'Apri menu',
+    'mobile.menu_close': 'Chiudi menu',
+    'mobile.nav_label': 'Navigazione del sito',
   },
 } as const;

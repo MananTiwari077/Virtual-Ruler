@@ -31,7 +31,7 @@ const translatePath = useTranslatedPath(currentLang);
           </svg>
         </div>
         <span class="font-semibold text-xs sm:text-[13px] tracking-tight text-[var(--text-main)]">
-          <span class="inline sm:hidden">{t('header.logo_short')}</span>
+          <span class="inline sm:hidden max-w-[85px] min-[390px]:max-w-[120px] truncate">{t('header.logo_short')}</span>
           <span class="hidden sm:inline">{t('header.logo')}</span>
         </span>
       </a>
@@ -116,15 +116,21 @@ const translatePath = useTranslatedPath(currentLang);
       <!-- Calibrate -->
       <button id="open-calibrate-btn"
         class="h-7 px-2 sm:px-2.5 flex items-center gap-1.5 rounded-[6px] border border-[var(--accent-border)] bg-[var(--accent-light)] hover:bg-[var(--accent)] hover:text-white text-[var(--accent)] text-[11px] font-medium transition-all shrink-0"
-        title="Calibrate Screen">
+        title={t('header.calibrate')}
+        aria-label={t('header.calibrate')}>
         <span id="cal-status-dot" class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse shrink-0"></span>
-        <span class="hidden min-[360px]:inline">{t('header.calibrate')}</span>
+        <svg class="w-3.5 h-3.5 inline min-[480px]:hidden text-[var(--accent)] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M12 2v3m0 14v3M2 12h3m14 0h3"></path>
+        </svg>
+        <span class="hidden min-[480px]:inline">{t('header.calibrate')}</span>
       </button>
 
       <!-- Compare (desktop only) -->
       <button id="open-objects-btn"
         class="h-7 px-2 hidden lg:flex items-center gap-1 rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--accent-light)] hover:border-[var(--accent-border)] hover:text-[var(--accent)] text-[var(--text-secondary)] text-[11px] font-medium transition-all"
-        title="Compare Objects">
+        title={t('header.compare')}
+        aria-label={t('header.compare')}>
         <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
           <rect x="2" y="4" width="12" height="8" rx="1.5"></rect>
           <line x1="2" y1="7" x2="14" y2="7"></line>
@@ -180,10 +186,10 @@ const translatePath = useTranslatedPath(currentLang);
       
       <!-- Left: Compact Edge Selector Segment (T | L | B | R) -->
       <div class="flex items-center rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] p-0.5 shrink-0" role="group" aria-label="Ruler Edges">
-        <button data-edge="top" class="edge-btn h-7 px-2 rounded-[4px] bg-[var(--accent)] text-white text-[11px] font-semibold transition-all" title="Top Edge" aria-pressed="true">T</button>
-        <button data-edge="left" class="edge-btn h-7 px-2 rounded-[4px] text-[var(--text-secondary)] hover:text-[var(--text-main)] text-[11px] font-medium transition-all" title="Left Edge" aria-pressed="false">L</button>
-        <button data-edge="bottom" class="edge-btn h-7 px-2 rounded-[4px] text-[var(--text-secondary)] hover:text-[var(--text-main)] text-[11px] font-medium transition-all" title="Bottom Edge" aria-pressed="false">B</button>
-        <button data-edge="right" class="edge-btn h-7 px-2 rounded-[4px] text-[var(--text-secondary)] hover:text-[var(--text-main)] text-[11px] font-medium transition-all" title="Right Edge" aria-pressed="false">R</button>
+        <button data-edge="top" class="edge-btn h-7 px-2 rounded-[4px] bg-[var(--accent)] text-white text-[11px] font-semibold transition-all" title={t('header.edge_top')} aria-label={t('header.edge_top')} aria-pressed="true">T</button>
+        <button data-edge="left" class="edge-btn h-7 px-2 rounded-[4px] text-[var(--text-secondary)] hover:text-[var(--text-main)] text-[11px] font-medium transition-all" title={t('header.edge_left')} aria-label={t('header.edge_left')} aria-pressed="false">L</button>
+        <button data-edge="bottom" class="edge-btn h-7 px-2 rounded-[4px] text-[var(--text-secondary)] hover:text-[var(--text-main)] text-[11px] font-medium transition-all" title={t('header.edge_bottom')} aria-label={t('header.edge_bottom')} aria-pressed="false">B</button>
+        <button data-edge="right" class="edge-btn h-7 px-2 rounded-[4px] text-[var(--text-secondary)] hover:text-[var(--text-main)] text-[11px] font-medium transition-all" title={t('header.edge_right')} aria-label={t('header.edge_right')} aria-pressed="false">R</button>
       </div>
 
       <!-- Right: Mobile Tools (Floating, Calipers, Compare, Fullscreen) -->
@@ -192,31 +198,31 @@ const translatePath = useTranslatedPath(currentLang);
         <!-- Floating Ruler -->
         <button id="mobile-toggle-floating-btn"
           class="h-7 px-2 rounded-[6px] bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--accent)] hover:border-[var(--accent-border)] text-[11px] font-medium flex items-center gap-1 transition-all"
-          title="Floating Ruler" aria-pressed="false">
+          title={t('header.floating')} aria-label={t('header.floating')} aria-pressed="false">
           <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
             <rect x="1.5" y="5.5" width="13" height="5" rx="1" transform="rotate(-10 8 8)"></rect>
             <line x1="5" y1="6.5" x2="6" y2="9.5"></line>
             <line x1="8.5" y1="6" x2="9.5" y2="10"></line>
           </svg>
-          <span class="hidden min-[370px]:inline">Float</span>
+          <span class="hidden min-[440px]:inline">{t('header.floating')}</span>
         </button>
 
         <!-- Calipers -->
         <button id="mobile-toggle-calipers-btn"
           class="h-7 px-2 rounded-[6px] bg-[var(--accent-light)] border border-[var(--accent-border)] text-[var(--accent)] text-[11px] font-medium flex items-center gap-1 transition-all"
-          title="Calipers" aria-pressed="true">
+          title={t('header.calipers')} aria-label={t('header.calipers')} aria-pressed="true">
           <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
             <line x1="3" y1="2" x2="3" y2="14" stroke-linecap="round"></line>
             <line x1="13" y1="2" x2="13" y2="14" stroke-linecap="round"></line>
             <line x1="3" y1="8" x2="13" y2="8" stroke-dasharray="2 1.5"></line>
           </svg>
-          <span class="hidden min-[370px]:inline">Calipers</span>
+          <span class="hidden min-[440px]:inline">{t('header.calipers')}</span>
         </button>
 
         <!-- Compare Objects -->
         <button id="mobile-open-objects-btn"
           class="h-7 w-7 rounded-[6px] bg-[var(--bg-card)] border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-[var(--accent)] flex items-center justify-center transition-all shrink-0"
-          title="Compare Everyday Objects">
+          title={t('header.compare')} aria-label={t('header.compare')}>
           <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
             <rect x="2" y="4" width="12" height="8" rx="1.5"></rect>
             <line x1="2" y1="7" x2="14" y2="7"></line>
