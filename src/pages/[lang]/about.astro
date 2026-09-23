@@ -1,0 +1,101 @@
+---
+// src/pages/[lang]/about.astro - Localized About Page
+import Layout from '../../layouts/Layout.astro';
+import SubpageHeader from '../../components/SubpageHeader.astro';
+import Footer from '../../components/Footer.astro';
+import { languages, type SupportedLang, defaultLang } from '../../i18n/ui';
+import { useTranslations, useTranslatedPath } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return (Object.keys(languages) as SupportedLang[])
+    .filter((l) => l !== defaultLang)
+    .map((lang) => ({
+      params: { lang },
+    }));
+}
+
+const { lang } = Astro.params as { lang: SupportedLang };
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+---
+
+<Layout
+  lang={lang}
+  title={`${t('nav.about')} — ${t('header.logo')} | freevirtualruler.com`}
+  description={t('meta.description')}
+>
+  <SubpageHeader activePage="about" lang={lang} />
+
+  <main class="relative z-10 bg-[var(--bg-page)] min-h-screen py-12 sm:py-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 space-y-12">
+      
+      <!-- Breadcrumb & Header -->
+      <div class="space-y-4">
+        <nav class="flex items-center gap-2 text-xs font-mono text-[var(--text-tertiary)]" aria-label="Breadcrumb">
+          <a href={translatePath('/')} class="hover:text-[var(--accent)] transition-colors">{t('nav.ruler')}</a>
+          <span>/</span>
+          <span class="text-[var(--text-main)]">{t('nav.about')}</span>
+        </nav>
+
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-card)] shadow-xs">
+            <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span>
+            <span class="mono-eyebrow text-[10px] text-[var(--text-tertiary)] uppercase tracking-wider">{t('seo.badge')}</span>
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-main)]">
+            {t('nav.about')} — {t('header.logo')}
+          </h1>
+          <p class="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
+            {t('footer.tagline')}
+          </p>
+        </div>
+      </div>
+
+      <!-- Hero Summary Card -->
+      <div class="p-6 sm:p-8 rounded-[16px] bg-[var(--bg-card)] border border-[var(--border-color)] shadow-[var(--shadow-whisper)] space-y-4">
+        <h2 class="text-lg sm:text-xl font-semibold text-[var(--text-main)]">
+          {t('seo.card1_title')}
+        </h2>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          {t('seo.card1_desc')}
+        </p>
+        <p class="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+          {t('seo.why_p2')}
+        </p>
+      </div>
+
+      <!-- Core Features Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="p-5 rounded-[12px] bg-[var(--bg-card)] border border-[var(--border-color)] shadow-[var(--shadow-whisper)] space-y-2">
+          <h3 class="text-sm font-semibold text-[var(--text-main)]">{t('seo.card2_title')}</h3>
+          <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+            {t('seo.card2_desc')}
+          </p>
+        </div>
+        <div class="p-5 rounded-[12px] bg-[var(--bg-card)] border border-[var(--border-color)] shadow-[var(--shadow-whisper)] space-y-2">
+          <h3 class="text-sm font-semibold text-[var(--text-main)]">{t('seo.card3_title')}</h3>
+          <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+            {t('seo.card3_desc')}
+          </p>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="text-center pt-6">
+        <a
+          href={translatePath('/')}
+          class="inline-flex items-center gap-2 px-6 py-3 rounded-[8px] bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white text-sm font-semibold shadow-sm transition-all hover:scale-[1.02]"
+        >
+          <span>{t('nav.open_ruler')}</span>
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <Footer lang={lang} />
+</Layout>

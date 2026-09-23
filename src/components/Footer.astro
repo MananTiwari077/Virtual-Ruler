@@ -1,5 +1,16 @@
 ---
-// Footer.astro - Multi-page SEO footer with comprehensive site navigation
+// Footer.astro - Multi-page SEO footer with comprehensive site navigation and language picker
+import LanguagePicker from './LanguagePicker.astro';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../i18n/utils';
+import type { SupportedLang } from '../i18n/ui';
+
+interface Props {
+  lang?: SupportedLang;
+}
+
+const currentLang = Astro.props.lang || getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
+const translatePath = useTranslatedPath(currentLang);
 ---
 
 <footer class="relative z-10 bg-[var(--bg-page)] border-t border-[var(--border-color)] py-14 transition-colors duration-200">
@@ -10,41 +21,41 @@
       
       <!-- Column 1: Brand & Identity -->
       <div class="col-span-2 md:col-span-1 space-y-3">
-        <a href="/" class="flex items-center gap-2 text-[var(--text-main)] group" aria-label="Free Virtual Ruler">
+        <a href={translatePath('/')} class="flex items-center gap-2 text-[var(--text-main)] group" aria-label={t('header.logo')}>
           <div class="w-6 h-6 rounded-[5px] bg-[var(--accent)] text-white flex items-center justify-center font-mono font-bold text-[11px] shadow-xs group-hover:scale-105 transition-transform">
             R
           </div>
-          <span class="font-semibold text-sm tracking-tight">Free Virtual Ruler</span>
+          <span class="font-semibold text-sm tracking-tight">{t('header.logo')}</span>
         </a>
         <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
-          Accurate on-screen digital ruler and measuring tape. Calibrated to actual physical size in inches, centimeters, and millimeters on any device.
+          {t('footer.tagline')}
         </p>
         <div class="pt-1 flex items-center gap-1.5 text-[11px] font-mono text-[var(--text-tertiary)]">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-          <span>100% Free · No App Needed</span>
+          <span>{t('footer.free_badge')}</span>
         </div>
       </div>
 
       <!-- Column 2: Ruler & Measuring Tools -->
       <div class="space-y-3">
         <h3 class="mono-eyebrow text-[11px] font-semibold text-[var(--text-main)] uppercase tracking-wider">
-          Measuring Tools
+          {t('footer.tools_title')}
         </h3>
         <ul class="space-y-2 text-xs text-[var(--text-secondary)]">
           <li>
-            <a href="/#ruler-workspace" class="hover:text-[var(--accent)] transition-colors">Virtual Ruler (Home)</a>
+            <a href={`${translatePath('/')}#ruler-workspace`} class="hover:text-[var(--accent)] transition-colors">{t('footer.tool_home')}</a>
           </li>
           <li>
-            <a href="/#ruler-workspace" class="hover:text-[var(--accent)] transition-colors">12 Inch Online Ruler</a>
+            <a href={`${translatePath('/')}#ruler-workspace`} class="hover:text-[var(--accent)] transition-colors">{t('footer.tool_12in')}</a>
           </li>
           <li>
-            <a href="/#ruler-workspace" class="hover:text-[var(--accent)] transition-colors">Metric Ruler (cm & mm)</a>
+            <a href={`${translatePath('/')}#ruler-workspace`} class="hover:text-[var(--accent)] transition-colors">{t('footer.tool_metric')}</a>
           </li>
           <li>
-            <a href="/#ruler-workspace" class="hover:text-[var(--accent)] transition-colors">Dual Calipers & Tape</a>
+            <a href={`${translatePath('/')}#ruler-workspace`} class="hover:text-[var(--accent)] transition-colors">{t('footer.tool_calipers')}</a>
           </li>
           <li>
-            <a href="/#ruler-workspace" class="hover:text-[var(--accent)] transition-colors">Floating Rotating Ruler</a>
+            <a href={`${translatePath('/')}#ruler-workspace`} class="hover:text-[var(--accent)] transition-colors">{t('footer.tool_floating')}</a>
           </li>
         </ul>
       </div>
@@ -52,20 +63,20 @@
       <!-- Column 3: Calibration & Help -->
       <div class="space-y-3">
         <h3 class="mono-eyebrow text-[11px] font-semibold text-[var(--text-main)] uppercase tracking-wider">
-          Guides & Help
+          {t('footer.guides_title')}
         </h3>
         <ul class="space-y-2 text-xs text-[var(--text-secondary)]">
           <li>
-            <a href="/#guides-section" class="hover:text-[var(--accent)] transition-colors">Calibration Methods</a>
+            <a href={`${translatePath('/')}#guides-section`} class="hover:text-[var(--accent)] transition-colors">{t('footer.guide_calibration')}</a>
           </li>
           <li>
-            <a href="/#guides-section" class="hover:text-[var(--accent)] transition-colors">Inches & Metric Chart</a>
+            <a href={`${translatePath('/')}#guides-section`} class="hover:text-[var(--accent)] transition-colors">{t('footer.guide_chart')}</a>
           </li>
           <li>
-            <a href="/#faq" class="hover:text-[var(--accent)] transition-colors">Frequently Asked Questions</a>
+            <a href={`${translatePath('/')}#faq`} class="hover:text-[var(--accent)] transition-colors">{t('footer.guide_faq')}</a>
           </li>
           <li>
-            <a href="/about" class="hover:text-[var(--accent)] transition-colors">Screen PPI Science</a>
+            <a href={translatePath('/about')} class="hover:text-[var(--accent)] transition-colors">{t('footer.guide_science')}</a>
           </li>
         </ul>
       </div>
@@ -73,37 +84,42 @@
       <!-- Column 4: Company & Legal (Multi-page links) -->
       <div class="space-y-3">
         <h3 class="mono-eyebrow text-[11px] font-semibold text-[var(--text-main)] uppercase tracking-wider">
-          Company & Legal
+          {t('footer.company_title')}
         </h3>
         <ul class="space-y-2 text-xs text-[var(--text-secondary)]">
           <li>
-            <a href="/about" class="hover:text-[var(--accent)] transition-colors font-medium">About Us</a>
+            <a href={translatePath('/about')} class="hover:text-[var(--accent)] transition-colors font-medium">{t('nav.about')}</a>
           </li>
           <li>
-            <a href="/contact" class="hover:text-[var(--accent)] transition-colors font-medium">Contact Us</a>
+            <a href={translatePath('/contact')} class="hover:text-[var(--accent)] transition-colors font-medium">{t('nav.contact')}</a>
           </li>
           <li>
-            <a href="/privacy" class="hover:text-[var(--accent)] transition-colors font-medium">Privacy Policy</a>
+            <a href={translatePath('/privacy')} class="hover:text-[var(--accent)] transition-colors font-medium">{t('nav.privacy')}</a>
           </li>
           <li>
-            <a href="/terms" class="hover:text-[var(--accent)] transition-colors font-medium">Terms & Conditions</a>
+            <a href={translatePath('/terms')} class="hover:text-[var(--accent)] transition-colors font-medium">{t('nav.terms')}</a>
           </li>
         </ul>
       </div>
 
     </div>
 
+    <!-- Language Selector Section (Grid format for SEO spider indexing & users) -->
+    <div class="pt-8 border-t border-[var(--border-color)]">
+      <LanguagePicker variant="footer" currentLang={currentLang} />
+    </div>
+
     <!-- Bottom Row -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-[var(--border-color)] text-[11px] text-[var(--text-tertiary)] font-mono">
-      <p>&copy; {new Date().getFullYear()} Free Virtual Ruler (freevirtualruler.com). All rights reserved.</p>
+      <p>&copy; {new Date().getFullYear()} {t('footer.copyright')}</p>
       <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
-        <a href="/about" class="hover:text-[var(--text-main)] transition-colors">About</a>
+        <a href={translatePath('/about')} class="hover:text-[var(--text-main)] transition-colors">{t('nav.about')}</a>
         <span>·</span>
-        <a href="/contact" class="hover:text-[var(--text-main)] transition-colors">Contact</a>
+        <a href={translatePath('/contact')} class="hover:text-[var(--text-main)] transition-colors">{t('nav.contact')}</a>
         <span>·</span>
-        <a href="/privacy" class="hover:text-[var(--text-main)] transition-colors">Privacy</a>
+        <a href={translatePath('/privacy')} class="hover:text-[var(--text-main)] transition-colors">{t('nav.privacy')}</a>
         <span>·</span>
-        <a href="/terms" class="hover:text-[var(--text-main)] transition-colors">Terms</a>
+        <a href={translatePath('/terms')} class="hover:text-[var(--text-main)] transition-colors">{t('nav.terms')}</a>
       </div>
     </div>
 

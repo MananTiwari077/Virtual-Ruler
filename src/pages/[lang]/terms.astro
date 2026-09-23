@@ -1,0 +1,82 @@
+---
+// src/pages/[lang]/terms.astro - Localized Terms and Conditions Page
+import Layout from '../../layouts/Layout.astro';
+import SubpageHeader from '../../components/SubpageHeader.astro';
+import Footer from '../../components/Footer.astro';
+import { languages, type SupportedLang, defaultLang } from '../../i18n/ui';
+import { useTranslations, useTranslatedPath } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return (Object.keys(languages) as SupportedLang[])
+    .filter((l) => l !== defaultLang)
+    .map((lang) => ({
+      params: { lang },
+    }));
+}
+
+const { lang } = Astro.params as { lang: SupportedLang };
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+---
+
+<Layout
+  lang={lang}
+  title={`${t('nav.terms')} — ${t('header.logo')} | freevirtualruler.com`}
+  description={t('meta.description')}
+>
+  <SubpageHeader activePage="terms" lang={lang} />
+
+  <main class="relative z-10 bg-[var(--bg-page)] min-h-screen py-12 sm:py-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 space-y-10">
+      
+      <!-- Breadcrumb & Header -->
+      <div class="space-y-4">
+        <nav class="flex items-center gap-2 text-xs font-mono text-[var(--text-tertiary)]" aria-label="Breadcrumb">
+          <a href={translatePath('/')} class="hover:text-[var(--accent)] transition-colors">{t('nav.ruler')}</a>
+          <span>/</span>
+          <span class="text-[var(--text-main)]">{t('nav.terms')}</span>
+        </nav>
+
+        <div class="space-y-2">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[var(--border-color)] bg-[var(--bg-card)] shadow-xs">
+            <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span>
+            <span class="mono-eyebrow text-[10px] text-[var(--text-tertiary)] uppercase tracking-wider">{t('nav.terms')}</span>
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-main)]">
+            {t('nav.terms')} — {t('header.logo')}
+          </h1>
+          <p class="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
+            {t('footer.tagline')}
+          </p>
+        </div>
+      </div>
+
+      <!-- Terms Card -->
+      <div class="p-6 sm:p-8 rounded-[16px] bg-[var(--bg-card)] border border-[var(--border-color)] shadow-[var(--shadow-whisper)] space-y-6 text-sm text-[var(--text-secondary)] leading-relaxed">
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-[var(--text-main)]">Acceptance of Terms</h2>
+          <p>
+            By accessing and using Free Virtual Ruler (freevirtualruler.com), you agree to comply with and be bound by these Terms and Conditions.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-[var(--text-main)]">Intended Use and Accuracy Disclaimer</h2>
+          <p>
+            Free Virtual Ruler is provided as a free, convenient, high-precision utility for everyday measurement and visual reference. Although our calibration algorithms provide 1:1 physical accuracy when correctly calibrated, the service is provided on an "as is" and "as available" basis.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-[var(--text-main)]">Intellectual Property</h2>
+          <p>
+            The software, interactive ruler canvas, calibration algorithms, and interface designs are the intellectual property of Free Virtual Ruler.
+          </p>
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <Footer lang={lang} />
+</Layout>

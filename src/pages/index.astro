@@ -10,11 +10,12 @@ import Footer from '../components/Footer.astro';
 ---
 
 <Layout
+  lang="en"
   title="Virtual Ruler — Accurate Online Ruler in Inches, cm & mm | Full Size Virtual Ruler"
   description="Free, 100% accurate virtual ruler and online ruler for your screen. Measure objects in actual size with virtual ruler inches, online ruler in cm, mm, and 12 inch online ruler. Use as a mobile ruler or measuring tape full size virtual ruler app without installation."
 >
-  <!-- Global Vercel-style App Chrome Header -->
-  <Header />
+  <!-- Global App Chrome Header -->
+  <Header lang="en" />
 
   <!-- Main Interactive Virtual Ruler Workspace -->
   <main id="main-content" class="relative">
@@ -22,13 +23,13 @@ import Footer from '../components/Footer.astro';
   </main>
 
   <!-- Comprehensive SEO Guide, Fraction Charts & FAQs (600+ words) -->
-  <SeoContent />
+  <SeoContent lang="en" />
 
   <!-- Footer -->
-  <Footer />
+  <Footer lang="en" />
 
   <!-- Modals & Overlays -->
-  <CalibrationModal />
-  <ObjectPresetsModal />
-  <ShortcutsModal />
+  <CalibrationModal lang="en" />
+  <ObjectPresetsModal lang="en" />
+  <ShortcutsModal lang="en" />
 </Layout>

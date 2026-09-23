@@ -1,0 +1,50 @@
+---
+// src/pages/[lang]/index.astro - Localized Home Page for all non-default languages
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import RulerCanvas from '../../components/RulerCanvas.astro';
+import CalibrationModal from '../../components/CalibrationModal.astro';
+import ObjectPresetsModal from '../../components/ObjectPresetsModal.astro';
+import ShortcutsModal from '../../components/ShortcutsModal.astro';
+import SeoContent from '../../components/SeoContent.astro';
+import Footer from '../../components/Footer.astro';
+import { languages, type SupportedLang, defaultLang } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return (Object.keys(languages) as SupportedLang[])
+    .filter((l) => l !== defaultLang)
+    .map((lang) => ({
+      params: { lang },
+    }));
+}
+
+const { lang } = Astro.params as { lang: SupportedLang };
+const t = useTranslations(lang);
+---
+
+<Layout
+  lang={lang}
+  title={t('meta.title')}
+  description={t('meta.description')}
+  keywords={t('meta.keywords')}
+>
+  <!-- Global App Chrome Header -->
+  <Header lang={lang} />
+
+  <!-- Main Interactive Virtual Ruler Workspace -->
+  <main id="main-content" class="relative">
+    <RulerCanvas />
+  </main>
+
+  <!-- Comprehensive SEO Guide, Fraction Charts & FAQs in target language -->
+  <SeoContent lang={lang} />
+
+  <!-- Multi-Language Footer -->
+  <Footer lang={lang} />
+
+  <!-- Modals & Overlays -->
+  <CalibrationModal lang={lang} />
+  <ObjectPresetsModal lang={lang} />
+  <ShortcutsModal lang={lang} />
+</Layout>

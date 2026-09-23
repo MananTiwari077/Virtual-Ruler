@@ -21,7 +21,6 @@ const currentLangLabel = languages[currentLang] || languages.en;
 ---
 
 {variant === 'footer' ? (
-  <!-- Footer Multi-Language Grid for SEO Discovery and User Switching -->
   <div class={`space-y-3 ${className}`}>
     <h3 class="mono-eyebrow text-[11px] font-semibold text-[var(--text-main)] uppercase tracking-wider flex items-center gap-1.5">
       <svg class="w-3.5 h-3.5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -56,7 +55,6 @@ const currentLangLabel = languages[currentLang] || languages.en;
     </ul>
   </div>
 ) : (
-  <!-- Header / Compact Language Switcher Dropdown -->
   <div class={`relative inline-block text-left lang-picker-container ${className}`}>
     <button
       type="button"
@@ -77,7 +75,6 @@ const currentLangLabel = languages[currentLang] || languages.en;
       </svg>
     </button>
 
-    <!-- Dropdown Menu -->
     <div
       class="lang-picker-menu hidden absolute right-0 mt-1.5 w-40 rounded-[8px] border border-[var(--border-color)] bg-[var(--bg-card)] shadow-[var(--shadow-floating)] py-1 z-50 text-xs backdrop-blur-md"
       role="menu"

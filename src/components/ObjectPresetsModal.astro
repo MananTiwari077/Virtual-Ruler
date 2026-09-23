@@ -1,5 +1,14 @@
 ---
 // ObjectPresetsModal.astro - Real-world object scale reference overlay
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+import type { SupportedLang } from '../i18n/ui';
+
+interface Props {
+  lang?: SupportedLang;
+}
+
+const currentLang = Astro.props.lang || getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
 ---
 
 <div
@@ -16,7 +25,7 @@
       <div>
         <div class="mono-eyebrow text-[10px] text-[var(--text-tertiary)] uppercase mb-0.5">Physical Verification</div>
         <h2 id="objects-modal-title" class="text-base font-semibold tracking-tight text-[var(--text-main)]">
-          Everyday Object References
+          {t('presets.title')}
         </h2>
       </div>
       <button

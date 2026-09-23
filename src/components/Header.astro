@@ -1,5 +1,16 @@
 ---
 // Header.astro - Mobile-optimized responsive ruler toolbar
+import LanguagePicker from './LanguagePicker.astro';
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../i18n/utils';
+import type { SupportedLang } from '../i18n/ui';
+
+interface Props {
+  lang?: SupportedLang;
+}
+
+const currentLang = Astro.props.lang || getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
+const translatePath = useTranslatedPath(currentLang);
 ---
 
 <header id="main-header" class="fixed top-0 left-0 right-0 z-50 bg-[var(--bg-page)]/95 backdrop-blur-md border-b border-[var(--border-color)] transition-colors duration-200 select-none">
@@ -9,7 +20,7 @@
     
     <!-- Left: Logo -->
     <div class="flex items-center gap-1.5 shrink-0">
-      <a href="/" class="flex items-center gap-1.5 text-[var(--text-main)] hover:opacity-80 transition-opacity" aria-label="Free Virtual Ruler Home">
+      <a href={translatePath('/')} class="flex items-center gap-1.5 text-[var(--text-main)] hover:opacity-80 transition-opacity" aria-label={t('header.logo')}>
         <div class="w-7 h-7 rounded-[6px] bg-[var(--accent)] text-white flex items-center justify-center shrink-0 shadow-sm">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"></path>
@@ -20,8 +31,8 @@
           </svg>
         </div>
         <span class="font-semibold text-xs sm:text-[13px] tracking-tight text-[var(--text-main)]">
-          <span class="inline sm:hidden">Free Ruler</span>
-          <span class="hidden sm:inline">Free Virtual Ruler</span>
+          <span class="inline sm:hidden">{t('header.logo_short')}</span>
+          <span class="hidden sm:inline">{t('header.logo')}</span>
         </span>
       </a>
     </div>
@@ -32,16 +43,16 @@
       <div class="flex items-center gap-0.5 p-0.5 rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-subtle)]">
         <button id="edge-top-btn" data-edge="top"
           class="edge-btn h-7 px-2.5 flex items-center rounded-[4px] bg-[var(--accent)] text-white font-medium text-[11px] transition-all"
-          title="Toggle Top Ruler (T)" aria-pressed="true">Top</button>
+          title="Toggle Top Ruler (T)" aria-pressed="true">{t('header.edge_top')}</button>
         <button id="edge-left-btn" data-edge="left"
           class="edge-btn h-7 px-2.5 flex items-center rounded-[4px] text-[var(--text-secondary)] hover:text-[var(--text-main)] font-medium text-[11px] transition-all"
-          title="Toggle Left Ruler (L)" aria-pressed="false">Left</button>
+          title="Toggle Left Ruler (L)" aria-pressed="false">{t('header.edge_left')}</button>
         <button id="edge-bottom-btn" data-edge="bottom"
           class="edge-btn h-7 px-2.5 flex items-center rounded-[4px] text-[var(--text-secondary)] hover:text-[var(--text-main)] font-medium text-[11px] transition-all"
-          title="Toggle Bottom Ruler (B)" aria-pressed="false">Bottom</button>
+          title="Toggle Bottom Ruler (B)" aria-pressed="false">{t('header.edge_bottom')}</button>
         <button id="edge-right-btn" data-edge="right"
           class="edge-btn h-7 px-2.5 flex items-center rounded-[4px] text-[var(--text-secondary)] hover:text-[var(--text-main)] font-medium text-[11px] transition-all"
-          title="Toggle Right Ruler (R)" aria-pressed="false">Right</button>
+          title="Toggle Right Ruler (R)" aria-pressed="false">{t('header.edge_right')}</button>
       </div>
 
       <div class="h-5 w-px bg-[var(--border-color)]"></div>
@@ -55,7 +66,7 @@
           <line x1="8" y1="6" x2="9" y2="10"></line>
           <line x1="11" y1="5.5" x2="12" y2="9"></line>
         </svg>
-        <span>Floating</span>
+        <span>{t('header.floating')}</span>
       </button>
 
       <button id="toggle-calipers-btn"
@@ -66,7 +77,7 @@
           <line x1="13" y1="2" x2="13" y2="14" stroke-linecap="round"></line>
           <line x1="3" y1="8" x2="13" y2="8" stroke-dasharray="2 1.5"></line>
         </svg>
-        <span>Calipers</span>
+        <span>{t('header.calipers')}</span>
       </button>
 
       <button id="toggle-guides-btn"
@@ -107,7 +118,7 @@
         class="h-7 px-2 sm:px-2.5 flex items-center gap-1.5 rounded-[6px] border border-[var(--accent-border)] bg-[var(--accent-light)] hover:bg-[var(--accent)] hover:text-white text-[var(--accent)] text-[11px] font-medium transition-all shrink-0"
         title="Calibrate Screen">
         <span id="cal-status-dot" class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse shrink-0"></span>
-        <span class="hidden min-[360px]:inline">Calibrate</span>
+        <span class="hidden min-[360px]:inline">{t('header.calibrate')}</span>
       </button>
 
       <!-- Compare (desktop only) -->
@@ -118,7 +129,7 @@
           <rect x="2" y="4" width="12" height="8" rx="1.5"></rect>
           <line x1="2" y1="7" x2="14" y2="7"></line>
         </svg>
-        <span>Compare</span>
+        <span>{t('header.compare')}</span>
       </button>
 
       <!-- Shortcuts (hidden on mobile) -->
@@ -127,16 +138,19 @@
         title="Shortcuts (?)" aria-label="Keyboard Shortcuts">?</button>
 
       <!-- About Page Link (desktop) -->
-      <a href="/about"
+      <a href={translatePath('/about')}
         class="h-7 px-2 hidden lg:flex items-center gap-1 rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--accent-light)] hover:border-[var(--accent-border)] hover:text-[var(--accent)] text-[var(--text-secondary)] text-[11px] font-medium transition-all"
-        title="About Free Virtual Ruler">
-        <span>About</span>
+        title={t('header.about')}>
+        <span>{t('header.about')}</span>
       </a>
+
+      <!-- Language Selector -->
+      <LanguagePicker variant="header" currentLang={currentLang} />
 
       <!-- Theme Toggle -->
       <button id="theme-toggle-btn"
         class="h-7 w-7 flex items-center justify-center rounded-[6px] border border-[var(--border-color)] bg-[var(--bg-card)] hover:bg-[var(--accent-light)] hover:border-[var(--accent-border)] hover:text-[var(--accent)] text-[var(--text-main)] transition-all shrink-0"
-        title="Toggle Theme (D)" aria-label="Toggle Theme">
+        title={t('header.theme')} aria-label={t('header.theme')}>
         <svg id="theme-sun-icon" class="w-3.5 h-3.5 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="4"></circle>
           <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>

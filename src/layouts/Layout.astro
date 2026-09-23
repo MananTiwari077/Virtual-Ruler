@@ -1,7 +1,9 @@
+---
 // Layout.astro - Complete SEO optimized layout with Open Graph, Twitter Cards & Structured Data
 import '../styles/global.css';
 import { getLangFromUrl, getHreflangList, getLocaleMeta, useTranslations } from '../i18n/utils';
-import { type SupportedLang, defaultLang } from '../i18n/ui';
+import type { SupportedLang } from '../i18n/ui';
+import { defaultLang } from '../i18n/ui';
 
 interface Props {
 	title?: string;
@@ -102,8 +104,7 @@ const hreflangs = getHreflangList(Astro.url.pathname, 'https://freevirtualruler.
 		<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
 		<!-- JSON-LD Structured Data: WebApplication -->
-		<script type="application/ld+json" is:inline>
-		{
+		<script type="application/ld+json" is:inline set:html={JSON.stringify({
 			"@context": "https://schema.org",
 			"@type": "WebApplication",
 			"name": "Free Virtual Ruler",
@@ -116,12 +117,12 @@ const hreflangs = getHreflangList(Astro.url.pathname, 'https://freevirtualruler.
 				"Mobile Ruler",
 				"12 Inch Online Ruler"
 			],
-			"url": "https://freevirtualruler.com/",
-			"description": "Accurate online ruler and full size virtual ruler web app for measuring physical objects in inches, cm, and mm directly on your screen. Supports auto device detection, screen diagonal calibration, and dual calipers.",
+			"url": canonicalURL.toString(),
+			"description": description,
 			"applicationCategory": "UtilitiesApplication",
 			"operatingSystem": "All (Windows, macOS, Linux, iOS, Android)",
 			"browserRequirements": "Requires HTML5 Canvas and JavaScript support",
-			"inLanguage": "en-US",
+			"inLanguage": meta.htmlLang,
 			"isAccessibleForFree": true,
 			"offers": {
 				"@type": "Offer",
@@ -143,8 +144,7 @@ const hreflangs = getHreflangList(Astro.url.pathname, 'https://freevirtualruler.
 				"Accurate online ruler calibrated via auto-detect or screen diagonal",
 				"Mobile ruler optimized for smartphones and touch devices"
 			]
-		}
-		</script>
+		})} />
 
 		<!-- Google Analytics 4 (GA4) -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-2L8XK8TW55" is:inline></script>
