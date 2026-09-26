@@ -1,7 +1,10 @@
 {
-  "name": "",
+  "name": "free-virtual-ruler",
+  "description": "High-precision, sub-pixel accurate 1:1 physical screen ruler and measurement suite built with Astro, Tailwind CSS v4, and HTML5 Canvas.",
+  "version": "1.0.0",
+  "author": "Manan Tiwari <tiwarimanan077@gmail.com>",
+  "license": "MIT",
   "type": "module",
-  "version": "0.0.1",
   "engines": {
     "node": ">=22.12.0"
   },
